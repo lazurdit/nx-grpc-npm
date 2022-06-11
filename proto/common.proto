@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+//import "google/protobuf/empty.proto"; 
+import "google/protobuf/wrappers.proto";
+//import "google/protobuf/duration.proto";   
+//import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Nx.Server.Protos";
+
+
+package NxServer;
+ 
+message ResponseStatus{
+	bool Success =1;
+	google.protobuf.StringValue ExtraResponseData=2;
+	ErrorMessage Error=3;
+}
+
+message PassportInfo{
+	google.protobuf.StringValue RepositoryName =1;
+	google.protobuf.Int64Value RepositoryId =2;
+	google.protobuf.Int64Value EntityId=3; 
+	google.protobuf.Int64Value BranchId=4; 
+
+}
+
+message ErrorMessage {
+	int64 ErrorNumber =1;
+	google.protobuf.StringValue ErrorDescription =2 ;
+	google.protobuf.StringValue ErrorDetails=3 ;
+	bool HasLocalizedDescription=4;
+	google.protobuf.StringValue ErrorLocalizedDescription =5;
+	ErrorTypes ErrorType =6;
+	google.protobuf.StringValue ExtraData=7 ;
+}
+
+enum ErrorTypes{
+	KNOWN_ERROR=0;
+	UNKNOWN_ERROR=1;
+}
+
+message IdNameObject{
+	int64 Id = 1;
+	string Name =2;
+}
+
+message FileData{
+	string FileName =8;
+	int64 ChunckNumber =1;
+	int64 TotalChucnks =2;
+	int64 TotalBytes =3;
+	int32 ChuckSize =4;
+	bytes ChunckData=5; 
+	bytes FileMD5=6; 
+}
+message NprFileDataResponse {
+	ResponseStatus Status=1;
+	FileData Data=2;
+}
+ 
+message NprRecordDeleteRequest{
+    PassportInfo Passport =1;
+    int64 RecordId =2;
+}
+message NprDecimalValue {
+
+  // The whole units of the amount.
+  int64 units = 1;
+
+  // Number of nano (10^-9) units of the amount.
+  // The value must be between -999,999,999 and +999,999,999 inclusive.
+  // If `units` is positive, `nanos` must be positive or zero.
+  // If `units` is zero, `nanos` can be positive, zero, or negative.
+  // If `units` is negative, `nanos` must be negative or zero.
+  // For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+  int32 nanos = 2;
+}

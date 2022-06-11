@@ -1,0 +1,61 @@
+/*
+
+	Scalar Value Types
+	==================
+	A scalar message field can have one of the following types � the table shows the type specified in the .proto file, and the corresponding type in the automatically generated class:
+	double, float, int32, int64, uint32, uint64, sint32, sint64, fixed32, fixed64, sfixed32, sfixed64, bool, string, bytes
+  
+	see https://developers.google.com/protocol-buffers/docs/proto3#scalar
+
+*/
+
+syntax = "proto3";
+import "google/protobuf/empty.proto"; 
+//import "Common.proto"; 
+
+option csharp_namespace = "Nx.Server.Protos";
+package NxServer;
+
+
+
+service AppPingService{
+      rpc AppPing (AppPingRequest) returns (AppPingReply);
+      rpc AppPingStream (AppPingRequest) returns (stream AppPingReply);
+
+}
+
+service AppInfoService{
+	rpc AppVersion (google.protobuf.Empty) returns (VersionInfoMessage);
+	rpc AppLogoStream (google.protobuf.Empty) returns (stream AppLogoMessage);
+}
+ 
+
+message VersionInfoMessage{
+	string Version =1;
+	int32 Major=2;
+	int32 Minor=3;
+	int32 Revision=4; 
+	bytes logo=5; 
+}
+
+message AppLogoMessage{
+	
+	int64 Part =1;
+	int64 TotalParts =2;
+	int64 TotalBytes =3;
+	int32 ChuckSize =4;
+	bytes Data=5; 
+	bytes MD5=6; 
+	bool Done=7; 
+}
+
+message AppPingRequest {
+	string sender =1;
+}
+
+message AppPingReply{
+	string msg = 1;
+	string serverStatus=2;
+	
+}
+

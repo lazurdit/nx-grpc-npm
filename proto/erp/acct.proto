@@ -1,0 +1,4314 @@
+syntax ="proto3";
+
+option csharp_namespace ="Nx.Server.Services.Erp";
+
+import "google/protobuf/empty.proto"; 
+import "common.proto";
+import "google/protobuf/wrappers.proto";
+//import "google/protobuf/duration.proto";  
+import "google/protobuf/timestamp.proto";
+
+package NxServer;
+
+//Common
+    message NprRecordAddResponse{ 
+        int64 RecordId =2;
+        ResponseStatus Status =3;  
+    }
+
+    message NprRecordUpdateResponse{ 
+        int64 RecordId =2;
+        ResponseStatus Status =3;  
+    }
+
+// NxCurrencyService 
+    service NxCurrencyService {
+        rpc SearchCurrencies (NprCurrencySearchRequest) returns (NprCurrencySearchResponse);
+        rpc GetActiveCurrencyList (NprCurrencyListRequest) returns (NprCurrencyListResponse);
+        rpc GetCurrencyList (NprCurrencyListRequest) returns (NprCurrencyListResponse);
+    }
+
+    message NprCurrencyListRequest {
+        PassportInfo Passport =1; 
+        repeated int64 currencyIdsRequired =2;
+    }
+
+    message NprCurrencySearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprCurrencySearchResponse{
+        repeated NprCurrency Currencies =1;
+        ResponseStatus Status =3;   
+    }
+     
+    message NprCurrencyListResponse {
+        repeated NprCurrency Currencies =1;
+        ResponseStatus Status =2;
+    } 
+    message NprCurrency{
+        int64 Id =1;
+        string Name =2;
+        string Code =3;
+        int32  NumericCode =4;
+        int32  Percision =5;
+        bool IsActive =6;
+        int32  PartsCount =7;
+        google.protobuf.Timestamp CreationDate =8; 
+        google.protobuf.Timestamp ModifyDate =9;
+        int64 EntityId =10;
+        bool IsEntityDefault =11;
+        repeated NprCurrencyTranslation translations =12;
+    }
+
+    message NprCurrencyTranslation{
+        int64 Id =1;
+        string UnitSingleName =2;
+        string UnitPluralName =3;
+        string PartSingleName =4;
+        string PartPluralName =5;
+        int32 TranslationId =6;
+        int64 CurrencyId =7;
+        string Symbol =8;
+    }
+
+// NxCurrencyJournalService 
+    service NxCurrencyJournalService {
+        rpc DeleteCurrencyJournal (NprCurrencyJournalDeleteRequest) returns (ResponseStatus);
+        rpc GetCurrencyJournalList (NprCurrencyJournalListRequest) returns (NprCurrencyJournalListResponse);
+        rpc ChangeIsActiveStatus (NprCurrencyJournalIsActiveChangeRequest) returns (ResponseStatus);
+        rpc GetCurrencyJournalDetails (NprCurrencyJournalDetailsRequest) returns (NprCurrencyJournalListResponse);
+        rpc UpdateCurrencyJournal (NprCurrencyJournalRequest) returns (ResponseStatus);
+        rpc AddCurrencyJournal (NprCurrencyJournalRequest) returns (ResponseStatus);
+    }
+
+    message NprCurrencyJournalRequest {
+        PassportInfo Passport =1;
+        NprCurrencyJournal Journal =2;
+    }
+     
+    message NprCurrencyJournalIsActiveChangeRequest {
+        PassportInfo Passport =1;
+        int64 CurrencyJournalId =2; 
+        bool IsActiveNewValue =3;
+    }
+    
+    message NprCurrencyJournalDeleteRequest {
+        PassportInfo Passport =1;
+        int64 RecordId =2;
+        bool ForceDeleteDefaultJournal =3;
+    }
+    
+    message NprCurrencyJournalListRequest {
+        PassportInfo Passport =1;
+        repeated int64 IdsRequired =2;
+    }
+    
+    message NprCurrencyJournalDetailsRequest {
+        PassportInfo Passport =1;
+        int64 RecordId =2;
+    }
+
+    message NprCurrencyJournalListResponse{
+        repeated NprCurrencyJournal Journals =1;
+        ResponseStatus Status =2;
+    }
+
+    message NprCurrencyJournal{
+        repeated NprCurrencyJournalDetail Details =1;
+        repeated NprCurrencyJournalTranslation Translations =2;
+        int64 Id =3;
+        google.protobuf.Timestamp CreationDate =4;
+        google.protobuf.Timestamp ModifyDate =5;
+        bool IsActive =6;
+        google.protobuf.Timestamp EndDate =7;
+        bool IsEntityDefault =8;
+        google.protobuf.Timestamp StartDate =9;
+        int64 EntityId =10; 
+        string TempId =11;
+    }
+
+    message NprCurrencyJournalDetail{
+        int64 CurrencyJournalId =1;
+        int64 Id =2;
+        int64 CurrencyId =3;
+        NprDecimalValue ExchangeRate =4;
+    }
+    message NprCurrencyJournalTranslation{
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 CurrencyJournalId =4;
+        int32 TranslationId =5;
+    }
+ 
+// NxTagService 
+    service NxTagService { 
+        rpc SearchTags (NprTagSearchRequest) returns (NprTagSearchResponse);
+        rpc GetTags (NprTagListRequest) returns (NprTagListResponse); 
+    }
+    message NprTagSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprTagSearchResponse{
+        repeated NprTag Tags =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprTag{
+        int64 Id =1;
+        google.protobuf.Timestamp CreationDate =2;
+        google.protobuf.Timestamp ModifyDate =3;
+        int64 EntityId =4;
+        repeated NprTagTranslation Translations =5;
+
+    }
+
+    message NprTagTranslation {
+            int64 Id =1;
+            string Name =2;
+            int64 TagId =3; 
+            int32 TranslationId =5; 
+    }
+    message NprTagListRequest{
+        PassportInfo Passport =1;
+        repeated int64 TagIdsRequired =3;
+    }
+    message NprTagListResponse{
+        repeated NprTag Tags =1;
+        ResponseStatus Status =2; 
+    }
+
+// NxRepositoryService
+    service NxRepositoryService {
+	    rpc GetRepositoryInformation (NxRepositoryInfoRequest) returns (NxRepositoryInfoResponse);
+	    rpc GetRepositoryList (google.protobuf.Empty) returns (NxRepositoryListResponse);
+    }
+
+    message NxRepositoryInfoRequest{ 
+	    string RepositoryName =1;
+    }
+
+    message NxRepositoryInfoResponse{
+	    int64 Id =1;
+	    string Name =2;
+	    string Location =3;  
+	    string ServerName =4;
+	    string Database =5;
+	    bool UseWindowsAuthentication =6;
+	    string TablePrefix =7;
+	    string UserName =8;
+	    string Password =9;
+	    repeated IdNameObject Entities =10;
+	    ResponseStatus  Status =11; 
+	    NprDecimalValue testValue =12;
+    }
+
+    message NxRepositoryListResponse{
+	    repeated IdNameObject Repositories =1; 
+    }
+
+// ItemNodeService
+    service NxItemNodeService {
+        rpc GetAllGroupsAsTree (NprItemGroupTreeRequest) returns (NprItemNodeListResponse); 
+        rpc GetItemNodes (NprItemNodeListRequest) returns (NprItemNodeListResponse); 
+        rpc GetItemNodeByCodeTempAddSKU (NprItemNodeByCodeTempAddSKURequest) returns (NprItemNodeListResponse); 
+        rpc GetItemNodeByItemNodeMeasurementUnit (NprItemNodeByItemNodeMeasurementUnitRequest) returns (NprItemNodeListResponse); 
+        rpc GetItemNodeByCodeTempAddSKUOrNumber (NprItemNodeByCodeTempAddSKUOrNumberRequest) returns (NprItemNodeListResponse); 
+        rpc GetItemNodeByBarcode (NprItemNodeByBarcodeRequest) returns (NprItemNodeListResponse); 
+        rpc DeleteItemNodeFullStructure (NprItemNodeDeleteRequest) returns (ResponseStatus); 
+        rpc GetNewSuspectNumber (NewSuspectNumberRequest) returns (NprSuspectNumberResponse);
+        rpc SearchItemNodes (NprItemNodeSearchRequest) returns (NprItemNodeSearchResponse);
+        rpc AddNewItemNode (stream NprItemNodeAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateItemNode (stream NprItemNodeUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc GetItemNodeAvatar (NprItemNodeAvatarRequest) returns (stream NprFileDataResponse); 
+        rpc GetItemNodeSellPriceData (NprItemNodeSellPriceDataRequest) returns (NprItemNodeSellPriceDataResponse); 
+        rpc GetItemNodeBuyPriceData (NprItemNodeBuyPriceDataRequest) returns (NprItemNodeBuyPriceDataResponse); 
+    }
+
+    message NprItemNodeSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+        NprVariantStatus VariantStatus =3;
+        NprItemNodeGroupType GroupType =4;
+        bool PopulateMeasurementUnitsData=6;
+	    google.protobuf.Int64Value EntityId =7;
+        google.protobuf.Int64Value GlobalItemNodeId =8;
+        google.protobuf.Int64Value ItemNodeId =9;
+        google.protobuf.Int64Value PageNumber =10;
+        google.protobuf.Int64Value ItemsPerPage =11;
+        google.protobuf.Int64Value PickupOptionId =12;
+        string Longitude =13;
+        string Latitude =14;
+        NprDecimalValue MinimumCostPerMainUnit =15;
+        NprDecimalValue MaximumCostPerMainUnit =16;
+		 
+    }
+
+    enum NprVariantStatus{
+        ALL_STATUSES =0;
+        VARIANT =1;
+        NON_VARIANT =2;
+    }
+    
+    message NprDefaultUnitSellPrice{
+		int64 ItemNodeMeasurementUnitId =1;
+		NprDecimalValue Price=2;
+    }
+	
+    message NprItemNodeSearchResponse{
+        repeated NprItemNode ItemNodes =1;
+		repeated NprDefaultUnitSellPrice DefaultUnitSellPrices =2;
+        ResponseStatus Status =3;  
+    } 
+
+    message NprItemNodeAvatarRequest{ 
+        PassportInfo Passport =1;
+        int64 RecordId =2;  
+        bool GetThumbnail =3;
+    }
+
+    message NprItemNodeUpdateRequest{  
+        int64 RecordId =1; 
+        string Name =3; 
+        string CodeTempAddSKU =5;
+        google.protobuf.StringValue SKU =6;
+        string Description =7;
+        bool CanHoldTransableItemNodes =10;
+        int64 Number =11;
+        NprItemNodeUpdateAvatarStatus AvatarStatus =12;
+        FileData Avatar =13;
+        PassportInfo Passport =14;
+        repeated int64 TagIds =15;
+        repeated NprItemNodeMeasurementUnitEntry MeasurementUnits =16;
+        repeated int64 IdentifierIds =17;
+        bool IsVariant = 18;
+        google.protobuf.Int64Value VariantParentNodeId =19;
+        repeated NprItemNodeSpecificationEntry Specifications =20;
+    }
+
+
+
+    enum NprItemNodeUpdateAvatarStatus{
+        NO_CHANGE =0;
+        REMOVED =1;
+        CHANGED =2;
+    }
+
+	message NprItemNodeAddTranslation {
+            string Name =2;
+            string Description =4;
+            int32 TranslationId =5;
+            string Notes =6;
+    }
+
+	
+    message NprItemNodeAddRequest{ 
+        NprItemNodeTypes NodeType =1; 
+        NprSuspectNumber Number =2;
+		repeated NprItemNodeAddTranslation Translations =3;
+        google.protobuf.StringValue CodeTempAddSKU =4;
+        google.protobuf.Int64Value GlobalItemNodeId =5;
+        string TempId =6;
+        google.protobuf.StringValue SKU =7;
+        bool CanHoldTransableItemNodes =9;
+        google.protobuf.Int64Value ParentId =10;
+        bool HasAvatar =11;
+        FileData Avatar =12;
+        bool ReturnCreatedNode =13;
+        PassportInfo Passport =14;
+        repeated int64 TagIds =15;
+        repeated NprItemNodeMeasurementUnitEntry MeasurementUnits =16;
+        repeated int64 IdentifierIds =17;
+        bool IsVariant = 18;
+        google.protobuf.Int64Value VariantParentNodeId =19;
+        repeated NprItemNodeSpecificationEntry Specifications =20;
+		string LogoPath =21;
+		repeated string images =42;
+    }
+     
+    message NewSuspectNumberRequest{
+        PassportInfo Passport =1;
+        google.protobuf.Int64Value ParentNodeId =3; 
+    }
+
+    message NprItemNodeListResponse{
+        repeated NprItemNode Nodes =1;
+	    repeated NprDefaultUnitSellPrice DefaultUnitSellPrices =2;
+        ResponseStatus Status =3; 
+    }
+  
+    message NprItemGroupTreeRequest{
+        PassportInfo Passport =1;
+    }
+  
+    message NprItemNodeDeleteRequest{
+        PassportInfo Passport =1;
+        int64 NodeIdRequired =3;
+    }
+     
+    message NprItemNodeListRequest{
+        PassportInfo Passport =1;
+        repeated int64 NodeIdsRequired =3;
+        google.protobuf.Int64Value ParentNodeId =4;
+        NprItemNodeGroupType IncludedTypes =5 ; 
+        bool PopulateMeasurementUnitsData=6;
+    }
+    
+    message NprItemNodeByCodeTempAddSKURequest{
+        PassportInfo Passport =1;
+        string CodeTempAddSKURequired =3;
+        bool PopulateMeasurementUnitsData=6;
+    } 
+    
+    message NprItemNodeByItemNodeMeasurementUnitRequest{
+        PassportInfo Passport =1;
+        repeated int64 ItemNodeMeasurementUnitIds =2;
+        bool PopulateMeasurementUnitsData=3;
+    }
+    
+    message NprItemNodeByCodeTempAddSKUOrNumberRequest{
+        PassportInfo Passport =1;
+        string CodeTempAddSKUOrNumberRequired =3;
+        bool PopulateMeasurementUnitsData=6;
+    }
+
+    message NprItemNodeByBarcodeRequest{
+        PassportInfo Passport =1;
+        string BarcodeRequired =3;
+        bool PopulateMeasurementUnitsData=6;
+    }
+
+    enum NprItemNodeGroupType{
+        All_TYPES =0;
+        TransableItemNode =1;
+        GroupItemNode =2;
+    }
+
+    message NprItemNode{ 
+           repeated NprItemNodeSpecification Specifications =1;
+           repeated NprItemNodeIdentifier Identifiers =2;
+           repeated NprItemNode Nodes =3;
+           bool CanHoldTransableItemNodes =4;
+           repeated NprItemNodeTranslation Translations =5;
+           repeated NprItemNodeMeasurementUnit  MeasurementUnits =6;
+           int64 Id =7;
+           google.protobuf.Int64Value ParentId =8;
+           int64 EntityId =9;
+           NprItemNodeTypes ItemNodeType =10;
+           string NodeParentPath =11;
+           string CodeTempAddSKU =12;
+           string NodeFullPath =13;
+           string NodeFullPathForUi =14;
+           int64 AllChildrenStoredCount =15;
+           int64 DirectChildrenStoredCount =16;
+           int64 DirectChildrenTransableCount =17;
+           int64 AllChildrenGroupsStoredCount =18;
+           int64 AllChildrenTransableCount =19;
+           int64 DirectChildrenGroupsStoredCount =20;
+           bool IsGroup =21;
+           int32 LevelNumber =22;
+           google.protobuf.Timestamp CreationDate =23; 
+           google.protobuf.Timestamp ModifyDate =24;
+           NprSuspectNumber Number =25;  
+           google.protobuf.Int64Value GlobalItemNodeId =26;
+           google.protobuf.Int64Value AvatarFileSize =27;
+           google.protobuf.StringValue AvatarStoredFileName =28;
+           google.protobuf.Int64Value AvatarThumbnailFileSize =29;
+           google.protobuf.Timestamp AvatarThumbnailFileStoreDate =30;
+           google.protobuf.StringValue AvatarThumbnailStoredFileName =31;
+           bool HasAvatar =32;
+           google.protobuf.Timestamp AvatarFileStoreDate =33;
+           repeated NprItemNodeTag  Tags =34;
+           repeated NprItemNodeMedia MediaItems =35;
+           repeated NprItemNodeAttachment Attachments =36; 
+           bool IsVariant = 38;
+           google.protobuf.Int64Value VariantParentNodeId =39;
+           google.protobuf.StringValue SKU =40;
+		   string LogoPath =41;
+		   repeated string images =42;
+		 
+    }
+    
+    message NprSuspectNumberResponse {
+        NprSuspectNumber Number =2;
+        ResponseStatus Status =3;  
+    }
+
+    message NprSuspectNumber {
+        int64 Value =1;
+        NprSuspectNumberContentTypes ContentType =2;
+    }
+ 
+    enum NprSuspectNumberContentTypes { 
+        NormalNumberContentType =0; 
+        InvalidContentType =1;
+        SuspectNumberContentType =2;
+    }
+
+    message  NprItemNodeMeasurementUnit {
+        int64 Id =1;
+        int64 MeasurementUnitId =2;
+        int64 ItemNodeId =3;
+        string Barcode =4;
+        bool IsLinkedToDynamicBarcode =5;
+        google.protobuf.Int64Value DynamicBarcodeId =6;
+        bool IsLinkedToElectronicScale =7;
+        google.protobuf.Int64Value ElectronicScaleId =8;
+        NprDecimalValue QuantityPerUnit =9;
+        bool IsDefault =10;
+        NprMeasurementUnit MeasurementUnitData =11;
+    }
+
+    message  NprItemNodeTag {
+        int64 Id =1;
+        int64 TagId =2;
+        int64 ItemNodeId =3; 
+    }
+
+    message NprItemNodeIdentifier {
+        int64 Id =1;
+        int64 IdentifierId =2;
+        google.protobuf.Timestamp CreationDate =3;
+        google.protobuf.Timestamp ModifyDate =4;
+        int64 ItemNodeId =5;
+        bool IsMandatory =6;
+    }
+
+    message NprItemNodeSpecification {
+            int64 Id =1;
+            int64 SpecificationId =2;
+            int64 ItemNodeId =5; 
+            google.protobuf.Int64Value IdParent = 8;
+            bool IsRelatedToParentFeature = 9;
+            google.protobuf.StringValue Value = 10;
+            NprSpecificationValueTypes ValueType = 11;
+            google.protobuf.BoolValue YesNoValue = 12;
+            NprDecimalValue FloatNumberValue = 13;
+            google.protobuf.Timestamp DateTimeValue = 14;
+            google.protobuf.Int64Value IntegerValue = 15;
+    }
+
+    message NprItemNodeSpecificationEntry {
+            int64 Id =1;
+            int64 SpecificationId =2;
+            int64 ItemNodeId =5; 
+            google.protobuf.Int64Value IdParent = 8;
+            bool IsRelatedToParentFeature = 9;
+            google.protobuf.StringValue Value = 10;
+            NprSpecificationValueTypes ValueType = 11;
+            google.protobuf.BoolValue YesNoValue = 12;
+            NprDecimalValue FloatNumberValue = 13;
+            google.protobuf.Timestamp DateTimeValue = 14;
+            google.protobuf.Int64Value IntegerValue = 15;
+    }
+      
+    message NprItemNodeMeasurementUnitEntry {
+            int64 Id =1;
+            int64 MeasurementUnitId =2;
+            int64 ItemNodeId =3; 
+            string Barcode = 4;
+            NprDecimalValue QuantityPerUnit = 5; 
+            bool IsLinkedToElectronicScale = 6; 
+            google.protobuf.Int64Value DynamicBarcodeId = 7; 
+            google.protobuf.Int64Value ElectronicScaleId = 8; 
+            bool IsDefault =9 ; 
+            bool IsLinkedToDynamicBarcode =10 ; 
+
+    }
+    message NprItemNodeTranslation {
+            int64 Id =1;
+            string Name =2;
+            int64 ItemNodeId =3;
+            string Description =4;
+            int32 TranslationId =5;
+            string Notes =6;
+    }
+
+    enum NprItemNodeTypes { 
+        Material_Item_Node =0; 
+        Service_Item_Node =1; 
+        Group_Item_Node =2;
+    }
+
+    enum NprSpecificationValueTypes {
+        ANONYMOUS_VALUE_TYPE = 0;
+        STRING_VALUE_TYPE = 1;
+        INTEGER_VALUE_TYPE = 2;
+        FLOAT_NUMBER_VALUE_TYPE = 3;
+        YES_NO_VALUE_TYPE =4;
+        TIME_VALUE_TYPE =8;
+        DATE_VALUE_TYPE =9;
+        DATE_TIME_VALUE_TYPE =10;
+    }
+  
+// NxItemNodeMediaService 
+    service NxItemNodeMediaService { 
+        rpc SearchItemNodeMedias (NprItemNodeMediaSearchRequest) returns (NprItemNodeMediaSearchResponse);
+        rpc GetItemNodeMedias (NprItemNodeMediaListRequest) returns (NprItemNodeMediaListResponse); 
+        rpc GetItemNodeMediaImages (NprItemNodeMediaImageRequest) returns (stream NprFileDataResponse); 
+        rpc DeleteItemNodeMedia (NprItemNodeMediaDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewItemNodeMedia (stream NprItemNodeMediaAddRequest) returns (NprRecordAddResponse); 
+    }
+     
+    message NprItemNodeMediaSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprItemNodeMediaSearchResponse{
+        repeated NprItemNodeMedia ItemNodeMedias =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprItemNodeMedia {
+        int64 Id =1;
+        NprMediaTypes MediaType =4;
+        google.protobuf.Timestamp ThumbnailStoreDate =8;
+        string RealFileName =9; 
+        google.protobuf.Timestamp StoreDate =10; 
+        int64 ItemNodeId =11;
+        repeated NprItemNodeMediaTranslation Translations =12;
+        google.protobuf.Int64Value ThumbnailFileSize =13;
+        string ThumbnailStoredFileName =14;
+        int64 FileSize =15;
+        string StoredFileName =16; 
+    }
+
+    message NprItemNodeMediaTranslation {
+        int64 Id =1;
+        string ShortDescription =2;
+        string FullDescription =3;
+        int64 ItemNodeMediaId =4; 
+        int32 TranslationId =5; 
+    }
+
+    message NprItemNodeMediaListRequest{
+        PassportInfo Passport =1;
+        repeated int64 ItemNodeMediaIdsRequired =4;
+    }
+
+    message NprItemNodeMediaListResponse{
+        repeated NprItemNodeMedia ItemNodeMedias =1;
+        ResponseStatus Status =2; 
+    }
+
+    message NprItemNodeMediaImageRequest{ 
+        PassportInfo Passport =1;
+        int64 RecordId =2;  
+        bool GetThumbnail =3;
+    }
+     
+    message NprItemNodeMediaAddRequest{ 
+        NprMediaTypes MediaType =2;
+        int64 ItemNodeId =4;
+        string ShortDescription =5;
+        string FullDescription =6;
+        FileData MediaData =7;
+        PassportInfo Passport =8;
+
+    }
+
+
+
+    enum NprMediaTypes { 
+        Image =0;
+    }
+    message NprItemNodeMediaDeleteRequest{
+        PassportInfo Passport =1;
+        int64 NodeMediaIdRequired =3;
+    }
+     
+// NxItemNodeAttachmentService 
+    service NxItemNodeAttachmentService { 
+        rpc SearchItemNodeAttachments (NprItemNodeAttachmentSearchRequest) returns (NprItemNodeAttachmentSearchResponse);
+        rpc GetItemNodeAttachments (NprItemNodeAttachmentListRequest) returns (NprItemNodeAttachmentListResponse); 
+        rpc GetItemNodeAttachmentFiles (NprItemNodeAttachmentFileRequest) returns (stream NprFileDataResponse); 
+        rpc DeleteItemNodeAttachment (NprItemNodeAttachmentDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewItemNodeAttachment (stream NprItemNodeAttachmentAddRequest) returns (NprRecordAddResponse); 
+    }
+     
+    message NprItemNodeAttachmentSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprItemNodeAttachmentSearchResponse{
+        repeated NprItemNodeAttachment ItemNodeAttachments =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprItemNodeAttachment {
+        int64 Id =1;
+        NprAttachmentTypes AttachmentType =4;
+        string RealFileName =9; 
+        google.protobuf.Timestamp StoreDate =10; 
+        int64 ItemNodeId =11;
+        repeated NprItemNodeAttachmentTranslation Translations =12;
+        int64 FileSize =15;
+        string StoredFileName =16; 
+    }
+
+    message NprItemNodeAttachmentTranslation {
+        int64 Id =1;
+        string ShortDescription =2;
+        string FullDescription =3;
+        int64 ItemNodeAttachmentId =4; 
+        int32 TranslationId =5; 
+    }
+
+    message NprItemNodeAttachmentListRequest{
+        PassportInfo Passport =1;
+        repeated int64 ItemNodeAttachmentIdsRequired =4;
+    }
+
+    message NprItemNodeAttachmentListResponse{
+        repeated NprItemNodeAttachment ItemNodeAttachments =1;
+        ResponseStatus Status =2; 
+    }
+
+    message NprItemNodeAttachmentFileRequest{ 
+        PassportInfo Passport =1;
+        int64 RecordId =2;  
+    }
+     
+    message NprItemNodeAttachmentAddRequest{ 
+        NprAttachmentTypes AttachmentType =2;
+        int64 ItemNodeId =4;
+        string ShortDescription =5;
+        string FullDescription =6;
+        FileData AttachmentData =7;
+        PassportInfo Passport =8; 
+    }
+
+
+
+    enum NprAttachmentTypes { 
+        File =0;
+    }
+    message NprItemNodeAttachmentDeleteRequest{
+        PassportInfo Passport =1;
+        int64 NodeAttachmentIdRequired =3;
+    }
+     
+// NxSpecificationService 
+    service NxSpecificationService { 
+        rpc SearchSpecifications (NprSpecificationSearchRequest) returns (NprSpecificationSearchResponse);
+        rpc GetSpecifications (NprSpecificationListRequest) returns (NprSpecificationListResponse); 
+    }
+    message NprSpecificationSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprSpecificationSearchResponse{
+        repeated NprSpecification Specifications =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprSpecification{
+        int64 Id =1;
+        google.protobuf.Timestamp CreationDate =2;
+        google.protobuf.Timestamp ModifyDate =3;
+        int64 SpecificationGroupId =4; 
+        NprSpecificationValueTypes ValueType = 5;
+        string IconPath = 6;
+        bool IsSearchable = 7;
+
+        repeated NprSpecificationTranslation Translations =8;
+
+    }
+
+    message NprSpecificationTranslation {
+            int64 Id =1;
+            int64 SpecificationId =3; 
+            int32 TranslationId =5; 
+            string FullName =6;
+            string ShortName =7;
+            string Suffix =8;
+    }
+    message NprSpecificationListRequest{
+        PassportInfo Passport =1;
+        repeated int64 SpecificationIdsRequired =3;
+    }
+    message NprSpecificationListResponse{
+        repeated NprSpecification Specifications =1;
+        ResponseStatus Status =2; 
+    }
+
+// NxIdentifierService 
+    service NxIdentifierService { 
+        rpc SearchIdentifiers (NprIdentifierSearchRequest) returns (NprIdentifierSearchResponse);
+        rpc GetIdentifiers (NprIdentifierListRequest) returns (NprIdentifierListResponse); 
+    }
+    message NprIdentifierSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprIdentifierSearchResponse{
+        repeated NprIdentifier Identifiers =1;
+        ResponseStatus Status =3;
+    } 
+
+    message NprIdentifier{
+        int64 Id =1;
+        google.protobuf.Timestamp CreationDate =2;
+        google.protobuf.Timestamp ModifyDate =3;
+        int64 EntityId =4;
+        repeated NprIdentifierTranslation Translations =5; 
+        google.protobuf.Int32Value FixedLength =6;
+        bool HasFixedLength =7;
+
+    }
+
+    message NprIdentifierTranslation {
+            int64 Id =1;
+            string Name =2;
+            int64 IdentifierId =3; 
+            int32 TranslationId =5; 
+    }
+
+    message NprIdentifierListRequest{
+        PassportInfo Passport =1;
+        repeated int64 IdentifierIdsRequired =3;
+    }
+
+    message NprIdentifierListResponse{
+        repeated NprIdentifier Identifiers =1;
+        ResponseStatus Status =2; 
+    }
+     
+// NxMeasurementUnitService 
+    service NxMeasurementUnitService { 
+        rpc SearchMeasurementUnits (NprMeasurementUnitSearchRequest) returns (NprMeasurementUnitSearchResponse);
+        rpc GetMeasurementUnits (NprMeasurementUnitListRequest) returns (NprMeasurementUnitListResponse); 
+        rpc DeleteMeasurementUnit (NprMeasurementUnitDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewMeasurementUnit (NprMeasurementUnitAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateMeasurementUnit (NprMeasurementUnitUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+    message NprMeasurementUnitSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprMeasurementUnitSearchResponse{
+        repeated NprMeasurementUnit MeasurementUnits =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprMeasurementUnit{
+        int64 Id =1;
+        google.protobuf.Timestamp CreationDate =2;
+        google.protobuf.Timestamp ModifyDate =3;
+        repeated NprMeasurementUnitTranslation Translations =8;
+    }
+
+    message NprMeasurementUnitTranslation {
+            int64 Id =1;
+            int64 MeasurementUnitId =3; 
+            int32 TranslationId =5; 
+            string Name =6;
+    }
+    message NprMeasurementUnitListRequest{
+        PassportInfo Passport =1;
+        repeated int64 MeasurementUnitIdsRequired =3;
+    }
+    message NprMeasurementUnitListResponse{
+        repeated NprMeasurementUnit MeasurementUnits =1;
+        ResponseStatus Status =2; 
+    }
+    
+    message NprMeasurementUnitAddRequest{ 
+        repeated NprMeasurementUnitTranslation Translations =4;
+        PassportInfo Passport =17;
+    }
+
+
+     
+    message NprMeasurementUnitDeleteRequest{
+        PassportInfo Passport =1;
+        int64 MeasurementUnitIdRequired =3;
+    }
+      
+    message NprMeasurementUnitUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprMeasurementUnitTranslation Translations =4;
+        PassportInfo Passport =17;
+    }
+    
+// NxElectronicScaleService 
+    service NxElectronicScaleService { 
+        rpc SearchElectronicScales (NprElectronicScaleSearchRequest) returns (NprElectronicScaleSearchResponse);
+        rpc GetElectronicScales (NprElectronicScaleListRequest) returns (NprElectronicScaleListResponse); 
+    }
+    message NprElectronicScaleSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprElectronicScaleSearchResponse{
+        repeated NprElectronicScale ElectronicScales =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprElectronicScale{
+        int64 Id =1;
+        google.protobuf.Timestamp CreationDate =2;
+        google.protobuf.Timestamp ModifyDate =3;
+        int32 DigitsCount =4;
+        int64 EntityId =5;
+        string FirstDigitsOrCharacters =6;
+        int32 ItemNumberDigitsCount =7;
+        int32 ItemNumberStartDigit =8;
+        int32 ValueDigitsCount =9;
+        int32 ValueStartDigit =10;
+        NprBarcodeValueTypes ValueType =11;
+        repeated NprElectronicScaleTranslation Translations =12;
+    }
+
+    message NprElectronicScaleTranslation {
+            int64 Id =1;
+            int64 ElectronicScaleId =3; 
+            int32 TranslationId =5; 
+            string Name =6;
+    }
+    message NprElectronicScaleListRequest{
+        PassportInfo Passport =1;
+        repeated int64 ElectronicScaleIdsRequired =3;
+    }
+    message NprElectronicScaleListResponse{
+        repeated NprElectronicScale ElectronicScales =1;
+        ResponseStatus Status =2; 
+    }
+ 
+    enum NprBarcodeValueTypes {
+        Quantity_Value=0;
+        Price_Value=1;
+    }
+
+// NxTaxService 
+    service NxTaxService { 
+        rpc SearchTaxes (NprTaxSearchRequest) returns (NprTaxSearchResponse);
+        rpc GetTaxes (NprTaxListRequest) returns (NprTaxListResponse); 
+        rpc DeleteTax (NprTaxDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewTax (NprTaxAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateTax (NprTaxUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+     
+    message NprTaxSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprTaxSearchResponse{
+        repeated NprTax Taxes =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprTax {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprTaxTranslation Translations =4;
+        google.protobuf.Timestamp EffectiveDate =5; 
+        google.protobuf.Timestamp SuspendDate =6; 
+        int64 TaxCategoryId =7;
+        bool IsActive = 8;
+        NprDecimalValue Value=10;
+        NprTaxValueCalculationMethods ValueCalculationMethod=11;
+        google.protobuf.Int64Value ValueCurrencyId=12;
+        NprTaxValueTargets ValueTarget=14;
+        repeated NprTaxItemNode ItemNodes =15;
+        repeated NprTaxCalculationRule CalculationRules=16;
+    }
+    
+    enum NprTaxValueCalculationMethods{
+        PERCENTAGE_TAX_VALUE_CALCULATION_METHOD=0;
+        FIXED_AMOUNT_TAX_VALUE_CALCULATION_METHOD=1;
+        AMOUNT_PER_QUANTITY_TAX_VALUE_CALCULATION_METHOD=2;
+        BY_RULES_TAX_VALUE_CALCULATION_METHOD=3;
+    }
+    
+    enum NprTaxValueTargets {
+        ALL_ITEMS_TAX_VALUE_TARGETS=0;
+        VOUCHER_TAX_VALUE_TARGETS=1;
+        SPECIFIC_ITEMS_TAX_VALUE_TARGETS=2;
+    }
+    message NprTaxTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 TaxId =4; 
+        int32 TranslationId =5; 
+    }
+    message NprTaxCalculationRule {
+        int64 Id = 1;
+        NprDecimalValue Amount1 = 2;
+        NprDecimalValue Amount2 = 3;
+        NprTaxValueCalculationMethods ValueCalculationMethod = 4;
+        NprComparisonRule AmountComparisonRule = 5;
+        NprDecimalValue Value = 6;
+        int64 TaxId = 7;
+    }
+    
+    enum NprComparisonRule {
+        ANY =0; 
+        EQUAL_TO2 =1;
+        NOT_EQUAL_TO =2;
+        LESS_THAN =3;
+        MORE_THAN =4;
+        LESS_THAN_OR_EQUAL_TO =5;
+        MORE_THAN_OR_EQUAL_TO =6;
+        BETWEEN =7;
+        NOT_BETWEEN =8;
+        INSIDE =9;
+    } 
+     
+    message NprTaxItemNode {
+        int64 TaxId = 1;
+        int64 Id = 2;
+        int64 ItemNodeId = 3;
+    }
+
+    message NprTaxListRequest{
+        PassportInfo Passport =1;
+        repeated int64 TaxIdsRequired =2;
+        repeated int64 TaxCategoryIdsRequired =3;
+    }
+
+    message NprTaxListResponse{
+        repeated NprTax Taxes =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprTaxAddRequest{ 
+        repeated NprTaxTranslation Translations =4;
+        google.protobuf.Timestamp EffectiveDate =5; 
+        google.protobuf.Timestamp SuspendDate =6; 
+        int64 TaxCategoryId  =7;
+        bool IsActive = 8;
+        NprDecimalValue Value=10;
+        NprTaxValueCalculationMethods ValueCalculationMethod=11;
+        google.protobuf.Int64Value ValueCurrencyId=12;
+        NprTaxValueTargets ValueTarget=14;
+        repeated NprTaxItemNode ItemNodes =15;
+        repeated NprTaxCalculationRule CalculationRules=16;
+        PassportInfo Passport =17;
+    }
+    
+    message NprTaxDeleteRequest{
+        PassportInfo Passport =1;
+        int64 TaxIdRequired =3;
+    }
+      
+    message NprTaxUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprTaxTranslation Translations =4;
+        google.protobuf.Timestamp EffectiveDate =5; 
+        google.protobuf.Timestamp SuspendDate =6; 
+        int64 TaxCategoryId  =7;
+        bool IsActive = 8;
+        NprDecimalValue Value=10;
+        NprTaxValueCalculationMethods ValueCalculationMethod=11;
+        google.protobuf.Int64Value ValueCurrencyId=12;
+        NprTaxValueTargets ValueTarget=14;
+        repeated NprTaxItemNode ItemNodes =15;
+        repeated NprTaxCalculationRule CalculationRules=16;
+        PassportInfo Passport =17;
+    }
+
+// NxTaxCategoryService 
+    service NxTaxCategoryService { 
+        rpc SearchTaxCategories (NprTaxCategorySearchRequest) returns (NprTaxCategorySearchResponse);
+        rpc GetTaxCategories (NprTaxCategoryListRequest) returns (NprTaxCategoryListResponse); 
+        rpc DeleteTaxCategory (NprTaxCategoryDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewTaxCategory (NprTaxCategoryAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateTaxCategory (NprTaxCategoryUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+     
+    message NprTaxCategorySearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprTaxCategorySearchResponse{
+        repeated NprTaxCategory TaxCategories =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprTaxCategory {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprTaxCategoryTranslation Translations =4; 
+        int64 EntityId =7; 
+    } 
+    message NprTaxCategoryTranslation {
+        int64 Id =1;
+        string Name =2; 
+        int64 TaxCategoryId =4; 
+        int32 TranslationId =5; 
+    } 
+  
+    message NprTaxCategoryListRequest{
+        PassportInfo Passport =1;
+        repeated int64 TaxCategoryIdsRequired =4;
+    }
+
+    message NprTaxCategoryListResponse{
+        repeated NprTaxCategory TaxCategories =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprTaxCategoryAddRequest{ 
+        repeated NprTaxCategoryTranslation Translations =4;
+        PassportInfo Passport =17;
+    }
+
+
+     
+    message NprTaxCategoryDeleteRequest{
+        PassportInfo Passport =1;
+        int64 TaxCategoryIdRequired =3;
+    }
+      
+    message NprTaxCategoryUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprTaxCategoryTranslation Translations =4;
+        PassportInfo Passport =17;
+    }
+      
+// NxFeeService 
+    service NxFeeService { 
+        rpc SearchFees (NprFeeSearchRequest) returns (NprFeeSearchResponse);
+        rpc GetFees (NprFeeListRequest) returns (NprFeeListResponse); 
+        rpc DeleteFee (NprFeeDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewFee (NprFeeAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateFee (NprFeeUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+     
+    message NprFeeSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprFeeSearchResponse{
+        repeated NprFee Fees =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprFee {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprFeeTranslation Translations =4;
+        google.protobuf.Timestamp EffectiveDate =5; 
+        google.protobuf.Timestamp SuspendDate =6; 
+        int64 FeeCategoryId =7;
+        bool IsActive = 8;
+        NprDecimalValue Value=10;
+        NprFeeValueCalculationMethods ValueCalculationMethod=11;
+        google.protobuf.Int64Value ValueCurrencyId=12;
+        NprFeeValueTargets ValueTarget=14;
+        repeated NprFeeItemNode ItemNodes =15;
+        repeated NprFeeCalculationRule CalculationRules=16;
+    }
+    
+    enum NprFeeValueCalculationMethods{
+        PERCENTAGE_FEE_VALUE_CALCULATION_METHOD=0;
+        FIXED_AMOUNT_FEE_VALUE_CALCULATION_METHOD=1;
+        AMOUNT_PER_QUANTITY_FEE_VALUE_CALCULATION_METHOD=2;
+        BY_RULES_FEE_VALUE_CALCULATION_METHOD=3;
+    }
+    
+    enum NprFeeValueTargets {
+        ALL_ITEMS_FEE_VALUE_TARGETS=0;
+        VOUCHER_FEE_VALUE_TARGETS=1;
+        SPECIFIC_ITEMS_FEE_VALUE_TARGETS=2;
+    }
+    message NprFeeTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 FeeId =4; 
+        int32 TranslationId =5; 
+    }
+    message NprFeeCalculationRule {
+        int64 Id = 1;
+        NprDecimalValue Amount1 = 2;
+        NprDecimalValue Amount2 = 3;
+        NprFeeValueCalculationMethods ValueCalculationMethod = 4;
+        NprComparisonRule AmountComparisonRule = 5;
+        NprDecimalValue Value = 6;
+        int64 FeeId = 7;
+    }
+     
+    message NprFeeItemNode {
+        int64 FeeId = 1;
+        int64 Id = 2;
+        int64 ItemNodeId = 3;
+    }
+
+    message NprFeeListRequest{
+        PassportInfo Passport =1;
+        repeated int64 FeeIdsRequired =2;
+        repeated int64 FeeCategoryIdsRequired =3;
+    }
+
+    message NprFeeListResponse{
+        repeated NprFee Fees =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprFeeAddRequest{ 
+        repeated NprFeeTranslation Translations =4;
+        google.protobuf.Timestamp EffectiveDate =5; 
+        google.protobuf.Timestamp SuspendDate =6; 
+        int64 FeeCategoryId  =7;
+        bool IsActive = 8;
+        NprDecimalValue Value=10;
+        NprFeeValueCalculationMethods ValueCalculationMethod=11;
+        google.protobuf.Int64Value ValueCurrencyId=12;
+        NprFeeValueTargets ValueTarget=14;
+        repeated NprFeeItemNode ItemNodes =15;
+        repeated NprFeeCalculationRule CalculationRules=16;
+        PassportInfo Passport =17;
+    }
+
+
+     
+    message NprFeeDeleteRequest{
+        PassportInfo Passport =1;
+        int64 FeeIdRequired =3;
+    }
+      
+    message NprFeeUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprFeeTranslation Translations =4;
+        google.protobuf.Timestamp EffectiveDate =5; 
+        google.protobuf.Timestamp SuspendDate =6; 
+        int64 FeeCategoryId  =7;
+        bool IsActive = 8;
+        NprDecimalValue Value=10;
+        NprFeeValueCalculationMethods ValueCalculationMethod=11;
+        google.protobuf.Int64Value ValueCurrencyId=12;
+        NprFeeValueTargets ValueTarget=14;
+        repeated NprFeeItemNode ItemNodes =15;
+        repeated NprFeeCalculationRule CalculationRules=16;
+        PassportInfo Passport =17;
+    }
+
+// NxFeeCategoryService 
+    service NxFeeCategoryService { 
+        rpc SearchFeeCategories (NprFeeCategorySearchRequest) returns (NprFeeCategorySearchResponse);
+        rpc GetFeeCategories (NprFeeCategoryListRequest) returns (NprFeeCategoryListResponse); 
+        rpc DeleteFeeCategory (NprFeeCategoryDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewFeeCategory (NprFeeCategoryAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateFeeCategory (NprFeeCategoryUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+     
+    message NprFeeCategorySearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprFeeCategorySearchResponse{
+        repeated NprFeeCategory FeeCategories =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprFeeCategory {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprFeeCategoryTranslation Translations =4; 
+        int64 EntityId =7; 
+    } 
+    message NprFeeCategoryTranslation {
+        int64 Id =1;
+        string Name =2; 
+        int64 FeeCategoryId =4; 
+        int32 TranslationId =5; 
+    } 
+  
+    message NprFeeCategoryListRequest{
+        PassportInfo Passport =1;
+        repeated int64 FeeCategoryIdsRequired =4;
+    }
+
+    message NprFeeCategoryListResponse{
+        repeated NprFeeCategory FeeCategories =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprFeeCategoryAddRequest{ 
+        repeated NprFeeCategoryTranslation Translations =4;
+        PassportInfo Passport =17;
+    }
+
+
+     
+    message NprFeeCategoryDeleteRequest{
+        PassportInfo Passport =1;
+        int64 FeeCategoryIdRequired =3;
+    }
+      
+    message NprFeeCategoryUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprFeeCategoryTranslation Translations =4;
+        PassportInfo Passport =17;
+    }
+     
+// NxDepositService 
+    service NxDepositService { 
+        rpc SearchDeposits (NprDepositSearchRequest) returns (NprDepositSearchResponse);
+        rpc GetDeposits (NprDepositListRequest) returns (NprDepositListResponse); 
+        rpc DeleteDeposit (NprDepositDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewDeposit (NprDepositAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateDeposit (NprDepositUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+     
+    message NprDepositSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprDepositSearchResponse{
+        repeated NprDeposit Deposits =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprDeposit {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprDepositTranslation Translations =4;
+        google.protobuf.Timestamp EffectiveDate =5; 
+        google.protobuf.Timestamp SuspendDate =6; 
+        int64 DepositCategoryId =7;
+        bool IsActive = 8;
+        NprDecimalValue Value=10;
+        NprDepositValueCalculationMethods ValueCalculationMethod=11;
+        google.protobuf.Int64Value ValueCurrencyId=12;
+        NprDepositValueTargets ValueTarget=14;
+        repeated NprDepositItemNode ItemNodes =15;
+        repeated NprDepositCalculationRule CalculationRules=16;
+    }
+    
+    enum NprDepositValueCalculationMethods{
+        PERCENTAGE_DEPOSIT_VALUE_CALCULATION_METHOD=0;
+        FIXED_AMOUNT_DEPOSIT_VALUE_CALCULATION_METHOD=1;
+        AMOUNT_PER_QUANTITY_DEPOSIT_VALUE_CALCULATION_METHOD=2;
+        BY_RULES_DEPOSIT_VALUE_CALCULATION_METHOD=3;
+    }
+    
+    enum NprDepositValueTargets {
+        ALL_ITEMS_DEPOSIT_VALUE_TARGETS=0;
+        VOUCHER_DEPOSIT_VALUE_TARGETS=1;
+        SPECIFIC_ITEMS_DEPOSIT_VALUE_TARGETS=2;
+    }
+    message NprDepositTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 DepositId =4; 
+        int32 TranslationId =5; 
+    }
+    message NprDepositCalculationRule {
+        int64 Id = 1;
+        NprDecimalValue Amount1 = 2;
+        NprDecimalValue Amount2 = 3;
+        NprDepositValueCalculationMethods ValueCalculationMethod = 4;
+        NprComparisonRule AmountComparisonRule = 5;
+        NprDecimalValue Value = 6;
+        int64 DepositId = 7;
+    }
+  
+    message NprDepositItemNode {
+        int64 DepositId = 1;
+        int64 Id = 2;
+        int64 ItemNodeId = 3;
+    }
+
+    message NprDepositListRequest{
+        PassportInfo Passport =1;
+        repeated int64 DepositIdsRequired =2;
+        repeated int64 DepositCategoryIdsRequired =3;
+    }
+
+    message NprDepositListResponse{
+        repeated NprDeposit Deposits =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprDepositAddRequest{ 
+        repeated NprDepositTranslation Translations =4;
+        google.protobuf.Timestamp EffectiveDate =5; 
+        google.protobuf.Timestamp SuspendDate =6; 
+        int64 DepositCategoryId  =7;
+        bool IsActive = 8;
+        NprDecimalValue Value=10;
+        NprDepositValueCalculationMethods ValueCalculationMethod=11;
+        google.protobuf.Int64Value ValueCurrencyId=12;
+        NprDepositValueTargets ValueTarget=14;
+        repeated NprDepositItemNode ItemNodes =15;
+        repeated NprDepositCalculationRule CalculationRules=16;
+        PassportInfo Passport =17;
+    }
+
+
+     
+    message NprDepositDeleteRequest{
+        PassportInfo Passport =1;
+        int64 DepositIdRequired =3;
+    }
+      
+    message NprDepositUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprDepositTranslation Translations =4;
+        google.protobuf.Timestamp EffectiveDate =5; 
+        google.protobuf.Timestamp SuspendDate =6; 
+        int64 DepositCategoryId  =7;
+        bool IsActive = 8;
+        NprDecimalValue Value=10;
+        NprDepositValueCalculationMethods ValueCalculationMethod=11;
+        google.protobuf.Int64Value ValueCurrencyId=12;
+        NprDepositValueTargets ValueTarget=14;
+        repeated NprDepositItemNode ItemNodes =15;
+        repeated NprDepositCalculationRule CalculationRules=16;
+        PassportInfo Passport =17;
+    }
+
+// NxDepositCategoryService 
+    service NxDepositCategoryService { 
+        rpc SearchDepositCategories (NprDepositCategorySearchRequest) returns (NprDepositCategorySearchResponse);
+        rpc GetDepositCategories (NprDepositCategoryListRequest) returns (NprDepositCategoryListResponse); 
+        rpc DeleteDepositCategory (NprDepositCategoryDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewDepositCategory (NprDepositCategoryAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateDepositCategory (NprDepositCategoryUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+     
+    message NprDepositCategorySearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprDepositCategorySearchResponse{
+        repeated NprDepositCategory DepositCategories =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprDepositCategory {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprDepositCategoryTranslation Translations =4; 
+        int64 EntityId =7; 
+    } 
+    message NprDepositCategoryTranslation {
+        int64 Id =1;
+        string Name =2; 
+        int64 DepositCategoryId =4; 
+        int32 TranslationId =5; 
+    } 
+  
+    message NprDepositCategoryListRequest{
+        PassportInfo Passport =1;
+        repeated int64 DepositCategoryIdsRequired =4;
+    }
+
+    message NprDepositCategoryListResponse{
+        repeated NprDepositCategory DepositCategories =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprDepositCategoryAddRequest{ 
+        repeated NprDepositCategoryTranslation Translations =4;
+        PassportInfo Passport =17;
+    }
+
+
+     
+    message NprDepositCategoryDeleteRequest{
+        PassportInfo Passport =1;
+        int64 DepositCategoryIdRequired =3;
+    }
+      
+    message NprDepositCategoryUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprDepositCategoryTranslation Translations =4;
+        PassportInfo Passport =17;
+    }
+// NxSellPriceJournalService 
+    service NxSellPriceJournalService { 
+        rpc SearchSellPriceJournals (NprSellPriceJournalSearchRequest) returns (NprSellPriceJournalSearchResponse);
+        rpc GetSellPriceJournals (NprSellPriceJournalListRequest) returns (NprSellPriceJournalListResponse); 
+        rpc DeleteSellPriceJournal (NprSellPriceJournalDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewSellPriceJournal (NprSellPriceJournalAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateSellPriceJournal (NprSellPriceJournalUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc SetEntityDefault (NprSellPriceJournalSetEntityDefaultRequest) returns (ResponseStatus); 
+        rpc RemoveEntityDefault (NprSellPriceJournalRemoveEntityDefaultRequest) returns (ResponseStatus); 
+    }
+
+    
+    message NprSellPriceJournalSetEntityDefaultRequest {
+        PassportInfo Passport =1;
+        int64 SellPriceJournalId =2;
+        bool IgnoreCurrentDefaultSellPriceJournal=3;
+    }
+    message NprSellPriceJournalRemoveEntityDefaultRequest {
+        PassportInfo Passport =1;
+    }
+
+    message NprSellPriceJournalSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprSellPriceJournalSearchResponse{
+        repeated NprSellPriceJournal SellPriceJournals =1;
+        ResponseStatus Status =3;   
+    } 
+             
+    message NprSellPriceJournal {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprSellPriceJournalTranslation Translations =4;
+        repeated NprSellPriceJournalDetail Details=5;
+        int64 EntityId=6;
+        bool IsEntityDefault =7; 
+    } 
+
+    message NprSellPriceJournalTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 SellPriceJournalId =4; 
+        int32 TranslationId =5; 
+    }
+    message NprSellPriceJournalDetail{
+        int64 Id = 1;
+        NprDecimalValue Quantity1 = 2;
+        NprDecimalValue Quantity2 = 3;
+        NprComparisonRule SellPriceApplyRule = 5;
+        NprDecimalValue SellPrice = 6;
+        int64 SellPriceJournalId = 7;
+        int64 ItemNodeMeasurementUnitId = 8;
+    }
+      
+    message NprSellPriceJournalListRequest{
+        PassportInfo Passport =1;
+        repeated int64 SellPriceJournalIdsRequired =2;
+    }
+
+    message NprSellPriceJournalListResponse{
+        repeated NprSellPriceJournal SellPriceJournals =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprSellPriceJournalAddRequest{ 
+        repeated NprSellPriceJournalTranslation Translations =4;
+        repeated NprSellPriceJournalDetail Details=5;  
+        PassportInfo Passport =9;
+    }
+
+
+     
+    message NprSellPriceJournalDeleteRequest{
+        PassportInfo Passport =1;
+        int64 SellPriceJournalIdRequired =3;
+    }
+      
+    message NprSellPriceJournalUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprSellPriceJournalTranslation Translations =4;
+        repeated NprSellPriceJournalDetail Details=5; 
+        PassportInfo Passport =9;
+    }
+     
+
+// NxBuyPriceJournalService 
+    service NxBuyPriceJournalService { 
+        rpc SearchBuyPriceJournals (NprBuyPriceJournalSearchRequest) returns (NprBuyPriceJournalSearchResponse);
+        rpc GetBuyPriceJournals (NprBuyPriceJournalListRequest) returns (NprBuyPriceJournalListResponse); 
+        rpc DeleteBuyPriceJournal (NprBuyPriceJournalDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewBuyPriceJournal (NprBuyPriceJournalAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateBuyPriceJournal (NprBuyPriceJournalUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc SetEntityDefault (NprBuyPriceJournalSetEntityDefaultRequest) returns (ResponseStatus); 
+        rpc RemoveEntityDefault (NprBuyPriceJournalRemoveEntityDefaultRequest) returns (ResponseStatus); 
+    }
+
+    
+    message NprBuyPriceJournalSetEntityDefaultRequest {
+        PassportInfo Passport =1;
+        int64 BuyPriceJournalId =2;
+        bool IgnoreCurrentDefaultBuyPriceJournal=3;
+    }
+    message NprBuyPriceJournalRemoveEntityDefaultRequest {
+        PassportInfo Passport =1;
+    }
+
+    message NprBuyPriceJournalSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprBuyPriceJournalSearchResponse{
+        repeated NprBuyPriceJournal BuyPriceJournals =1;
+        ResponseStatus Status =3;   
+    } 
+             
+    message NprBuyPriceJournal {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprBuyPriceJournalTranslation Translations =4;
+        repeated NprBuyPriceJournalDetail Details=5;
+        int64 EntityId=6;
+        bool IsEntityDefault =7; 
+    } 
+
+    message NprBuyPriceJournalTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 BuyPriceJournalId =4; 
+        int32 TranslationId =5; 
+    }
+    message NprBuyPriceJournalDetail{
+        int64 Id = 1;
+        NprDecimalValue Quantity1 = 2;
+        NprDecimalValue Quantity2 = 3;
+        NprComparisonRule BuyPriceApplyRule = 5;
+        NprDecimalValue BuyPrice = 6;
+        int64 BuyPriceJournalId = 7;
+        int64 ItemNodeMeasurementUnitId = 8;
+    }
+      
+    message NprBuyPriceJournalListRequest{
+        PassportInfo Passport =1;
+        repeated int64 BuyPriceJournalIdsRequired =2;
+    }
+
+    message NprBuyPriceJournalListResponse{
+        repeated NprBuyPriceJournal BuyPriceJournals =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprBuyPriceJournalAddRequest{ 
+        repeated NprBuyPriceJournalTranslation Translations =4;
+        repeated NprBuyPriceJournalDetail Details=5;  
+        PassportInfo Passport =9;
+    }
+
+
+     
+    message NprBuyPriceJournalDeleteRequest{
+        PassportInfo Passport =1;
+        int64 BuyPriceJournalIdRequired =3;
+    }
+      
+    message NprBuyPriceJournalUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprBuyPriceJournalTranslation Translations =4;
+        repeated NprBuyPriceJournalDetail Details=5; 
+        PassportInfo Passport =9;
+    }
+     
+// NxTaxJournalService 
+    service NxTaxJournalService { 
+        rpc SearchTaxJournals (NprTaxJournalSearchRequest) returns (NprTaxJournalSearchResponse);
+        rpc GetTaxJournals (NprTaxJournalListRequest) returns (NprTaxJournalListResponse); 
+        rpc DeleteTaxJournal (NprTaxJournalDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewTaxJournal (NprTaxJournalAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateTaxJournal (NprTaxJournalUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc SetEntityDefault (NprTaxJournalSetEntityDefaultRequest) returns (ResponseStatus); 
+        rpc RemoveEntityDefault (NprTaxJournalRemoveEntityDefaultRequest) returns (ResponseStatus); 
+    }
+     
+    message NprTaxJournalSetEntityDefaultRequest {
+        PassportInfo Passport =1;
+        int64 TaxJournalId =2;
+        bool IgnoreCurrentDefaultTaxJournal=3;
+    }
+    message NprTaxJournalRemoveEntityDefaultRequest {
+        PassportInfo Passport =1;
+    }
+
+    message NprTaxJournalSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprTaxJournalSearchResponse{
+        repeated NprTaxJournal TaxJournals =1;
+        ResponseStatus Status =3;   
+    } 
+             
+    message NprTaxJournal {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprTaxJournalTranslation Translations =4;
+        repeated NprTaxJournalDetail Details=5;
+        int64 EntityId=6;
+        bool IsEntityDefault =7; 
+    } 
+
+    message NprTaxJournalTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 TaxJournalId =4; 
+        int32 TranslationId =5; 
+    }
+    message NprTaxJournalDetail{
+        int64 Id = 1; 
+        int64 TaxJournalId = 2;
+        int64 TaxId = 3;
+        int64 TaxAccountId = 4;
+        int64 TaxReturnAccountId = 7; 
+    }
+      
+    message NprTaxJournalListRequest{
+        PassportInfo Passport =1;
+        repeated int64 TaxJournalIdsRequired =2;
+    }
+
+    message NprTaxJournalListResponse{
+        repeated NprTaxJournal TaxJournals =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprTaxJournalAddRequest{ 
+        repeated NprTaxJournalTranslation Translations =4;
+        repeated NprTaxJournalDetail Details=5;  
+        PassportInfo Passport =9;
+    }
+
+
+     
+    message NprTaxJournalDeleteRequest{
+        PassportInfo Passport =1;
+        int64 TaxJournalIdRequired =3;
+    }
+      
+    message NprTaxJournalUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprTaxJournalTranslation Translations =4;
+        repeated NprTaxJournalDetail Details=5; 
+        PassportInfo Passport =9;
+    }
+     
+// NxFeeJournalService 
+    service NxFeeJournalService { 
+        rpc SearchFeeJournals (NprFeeJournalSearchRequest) returns (NprFeeJournalSearchResponse);
+        rpc GetFeeJournals (NprFeeJournalListRequest) returns (NprFeeJournalListResponse); 
+        rpc DeleteFeeJournal (NprFeeJournalDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewFeeJournal (NprFeeJournalAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateFeeJournal (NprFeeJournalUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc SetEntityDefault (NprFeeJournalSetEntityDefaultRequest) returns (ResponseStatus); 
+        rpc RemoveEntityDefault (NprFeeJournalRemoveEntityDefaultRequest) returns (ResponseStatus); 
+    }
+     
+    message NprFeeJournalSetEntityDefaultRequest {
+        PassportInfo Passport =1;
+        int64 FeeJournalId =2;
+        bool IgnoreCurrentDefaultFeeJournal=3;
+    }
+    message NprFeeJournalRemoveEntityDefaultRequest {
+        PassportInfo Passport =1;
+    }
+
+    message NprFeeJournalSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprFeeJournalSearchResponse{
+        repeated NprFeeJournal FeeJournals =1;
+        ResponseStatus Status =3;   
+    } 
+             
+    message NprFeeJournal {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprFeeJournalTranslation Translations =4;
+        repeated NprFeeJournalDetail Details=5;
+        int64 EntityId=6;
+        bool IsEntityDefault =7; 
+    } 
+
+    message NprFeeJournalTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 FeeJournalId =4; 
+        int32 TranslationId =5; 
+    }
+    message NprFeeJournalDetail{
+        int64 Id = 1; 
+        int64 FeeJournalId = 2;
+        int64 FeeId = 3;
+        int64 FeeAccountId = 4;
+        int64 FeeReturnAccountId = 7; 
+    }
+      
+    message NprFeeJournalListRequest{
+        PassportInfo Passport =1;
+        repeated int64 FeeJournalIdsRequired =2;
+    }
+
+    message NprFeeJournalListResponse{
+        repeated NprFeeJournal FeeJournals =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprFeeJournalAddRequest{ 
+        repeated NprFeeJournalTranslation Translations =4;
+        repeated NprFeeJournalDetail Details=5;  
+        PassportInfo Passport =9;
+    }
+
+
+     
+    message NprFeeJournalDeleteRequest{
+        PassportInfo Passport =1;
+        int64 FeeJournalIdRequired =3;
+    }
+      
+    message NprFeeJournalUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprFeeJournalTranslation Translations =4;
+        repeated NprFeeJournalDetail Details=5; 
+        PassportInfo Passport =9;
+    }
+     
+// NxDepositJournalService 
+    service NxDepositJournalService { 
+        rpc SearchDepositJournals (NprDepositJournalSearchRequest) returns (NprDepositJournalSearchResponse);
+        rpc GetDepositJournals (NprDepositJournalListRequest) returns (NprDepositJournalListResponse); 
+        rpc DeleteDepositJournal (NprDepositJournalDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewDepositJournal (NprDepositJournalAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateDepositJournal (NprDepositJournalUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc SetEntityDefault (NprDepositJournalSetEntityDefaultRequest) returns (ResponseStatus); 
+        rpc RemoveEntityDefault (NprDepositJournalRemoveEntityDefaultRequest) returns (ResponseStatus); 
+    }
+     
+    message NprDepositJournalSetEntityDefaultRequest {
+        PassportInfo Passport =1;
+        int64 DepositJournalId =2;
+        bool IgnoreCurrentDefaultDepositJournal=3;
+    }
+    message NprDepositJournalRemoveEntityDefaultRequest {
+        PassportInfo Passport =1;
+    }
+
+    message NprDepositJournalSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprDepositJournalSearchResponse{
+        repeated NprDepositJournal DepositJournals =1;
+        ResponseStatus Status =3;   
+    } 
+             
+    message NprDepositJournal {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprDepositJournalTranslation Translations =4;
+        repeated NprDepositJournalDetail Details=5;
+        int64 EntityId=6;
+        bool IsEntityDefault =7; 
+    } 
+
+    message NprDepositJournalTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 DepositJournalId =4; 
+        int32 TranslationId =5; 
+    }
+    message NprDepositJournalDetail{
+        int64 Id = 1; 
+        int64 DepositJournalId = 2;
+        int64 DepositId = 3;
+        int64 DepositAccountId = 4;
+        int64 DepositReturnAccountId = 7; 
+    }
+      
+    message NprDepositJournalListRequest{
+        PassportInfo Passport =1;
+        repeated int64 DepositJournalIdsRequired =2;
+    }
+
+    message NprDepositJournalListResponse{
+        repeated NprDepositJournal DepositJournals =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprDepositJournalAddRequest{ 
+        repeated NprDepositJournalTranslation Translations =4;
+        repeated NprDepositJournalDetail Details=5;  
+        PassportInfo Passport =9;
+    }
+
+
+     
+    message NprDepositJournalDeleteRequest{
+        PassportInfo Passport =1;
+        int64 DepositJournalIdRequired =3;
+    }
+      
+    message NprDepositJournalUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprDepositJournalTranslation Translations =4;
+        repeated NprDepositJournalDetail Details=5; 
+        PassportInfo Passport =9;
+    }
+     
+// NxBranchService 
+    service NxBranchService { 
+        rpc SearchBranches (NprBranchSearchRequest) returns (NprBranchSearchResponse);
+        rpc GetBranches (NprBranchListRequest) returns (NprBranchListResponse); 
+        rpc DeleteBranch (NprBranchDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewBranch (NprBranchAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateBranch (NprBranchUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc GetBranchSalesTransactionTemplates (NprBranchSalesTransactionTemplateListRequest) returns (NprBranchSalesTransactionTemplateListResponse); 
+        rpc GetBranchQuotationTemplates (NprBranchQuotationTemplateListRequest) returns (NprBranchQuotationTemplateListResponse);  
+    }
+     
+    message NprBranchQuotationTemplateListResponse{
+       repeated NprBranchQuotationTemplateDetails Templates =1;
+        ResponseStatus Status =2; 
+    }
+
+    message NprBranchSalesTransactionTemplateDetails{ 
+        NprBranchSalesTransactionTemplate BranchSalesTransactionTemplateData =1;
+        NprSalesTransactionTemplate TemplateData=2;
+    }
+
+    message NprBranchSalesTransactionTemplateListResponse{
+        repeated NprBranchSalesTransactionTemplateDetails Templates =1;
+        ResponseStatus Status =2; 
+    }
+
+    message NprBranchQuotationTemplateDetails{ 
+        NprBranchSalesTransactionTemplate BranchSalesTransactionTemplateData =1;
+        NprQuotationTemplate TemplateData=2;
+    }
+    
+    message NprBranchQuotationTemplateListRequest{
+        PassportInfo Passport =1;
+        repeated int64 BranchIdsRequired =2;  
+        repeated int64 TemplateIdsRequired =3;  
+        bool PopulateTemplateData= 4;
+    }
+    
+    message NprBranchSalesTransactionTemplateListRequest{
+        PassportInfo Passport =1;
+        repeated int64 BranchIdsRequired =2;  
+        repeated int64 TemplateIdsRequired =3;  
+        bool IncludeSpecificBaseTypes=7;
+        repeated NprSalesTransactionTemplateBaseTypes IncludedBaseTypes=8;
+        bool PopulateTemplateData= 9;
+    }
+    message NprBranchSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprBranchSearchResponse{
+        repeated NprBranch Branches =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprBranch {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        int64 EntityId =4;
+        repeated NprBranchTranslation Translations =5;  
+        repeated NprBranchTaxJournal TaxJournals=8; 
+        repeated NprBranchDepositJournal DepositJournals=9; 
+        repeated NprBranchFeeJournal FeeJournals=10; 
+        repeated NprBranchPaymentJournal PaymentJournals=11; 
+        repeated NprBranchSalesTransactionTemplate SalesTransactionTemplates=12;
+        bool HasNoDepositJournal=13;
+        bool HasNoFeeJournal=14;
+        bool HasNoPaymentJournal=15;
+        bool HasNoSalesTransactionTemplates=17;
+        bool HasNoTaxJournal=18;
+        bool HasNoBuyPriceJournal=19;
+        bool HasNoSellPriceJournal=20;
+        repeated NprBranchBuyPriceJournal BuyPriceJournals=21; 
+        repeated NprBranchSellPriceJournal SellPriceJournals=22; 
+    } 
+
+    message NprBranchTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Address =3;
+        int64 BranchId =4; 
+        int32 TranslationId =5; 
+    } 
+    
+      message NprBranchSalesTransactionTemplate {
+        int64 Id =1;
+        google.protobuf.StringValue Prefix =2;
+        google.protobuf.StringValue Suffix =3;
+        int64 BranchId =4; 
+        int64 SalesTransactionTemplateId =5; 
+    } 
+    message NprBranchListRequest{
+        PassportInfo Passport =1;
+        repeated int64 BranchIdsRequired =2; 
+    }
+
+    message NprBranchListResponse{
+        repeated NprBranch Branches =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprBranchAddRequest{ 
+        repeated NprBranchSalesTransactionTemplate SalesTransactionTemplates=3; 
+        repeated NprBranchTranslation Translations =4;   
+        repeated NprBranchBuyPriceJournal BuyPriceJournals=5; 
+        repeated NprBranchSellPriceJournal SellPriceJournals=6; 
+        repeated NprBranchPaymentJournal PaymentJournals=7; 
+        repeated NprBranchTaxJournal TaxJournals=8; 
+        repeated NprBranchDepositJournal DepositJournals=9; 
+        repeated NprBranchFeeJournal FeeJournals=10; 
+        PassportInfo Passport =17;
+    }
+
+
+     
+    message NprBranchDeleteRequest{
+        PassportInfo Passport =1;
+        int64 BranchIdRequired =3;
+    }
+      
+    message NprBranchUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprBranchSalesTransactionTemplate SalesTransactionTemplates=3; 
+        repeated NprBranchTranslation Translations =4;  
+        repeated NprBranchBuyPriceJournal BuyPriceJournals=5; 
+        repeated NprBranchSellPriceJournal SellPriceJournals=6; 
+        repeated NprBranchPaymentJournal PaymentJournals=7; 
+        repeated NprBranchTaxJournal TaxJournals=8; 
+        repeated NprBranchDepositJournal DepositJournals=9; 
+        repeated NprBranchFeeJournal FeeJournals=10; 
+        PassportInfo Passport =17;
+    }
+
+
+
+    message  NprBranchBuyPriceJournal {
+        int64 Id =1;
+        int64 BuyPriceJournalId =2;
+        int64 BranchId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+
+    message  NprBranchSellPriceJournal {
+        int64 Id =1;
+        int64 SellPriceJournalId =2;
+        int64 BranchId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+
+    message  NprBranchTaxJournal {
+        int64 Id =1;
+        int64 TaxJournalId =2;
+        int64 BranchId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+
+    message  NprBranchDepositJournal {
+        int64 Id =1;
+        int64 DepositJournalId =2;
+        int64 BranchId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+    
+    message  NprBranchFeeJournal {
+        int64 Id =1;
+        int64 FeeJournalId =2;
+        int64 BranchId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+
+    message  NprBranchPaymentJournal {
+        int64 Id =1;
+        int64 PaymentJournalId =2;
+        int64 BranchId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+     
+// AccountNodeService
+    service NxAccountNodeService {
+        rpc GetAllGroupsAsTree (NprAccountGroupTreeRequest) returns (NprAccountNodeListResponse); 
+        rpc GetAccountNodes (NprAccountNodeListRequest) returns (NprAccountNodeListResponse); 
+        rpc CheckIfAccountIsUsed (NprAccountIsUsedCheckRequest) returns (NprItemUseValidationResult); 
+        rpc GetAccountNodeByCode (NprAccountNodeByCodeRequest) returns (NprAccountNodeListResponse); 
+        rpc GetAccountNodeByCodeOrNumber (NprAccountNodeByCodeOrNumberRequest) returns (NprAccountNodeListResponse); 
+        rpc DeleteAccountNodeFullStructure (NprAccountNodeDeleteRequest) returns (ResponseStatus); 
+        rpc GetNewSuspectNumber (NewSuspectNumberRequest) returns (NprSuspectNumberResponse);
+        rpc SearchAccountNodes (NprAccountNodeSearchRequest) returns (NprAccountNodeSearchResponse);
+        rpc AddNewAccountNode (NprAccountNodeAddRequest) returns (NprAccountNodeRecordResponse); 
+        rpc UpdateAccountNode (NprAccountNodeUpdateRequest) returns (NprAccountNodeRecordResponse); 
+    }
+
+    message NprAccountNodeRecordResponse{ 
+        int64 RecordId =2;
+        ResponseStatus Status =3;  
+        NprAccountNode ResultAccountNode=5;
+    }
+
+    message NprAccountIsUsedCheckRequest{
+        PassportInfo Passport =1;
+        int64 AccountNodeId =2; 
+    }
+
+    message NprItemUseValidationResult {
+        bool Succeed = 1  ;
+        bool IsUsed =  2 ;
+        bool IsPartiallyUsed =   3;
+        string ErrorThrown= 4;
+        ResponseStatus Status =5;  
+    }
+
+    message NprAccountNodeSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2; 
+        NprAccountNodeGroupType GroupType =4; 
+        bool PopulateCostCenterJournals =5;
+    }
+     
+    message NprAccountNodeSearchResponse{
+        repeated NprAccountNode AccountNodes =1;
+        ResponseStatus Status =3;  
+    } 
+     
+    message NprAccountNodeUpdateRequest{  
+        int64 RecordId =1; 
+        string Name =3; 
+        string Code =5;
+        bool CanHoldTransableNodes =7;
+        int64 Number =8; 
+        PassportInfo Passport =9;   
+        google.protobuf.StringValue Address =10;
+        bool ForceDefaultCurrency = 17;
+        NprDecimalValue LocalMinimumStopLimit = 18;
+        NprDecimalValue LocalMaximumStopLimit = 19;
+        NprDecimalValue LocalMinimumWarningLimit = 20;
+        NprDecimalValue LocalMaximumWarningLimit = 21;
+        bool HasLocalMinimumStopLimit = 22;
+        bool HasLocalMaximumStopLimit = 23;
+        bool HasLocalMinimumWarningLimit = 24;
+        bool HasLocalMaximumWarningLimit = 25;
+        int64 DefaultCurrencyId = 26;
+        google.protobuf.StringValue Telephone1 = 27;
+        google.protobuf.StringValue Telephone2 = 28;
+        google.protobuf.StringValue Telephone3 = 29;
+        google.protobuf.StringValue Fax1 = 30;
+        google.protobuf.StringValue Fax2 = 31;
+        google.protobuf.StringValue Mobile1 = 32;
+        google.protobuf.StringValue Mobile2 = 33;
+        google.protobuf.StringValue Email = 34;
+        google.protobuf.StringValue Website = 35;
+        NprCostCenterLinkAvailability CostCenterLinkAvailability = 36;
+        AccountNodeCostCenterJournal CostCenterJournal=37;
+        bool ReturnUpdatedNode = 38; 
+        bool PopulateCostCenterJournals=39;
+
+    }
+
+
+     
+    message NprAccountNodeAddRequest{ 
+        NprAccountNodeTypes NodeType =1;
+        string Name =2;
+        NprSuspectNumber Number =3;
+        google.protobuf.StringValue Code =4;
+        google.protobuf.StringValue Address =5;
+        google.protobuf.StringValue TempId =6;
+        bool CanHoldTransableNodes =7;
+        google.protobuf.Int64Value ParentId =8;
+        bool ReturnCreatedNode =9;
+        PassportInfo Passport = 10; 
+        bool ForceDefaultCurrency = 17;
+        NprDecimalValue LocalMinimumStopLimit = 18;
+        NprDecimalValue LocalMaximumStopLimit = 19;
+        NprDecimalValue LocalMinimumWarningLimit = 20;
+        NprDecimalValue LocalMaximumWarningLimit = 21;
+        bool HasLocalMinimumStopLimit = 22;
+        bool HasLocalMaximumStopLimit = 23;
+        bool HasLocalMinimumWarningLimit = 24;
+        bool HasLocalMaximumWarningLimit = 25;
+        int64 DefaultCurrencyId = 26;
+        google.protobuf.StringValue Telephone1 = 27;
+        google.protobuf.StringValue Telephone2 = 28;
+        google.protobuf.StringValue Telephone3 = 29;
+        google.protobuf.StringValue Fax1 = 30;
+        google.protobuf.StringValue Fax2 = 31;
+        google.protobuf.StringValue Mobile1 = 32;
+        google.protobuf.StringValue Mobile2 = 33;
+        google.protobuf.StringValue Email = 34;
+        google.protobuf.StringValue Website = 35;
+        NprCostCenterLinkAvailability CostCenterLinkAvailability = 36;
+        int64 EntityId = 37;  
+        bool PopulateCostCenterJournals =38;
+        bool IsGroup = 40; 
+        AccountNodeCostCenterJournal CostCenterJournal=41;
+    }
+
+
+  
+    message NprAccountNodeListResponse{
+        repeated NprAccountNode Nodes =1;
+        ResponseStatus Status =2; 
+    }
+  
+    message NprAccountGroupTreeRequest{
+        PassportInfo Passport =1;
+        bool PopulateCostCenterJournals =38;
+    }
+  
+    message NprAccountNodeDeleteRequest{
+        PassportInfo Passport =1;
+        int64 NodeIdRequired =3;
+    }
+     
+    message NprAccountNodeListRequest{
+        PassportInfo Passport =1;
+        repeated int64 NodeIdsRequired =3;
+        google.protobuf.Int64Value ParentNodeId =4;
+        NprAccountNodeGroupType IncludedTypes =5 ;  
+        bool PopulateCostCenterJournals =6;
+    }
+    
+    message NprAccountNodeByCodeRequest{
+        PassportInfo Passport =1;
+        string CodeRequired =3; 
+        bool PopulateCostCenterJournals =6;
+    } 
+     
+    message NprAccountNodeByCodeOrNumberRequest{
+        PassportInfo Passport =1;
+        string CodeOrNumberRequired =3; 
+        bool PopulateCostCenterJournals =6;
+    }
+     
+    enum NprAccountNodeGroupType{
+        ALL_ACCOUNT_NODE_GROUP_TYPES =0;
+        TRANSABLE_ACCOUNT_NODE =1;
+        GROUP_ACCOUNT_NODE =2;
+    }
+     
+    message NprAccountNode{ 
+           repeated NprAccountNode Nodes =3;
+           bool CanHoldTransableNodes =4;
+           repeated NprAccountNodeTranslation Translations =5;
+           int64 Id =7;
+           google.protobuf.Int64Value ParentId =8;
+           int64 EntityId =9;
+           NprAccountNodeTypes NodeType =10;
+           string NodeParentPath =11;
+           string Code =12;
+           string NodeFullPath =13;
+           string NodeFullPathForUi =14;
+           int64 AllChildrenStoredCount =15;
+           int64 DirectChildrenStoredCount =16;
+           int64 DirectChildrenTransableCount =17;
+           int64 AllChildrenGroupsStoredCount =18;
+           int64 AllChildrenTransableCount =19;
+           int64 DirectChildrenGroupsStoredCount =20;
+           bool IsGroup =21;
+           int32 LevelNumber =22;
+           google.protobuf.Timestamp CreationDate =23; 
+           google.protobuf.Timestamp ModifyDate =24;
+           NprSuspectNumber Number =25;
+           NprCostCenterLinkAvailability CostCenterLinkAvailability =26;
+           int64 DefaultCurrencyId =27;
+           string Email =28;
+           string Fax1 =29;
+           string Fax2 =30;
+           bool ForceDefaultCurrency =31;
+           bool HasLocalMaximumStopLimit =32;
+           bool HasLocalMaximumWarningLimit =33;
+           bool HasLocalMinimumStopLimit =34;
+           bool HasLocalMinimumWarningLimit =35;
+           NprDecimalValue LocalMaximumStopLimit =36;
+           NprDecimalValue LocalMaximumWarningLimit =37;
+           NprDecimalValue LocalMinimumStopLimit =38;
+           NprDecimalValue LocalMinimumWarningLimit =39;
+           string Mobile1 =40;
+           string Mobile2 =41; 
+           string Telephone1 =44;
+           string Telephone2 =45;
+           string Telephone3 =46;
+           string TempId =47;
+           string Website =48;
+           repeated AccountNodeCostCenterJournal CostCenterJournals=49;
+    }
+     
+      
+    message NprAccountNodeTranslation {
+            int64 Id =1;
+            string Name =2;
+            int64 AccountNodeId =3;
+            string Address =4;
+            int32 TranslationId =5; 
+    }
+
+    enum NprAccountNodeTypes { 
+        BALANCE_SHEET =0;  
+        INCOME_STATEMENT =1;
+    } 
+
+    enum NprCostCenterLinkAvailability {
+        NOT_AVAILABLE=0;
+        AVAILABLE_WITH_WARNING_IF_NOT_USED=1;
+        AVAILABLE_WITH_ERROR_IF_NOT_USED=2;
+    }
+
+    message AccountNodeCostCenterJournal {
+        repeated AccountNodeCostCenterJournalDetail Details =1;
+        int64 Id =2;
+        int64 AccountNodeId =3;
+        google.protobuf.Timestamp StartDate =4;
+        google.protobuf.Timestamp SuspendDate =5;
+    }
+
+    message AccountNodeCostCenterJournalDetail  {
+        int64 Id =1;
+        int64 AccountNodeCostCenterJournalId =2;
+        int64 CostCenterNodeId =3;
+        NprDecimalValue Percentage =4;
+    }
+
+
+// NxSupplierService 
+    service NxSupplierService { 
+        rpc SearchSuppliers (NprSupplierSearchRequest) returns (NprSupplierSearchResponse);
+        rpc GetSuppliers (NprSupplierListRequest) returns (NprSupplierListResponse); 
+        rpc DeleteSupplier (NprSupplierDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewSupplier (NprSupplierAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateSupplier (NprSupplierUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+     
+    message NprSupplierSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprSupplierSearchResponse{
+        repeated NprSupplier Suppliers =1;
+        ResponseStatus Status =3;  
+
+    } 
+ 
+    message NprSupplier {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3;
+        int64 EntityId =4;
+        int64 BranchId =5;
+        bool IsActive =6;
+        int64 AccountNodeId =7;
+        bool HasCustomFeeJournal =8;
+        bool HasCustomTaxJournal =9;
+        bool HasCustomDepositJournal =10;
+        bool HasCustomBuyPriceJournal =11;
+        string Telephone1 =12;
+        string Telephone2 =13;
+        string Telephone3 =14;
+        string Fax1 =15;
+        string Fax2 =16;
+        string Mobile1 =17;
+        string Mobile2 =18;
+        string Email =19;
+        string Website =20;
+        repeated NprSupplierTranslation Translations =21;
+        repeated NprSupplierBuyPriceJournal BuyPriceJournals=22;
+        repeated NprSupplierTaxJournal TaxJournals=23;
+        repeated NprSupplierDepositJournal DepositJournals=24;
+        repeated NprSupplierFeeJournal FeeJournals=25;
+    }
+
+    message NprSupplierTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Address =3;
+        string Remarks =4;
+        int64 SupplierId =5; 
+        int32 TranslationId =6; 
+    } 
+    
+    message NprSupplierListRequest{
+        PassportInfo Passport =1;
+        repeated int64 SupplierIdsRequired =2; 
+    }
+
+    message NprSupplierListResponse{
+        repeated NprSupplier Suppliers =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprSupplierAddRequest{ 
+        int64 BranchId =5;
+        bool IsActive =6;
+        int64 AccountNodeId =7;
+        bool HasCustomFeeJournal =8;
+        bool HasCustomTaxJournal =9;
+        bool HasCustomDepositJournal =10;
+        bool HasCustomBuyPriceJournal =11;
+        string Telephone1 =12;
+        string Telephone2 =13;
+        string Telephone3 =14;
+        string Fax1 =15;
+        string Fax2 =16;
+        string Mobile1 =17;
+        string Mobile2 =18;
+        string Email =19;
+        string Website =20;
+        repeated NprSupplierTranslation Translations =21;
+        repeated NprSupplierBuyPriceJournal BuyPriceJournals=22;
+        repeated NprSupplierTaxJournal TaxJournals=23;
+        repeated NprSupplierDepositJournal DepositJournals=24;
+        repeated NprSupplierFeeJournal FeeJournals=25; 
+        PassportInfo Passport =26;
+    }
+
+
+     
+    message NprSupplierDeleteRequest{
+        PassportInfo Passport =1;
+        int64 SupplierIdRequired =3;
+    }
+      
+    message NprSupplierUpdateRequest{ 
+        int64 RecordId =1;
+        int64 BranchId =5;
+        bool IsActive =6;
+        int64 AccountNodeId =7;
+        bool HasCustomFeeJournal =8;
+        bool HasCustomTaxJournal =9;
+        bool HasCustomDepositJournal =10;
+        bool HasCustomBuyPriceJournal =11;
+        string Telephone1 =12;
+        string Telephone2 =13;
+        string Telephone3 =14;
+        string Fax1 =15;
+        string Fax2 =16;
+        string Mobile1 =17;
+        string Mobile2 =18;
+        string Email =19;
+        string Website =20;
+        repeated NprSupplierTranslation Translations =21;
+        repeated NprSupplierBuyPriceJournal BuyPriceJournals=22;
+        repeated NprSupplierTaxJournal TaxJournals=23;
+        repeated NprSupplierDepositJournal DepositJournals=24;
+        repeated NprSupplierFeeJournal FeeJournals=25; 
+        PassportInfo Passport =26;
+    }
+
+
+
+    message  NprSupplierBuyPriceJournal {
+        int64 Id =1;
+        int64 BuyPriceJournalId =2;
+        int64 SupplierId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+
+    message  NprSupplierTaxJournal {
+        int64 Id =1;
+        int64 TaxJournalId =2;
+        int64 SupplierId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+
+    message  NprSupplierDepositJournal {
+        int64 Id =1;
+        int64 DepositJournalId =2;
+        int64 SupplierId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+    
+    message  NprSupplierFeeJournal {
+        int64 Id =1;
+        int64 FeeJournalId =2;
+        int64 SupplierId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+     
+// NxClientService 
+    service NxClientService { 
+        rpc SearchClients (NprClientSearchRequest) returns (NprClientSearchResponse);
+        rpc GetClients (NprClientListRequest) returns (NprClientListResponse); 
+        rpc DeleteClient (NprClientDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewClient (NprClientAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateClient (NprClientUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+     
+    message NprClientSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprClientSearchResponse{
+        repeated NprClient Clients =1;
+        ResponseStatus Status =3;  
+
+    } 
+ 
+    message NprClient {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3;
+        int64 EntityId =4;
+        int64 BranchId =5;
+        bool IsActive =6;
+        int64 AccountNodeId =7;
+        bool HasCustomFeeJournal =8;
+        bool HasCustomTaxJournal =9;
+        bool HasCustomDepositJournal =10;
+        bool HasCustomSellPriceJournal =11;
+        string Telephone1 =12;
+        string Telephone2 =13;
+        string Telephone3 =14;
+        string Fax1 =15;
+        string Fax2 =16;
+        string Mobile1 =17;
+        string Mobile2 =18;
+        string Email =19;
+        string Website =20;
+        repeated NprClientTranslation Translations =21;
+        repeated NprClientSellPriceJournal SellPriceJournals=22;
+        repeated NprClientTaxJournal TaxJournals=23;
+        repeated NprClientDepositJournal DepositJournals=24;
+        repeated NprClientFeeJournal FeeJournals=25;
+    }
+
+    message NprClientTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Address =3;
+        string Remarks =4;
+        int64 ClientId =5; 
+        int32 TranslationId =6; 
+    } 
+    
+    message NprClientListRequest{
+        PassportInfo Passport =1;
+        repeated int64 ClientIdsRequired =2; 
+    }
+
+    message NprClientListResponse{
+        repeated NprClient Clients =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprClientAddRequest{ 
+        int64 BranchId =5;
+        bool IsActive =6;
+        int64 AccountNodeId =7;
+        bool HasCustomFeeJournal =8;
+        bool HasCustomTaxJournal =9;
+        bool HasCustomDepositJournal =10;
+        bool HasCustomSellPriceJournal =11;
+        string Telephone1 =12;
+        string Telephone2 =13;
+        string Telephone3 =14;
+        string Fax1 =15;
+        string Fax2 =16;
+        string Mobile1 =17;
+        string Mobile2 =18;
+        string Email =19;
+        string Website =20;
+        repeated NprClientTranslation Translations =21;
+        repeated NprClientSellPriceJournal SellPriceJournals=22;
+        repeated NprClientTaxJournal TaxJournals=23;
+        repeated NprClientDepositJournal DepositJournals=24;
+        repeated NprClientFeeJournal FeeJournals=25; 
+        PassportInfo Passport =26;
+    }
+
+
+     
+    message NprClientDeleteRequest{
+        PassportInfo Passport =1;
+        int64 ClientIdRequired =3;
+    }
+      
+    message NprClientUpdateRequest{ 
+        int64 RecordId =1;
+        int64 BranchId =5;
+        bool IsActive =6;
+        int64 AccountNodeId =7;
+        bool HasCustomFeeJournal =8;
+        bool HasCustomTaxJournal =9;
+        bool HasCustomDepositJournal =10;
+        bool HasCustomSellPriceJournal =11;
+        string Telephone1 =12;
+        string Telephone2 =13;
+        string Telephone3 =14;
+        string Fax1 =15;
+        string Fax2 =16;
+        string Mobile1 =17;
+        string Mobile2 =18;
+        string Email =19;
+        string Website =20;
+        repeated NprClientTranslation Translations =21;
+        repeated NprClientSellPriceJournal SellPriceJournals=22;
+        repeated NprClientTaxJournal TaxJournals=23;
+        repeated NprClientDepositJournal DepositJournals=24;
+        repeated NprClientFeeJournal FeeJournals=25; 
+        PassportInfo Passport =26;
+    }
+
+
+
+    message  NprClientSellPriceJournal {
+        int64 Id =1;
+        int64 SellPriceJournalId =2;
+        int64 ClientId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+
+    message  NprClientTaxJournal {
+        int64 Id =1;
+        int64 TaxJournalId =2;
+        int64 ClientId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+
+    message  NprClientDepositJournal {
+        int64 Id =1;
+        int64 DepositJournalId =2;
+        int64 ClientId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+    
+    message  NprClientFeeJournal {
+        int64 Id =1;
+        int64 FeeJournalId =2;
+        int64 ClientId =3;
+        bool IsDefault =4;
+        google.protobuf.Timestamp StartDate=5;
+        google.protobuf.Timestamp EndDate =6; 
+    }
+    
+// NxPaymentService 
+    service NxPaymentService { 
+        rpc SearchPayments (NprPaymentSearchRequest) returns (NprPaymentSearchResponse);
+        rpc GetPayments (NprPaymentListRequest) returns (NprPaymentListResponse); 
+        rpc DeletePayment (NprPaymentDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewPayment (NprPaymentAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdatePayment (NprPaymentUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+     
+    message NprPaymentSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprPaymentSearchResponse{
+        repeated NprPayment Payments =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprPayment {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprPaymentTranslation Translations =4; 
+        bool IsActive = 8; 
+        int64 EntityId=10;
+        bool IsAcceptedByDefault =11;  
+    }
+     
+    message NprPaymentTranslation {
+        int64 Id =1;
+        string Name =2;
+        int64 PaymentId =4; 
+        int32 TranslationId =5; 
+    } 
+
+    message NprPaymentListRequest{
+        PassportInfo Passport =1;
+        repeated int64 PaymentIdsRequired =2; 
+    }
+
+    message NprPaymentListResponse{
+        repeated NprPayment Payments =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprPaymentAddRequest{ 
+        repeated NprPaymentTranslation Translations =4;   
+        bool IsActive = 8; 
+        bool IsAcceptedByDefault =11; 
+        PassportInfo Passport =17;
+    }
+
+
+     
+    message NprPaymentDeleteRequest{
+        PassportInfo Passport =1;
+        int64 PaymentIdRequired =3;
+    }
+      
+    message NprPaymentUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprPaymentTranslation Translations =4;  
+        bool IsActive = 8; 
+        bool IsAcceptedByDefault =11;  
+        PassportInfo Passport =17;
+    }
+
+// NxPaymentJournalService 
+    service NxPaymentJournalService { 
+        rpc SearchPaymentJournals (NprPaymentJournalSearchRequest) returns (NprPaymentJournalSearchResponse);
+        rpc GetPaymentJournals (NprPaymentJournalListRequest) returns (NprPaymentJournalListResponse); 
+        rpc DeletePaymentJournal (NprPaymentJournalDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewPaymentJournal (NprPaymentJournalAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdatePaymentJournal (NprPaymentJournalUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc SetEntityDefault (NprPaymentJournalSetEntityDefaultRequest) returns (ResponseStatus); 
+        rpc RemoveEntityDefault (NprPaymentJournalRemoveEntityDefaultRequest) returns (ResponseStatus); 
+    }
+     
+    message NprPaymentJournalSetEntityDefaultRequest {
+        PassportInfo Passport =1;
+        int64 PaymentJournalId =2;
+        bool IgnoreCurrentDefaultPaymentJournal=3;
+    }
+    message NprPaymentJournalRemoveEntityDefaultRequest {
+        PassportInfo Passport =1;
+    }
+
+    message NprPaymentJournalSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprPaymentJournalSearchResponse{
+        repeated NprPaymentJournal PaymentJournals =1;
+        ResponseStatus Status =3;   
+    } 
+             
+    message NprPaymentJournal {
+        int64 Id =1;
+        google.protobuf.Timestamp ModifyDate=2;
+        google.protobuf.Timestamp CreationDate =3; 
+        repeated NprPaymentJournalTranslation Translations =4;
+        repeated NprPaymentJournalDetail Details=5;
+        int64 EntityId=6;
+        bool IsEntityDefault =7; 
+    } 
+
+    message NprPaymentJournalTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Description =3;
+        int64 PaymentJournalId =4; 
+        int32 TranslationId =5; 
+    }
+    message NprPaymentJournalDetail{
+        int64 Id = 1; 
+        int64 PaymentJournalId = 2;
+        int64 PaymentId = 3;
+        int64 PaymentAccountId = 4;
+        int64 PaymentReturnAccountId = 7; 
+    }
+      
+    message NprPaymentJournalListRequest{
+        PassportInfo Passport =1;
+        repeated int64 PaymentJournalIdsRequired =2;
+    }
+
+    message NprPaymentJournalListResponse{
+        repeated NprPaymentJournal PaymentJournals =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprPaymentJournalAddRequest{ 
+        repeated NprPaymentJournalTranslation Translations =4;
+        repeated NprPaymentJournalDetail Details=5;  
+        PassportInfo Passport =9;
+    }
+
+
+     
+    message NprPaymentJournalDeleteRequest{
+        PassportInfo Passport =1;
+        int64 PaymentJournalIdRequired =3;
+    }
+      
+    message NprPaymentJournalUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprPaymentJournalTranslation Translations =4;
+        repeated NprPaymentJournalDetail Details=5; 
+        PassportInfo Passport =9;
+    }
+
+// NxSalesTransactionTemplateService
+    service NxSalesTransactionTemplateService {
+        rpc GetSalesTransactionTemplates (NprSalesTransactionTemplateListRequest) returns (NprSalesTransactionTemplateListResponse); 
+        rpc GetQuotationTemplates (NprQuotationTemplateListRequest) returns (NprQuotationTemplateListResponse); 
+        rpc DeleteSalesTransactionTemplateFullStructure (NprSalesTransactionTemplateDeleteRequest) returns (ResponseStatus); 
+        rpc SearchSalesTransactionTemplates (NprSalesTransactionTemplateSearchRequest) returns (NprSalesTransactionTemplateSearchResponse);
+        rpc SearchQuotationTemplates (NprSalesTransactionTemplateSearchRequest) returns (NprQuotationTemplateSearchResponse);
+        rpc AddNewQuotationTemplate (NprQuotationTemplateAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateQuotationTemplate (NprQuotationTemplateUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+
+    message NprSalesTransactionTemplateSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;  
+    }
+
+    message NprSalesTransactionTemplateSearchResponse{
+        repeated NprSalesTransactionTemplate SalesTransactionTemplates =1;
+        ResponseStatus Status =3;  
+    }
+    
+    message NprQuotationTemplateSearchResponse{
+        repeated NprQuotationTemplate QuotationTemplates =1;
+        ResponseStatus Status =3;  
+    } 
+     
+    message NprQuotationTemplateUpdateRequest{  
+        int64 RecordId =1;
+        bool HasExpiryDate = 7;
+        bool AllowGuest=10; 
+        bool AllowClients=12;
+        PassportInfo Passport =14; 
+        NprSalesTransactionTemplate SalesTransactionTemplateData =15;
+    }
+
+
+
+    message NprQuotationTemplateAddRequest{ 
+        bool HasExpiryDate = 7;
+        bool AllowGuest=10; 
+        bool AllowClients=12;
+        NprSalesTransactionTemplate SalesTransactionTemplateData =15;
+        PassportInfo Passport =14; 
+    }
+
+
+ 
+    message NprSalesTransactionTemplateListResponse{
+        repeated NprSalesTransactionTemplate Templates =1;
+        ResponseStatus Status =2; 
+    }
+    
+    message NprQuotationTemplateListResponse{
+        repeated NprQuotationTemplate Templates =1;
+        ResponseStatus Status =2; 
+    }
+  
+    message NprSalesTransactionTemplateDeleteRequest{
+        PassportInfo Passport =1;
+        int64 TemplateIdRequired =3;
+    }
+     
+    message NprSalesTransactionTemplateListRequest{
+        PassportInfo Passport =1;
+        repeated int64 TemplateIdsRequired =3;  
+        bool IncludeSpecificBaseTypes=7;
+        repeated NprSalesTransactionTemplateBaseTypes IncludedBaseTypes=8;
+    }
+   
+    message NprQuotationTemplateListRequest{
+        PassportInfo Passport =1;
+        repeated int64 TemplateIdsRequired =3;  
+    }
+
+    message NprSalesTransactionTemplate{ 
+           repeated NprSalesTransactionTemplateTranslation Translations =5;
+           int64 Id =7;
+           NprSalesTransactionTemplateBaseTypes BaseType=8;
+           int64 EntityId =9; 
+           string TempId =13; 
+           google.protobuf.Timestamp CreationDate =23; 
+           google.protobuf.Timestamp ModifyDate =24; 
+           repeated NprSalesTransactionTemplateCustomField CustomFields =35; 
+    }
+    
+    message NprQuotationTemplate{
+        bool HasExpiryDate=1;
+        NprSalesTransactionTemplate SalesTransactionData=3; 
+        bool AllowGuest=10; 
+        bool AllowClients=12;
+        google.protobuf.Timestamp CreationDate =23; 
+        google.protobuf.Timestamp ModifyDate =24;  
+    }
+
+    message NprSalesTransactionTemplateTranslation {
+            int64 Id =1;
+            string Name =2;
+            int64 SalesTransactionTemplateId =3; 
+            int32 TranslationId =5;
+            string Terms =6;
+            string TitleInReports =7;
+    }
+
+    enum NprSalesTransactionTemplateBaseTypes { 
+        QUOTATION=0; 
+    }
+ 
+    message NprSalesTransactionTemplateCustomField {
+        int64 Id =1;
+        bool IsMandatory =2;
+        NprCustomFieldLocations Location =3;
+        int32 Order =4;
+        int64 SalesTransactionTemplateId =5;
+        NprCustomFieldValueTypes ValueType =6;
+        repeated NprSalesTransactionTemplateCustomFieldTranslation Translations =7;
+    }
+
+    enum NprCustomFieldLocations { 
+        TRANSACTION_HEADER =0; 
+        TRANSACTION_FOOTER =1;
+    }
+
+    enum NprCustomFieldValueTypes { 
+        STRING_FIELD_VALUE_TYPE =  0;
+        INTEGER_FIELD_VALUE_TYPE =  1;
+        FLOAT_NUMBER_FIELD_VALUE_TYPE = 2;
+        YES_NO_FIELD_VALUE_TYPE = 3;
+        DATE_TIME_FIELD_VALUE_TYPE = 4;
+    }
+    message NprSalesTransactionTemplateCustomFieldTranslation {
+        int64 Id =1;
+        string Label =2;
+        google.protobuf.StringValue Help =3;
+        google.protobuf.StringValue HelpUrl =4;
+        int64 SalesTransactionTemplateCustomFieldId =5; 
+        int32 TranslationId =6; 
+    }
+ 
+// SalesTransactionService
+    service NxSalesTransactionService {
+        rpc GetSalesTransactions (NprSalesTransactionListRequest) returns (NprSalesTransactionListResponse); 
+        rpc GetQuotations (NprQuotationListRequest) returns (NprQuotationListResponse);  
+        rpc GetNewSuspectNumber (NprBranchSalesTransactionSuspectNumberRequest) returns (NprSuspectNumberResponse);
+        rpc AddNewQuotation (NprQuotationAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateQuotation (NprQuotationUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc DeleteQuotationFullStructure (NprSalesTransactionDeleteRequest) returns (ResponseStatus);   
+    } 
+    
+    message NprItemNodeSellPriceDataRequest {
+        PassportInfo Passport =1;
+        NprSaleSellParties Party=2;
+        int64 ItemNodeMeasurementUnitId =3;
+        int64 PartyId =4;
+        NprDecimalValue Quantity =5;
+        int64 BranchId =6;
+        google.protobuf.Timestamp AmountDateRequired =7;
+    }
+
+    message NprItemNodeSellPriceDataResponse{
+        NprItemNodePriceData PriceData=1;
+        repeated NprItemNodeTaxData TaxData=3;
+        repeated NprItemNodeDepositData DepositData=4;
+        repeated NprItemNodeFeeData FeeData=5; 
+        ResponseStatus Status =6;   
+
+    }
+
+     message NprItemNodeBuyPriceDataRequest {
+        PassportInfo Passport =1;
+        NprSaleBuyParties Party=2;
+        int64 ItemNodeMeasurementUnitId =3;
+        int64 PartyId =4;
+        NprDecimalValue Quantity =5;
+        int64 BranchId =6;
+        google.protobuf.Timestamp AmountDateRequired =7;
+    }
+
+    message NprItemNodeBuyPriceDataResponse{
+        NprItemNodePriceData PriceData=1;
+        repeated NprItemNodeTaxData TaxData=3;
+        repeated NprItemNodeDepositData DepositData=4;
+        repeated NprItemNodeFeeData FeeData=5; 
+        ResponseStatus Status =6;   
+
+    }
+    message NprItemNodePriceData{
+        NprSalesTransactionAmountSources PriceSource=1;
+        NprDecimalValue Price=2;
+    }
+
+    message NprItemNodeTaxData{
+        NprSalesTransactionAmountSources TaxSource=1;
+        int64 TaxId =2;
+        int64 TaxJournalId =3;
+        NprDecimalValue TaxValue=4;
+    }
+
+    message NprItemNodeDepositData{
+        NprSalesTransactionAmountSources DepositSource=1;
+        int64 DepositId =2;
+        int64 DepositJournalId =3;
+        NprDecimalValue DepositValue=4;
+    }
+
+    message NprItemNodeFeeData{
+        NprSalesTransactionAmountSources FeeSource=1;
+        int64 FeeId =2;
+        int64 FeeJournalId =3;
+        NprDecimalValue FeeValue=4;
+    }
+
+    message NprSalesTransactionDeleteRequest{
+        PassportInfo Passport =1;
+        int64 SalesTransactionIdRequired =3;
+    }
+     
+    message NprSalesTransactionDateSearchItem {
+        NprSearchComparisonMethods ComparisonMethod =1;
+        google.protobuf.Timestamp DatesRequired =2;
+    }
+     
+    message NprSalesTransactionNumberSearchItem {
+        NprSearchComparisonMethods ComparisonMethod =1;
+        repeated int64 NumbersRequired =2;
+    }
+
+    enum NprSearchComparisonMethods{
+        EQUAL_TO_NUMBER_SEARCH_COMPARISON=0;
+        LESS_THAN_NUMBER_SEARCH_COMPARISON=1;
+        MORE_THAN_NUMBER_SEARCH_COMPARISON=2;
+        LESS_THAN_OR_EQUAL_TO_NUMBER_SEARCH_COMPARISON=3;
+        MORE_THAN_OR_EQUAL_TO_NUMBER_SEARCH_COMPARISON=4;
+    }
+
+    message NprBranchSalesTransactionSuspectNumberRequest{
+        PassportInfo Passport =1;
+        int64 BranchSalesTransactionTemplateId =2; 
+    }
+      
+     
+    message NprQuotationUpdateRequest{  
+        int64 RecordId =1;
+        NprSalesTransaction SalesTransactionData=2;  
+        PassportInfo Passport =3; 
+        int64 CurrencyId=5;
+        google.protobuf.Timestamp ExpiryDate =7; 
+        google.protobuf.Int64Value ClientId =8;
+        NprSaleSellParties Party=9;
+        google.protobuf.StringValue TempId= 11;
+        NprDecimalValue TotalDiscountAmount=12;
+        NprDecimalValue TaxAmount=13;
+        NprDecimalValue FeeAmount=14;
+        NprDecimalValue DepositAmount=15;
+        NprDecimalValue TotalDueAmount=16;
+        repeated NprQuotationTaxJournalDetail TaxJournalDetails=17;
+        repeated NprQuotationFeeJournalDetail FeeJournalDetails=18;
+        repeated NprQuotationDepositJournalDetail DepositJournalDetails=19;
+        repeated NprQuotationEntry Entries=20;
+        repeated NprQuotationTranslation Translations=21; 
+    }
+     
+    message NprQuotationAddRequest{  
+        NprSalesTransaction SalesTransactionData=1;  
+        PassportInfo Passport =2; 
+        int64 CurrencyId=5;
+        google.protobuf.Timestamp ExpiryDate =7; 
+        google.protobuf.Int64Value ClientId =8;
+        NprSaleSellParties Party=9;
+        google.protobuf.StringValue TempId= 11;
+        NprDecimalValue TotalDiscountAmount=12;
+        NprDecimalValue TaxAmount=13;
+        NprDecimalValue FeeAmount=14;
+        NprDecimalValue DepositAmount=15;
+        NprDecimalValue TotalDueAmount=16;
+        repeated NprQuotationTaxJournalDetail TaxJournalDetails=17;
+        repeated NprQuotationFeeJournalDetail FeeJournalDetails=18;
+        repeated NprQuotationDepositJournalDetail DepositJournalDetails=19;
+        repeated NprQuotationEntry Entries=20;
+        repeated NprQuotationTranslation Translations=21; 
+
+    }
+     
+    message NprSalesTransactionListResponse{
+        repeated NprSalesTransaction Transactions =1;
+        ResponseStatus Status =2; 
+    }
+    
+    message NprQuotationListResponse{
+        repeated NprQuotation Transactions =1;
+        ResponseStatus Status =2; 
+    }
+   
+     
+    message NprSalesTransactionListRequest{
+        PassportInfo Passport =1;
+        repeated NprSalesTransactionTemplateBaseTypes IncludedBaseTypes=2; 
+        NprSalesTransactionNumberSearchItem NumberCondition=3;
+        NprSalesTransactionDateSearchItem DateCondition=4;
+        bool MatchAllConditions =5;
+        bool ApplyNumberConditions =6;
+        bool ApplyDateConditions =7;
+        bool ApplyBaseTypesRequired=8; 
+        repeated int64 IdsRequired =9;
+        bool ApplyIdsRequired=10; 
+        repeated int64 TemplateIdsRequired =11;
+        bool ApplyTemplateIdsRequired =12; 
+    }
+   
+    message NprQuotationListRequest{
+        PassportInfo Passport =1;
+        NprSalesTransactionNumberSearchItem NumberCondition=3;
+        NprSalesTransactionDateSearchItem DateCondition=4;
+        bool MatchAllConditions =5;
+        bool ApplyNumberConditions =6;
+        bool ApplyDateConditions =7;
+        repeated int64 IdsRequired =9;
+        bool ApplyIdsRequired=10; 
+        repeated int64 TemplateIdsRequired =11;
+        bool ApplyTemplateIdsRequired =12; 
+    }
+
+    message NprSalesTransaction{ 
+        int64 SalesTransactionId =1;
+        int64 BranchSalesTransactionTemplateId=2;  
+        NprSalesTransactionTemplateBaseTypes BaseType=4;
+        int64 FiscalPeriodId =5; 
+        NprSuspectNumber Number =6;
+        NprVoidStatus VoidStatus =7;
+        string FullNumber =8;
+        google.protobuf.Timestamp Date=9;
+        int32 EntriesCount =10;
+        bool HideRemarksInReport=11;
+        string TempId =13; 
+        google.protobuf.Timestamp CreationDate =23; 
+        google.protobuf.Timestamp ModifyDate =24; 
+        repeated NprSalesTransactionTranslation Translations =25;
+        repeated NprSalesTransactionAttachment Attachments =26; 
+        repeated NprSalesTransactionCustomField CustomFields =35; 
+    } 
+
+    enum NprVoidStatus{
+        VALID_VOID_STATUS=0;
+        VOID_VOID_STATUS=1;
+        MISSING_VOID_STATUS=2;
+        ON_HOLD_VOID_STATUS=3;
+    }
+    
+    message NprQuotation{
+        NprSalesTransaction SalesTransactionData=1;  
+        int64 CurrencyId=5;
+        google.protobuf.Timestamp ExpiryDate =7; 
+        google.protobuf.Int64Value ClientId =8;
+        NprSaleSellParties Party=9;
+        google.protobuf.StringValue TempId= 11;
+        NprDecimalValue TotalDiscountAmount=12;
+        NprDecimalValue TaxAmount=13;
+        NprDecimalValue FeeAmount=14;
+        NprDecimalValue DepositAmount=15;
+        NprDecimalValue TotalDueAmount=16;
+        repeated NprQuotationTaxJournalDetail TaxJournalDetails=17;
+        repeated NprQuotationFeeJournalDetail FeeJournalDetails=18;
+        repeated NprQuotationDepositJournalDetail DepositJournalDetails=19;
+        repeated NprQuotationEntry Entries=20;
+        repeated NprQuotationTranslation Translations=21;
+    }  
+    
+    message NprQuotationTranslation {
+        int64 Id =1; 
+        int64 SalesTransactionId =3;
+        int32 TranslationId =4;
+        string PartyName =5;
+        string ExtraTerms =6;
+        string DeliveryAdress =7;
+    }
+    
+    message NprQuotationTaxJournalDetail {
+        int64 Id=10;
+        int64 SalesTransactionId=1;
+        int64 TaxJournalDetailId=2;
+        NprSalesTransactionAmountSources Source=3;
+        NprDecimalValue Amount=4;
+    
+    }
+
+    message NprQuotationFeeJournalDetail {
+        int64 Id=10;
+        int64 SalesTransactionId=1;
+        int64 FeeJournalDetailId=2;
+        NprSalesTransactionAmountSources Source=3;
+        NprDecimalValue Amount=4;
+    
+    }
+
+    message NprQuotationDepositJournalDetail {
+        int64 Id=10;
+        int64 SalesTransactionId=1;
+        int64 DepositJournalDetailId=2;
+        NprSalesTransactionAmountSources Source=3;
+        NprDecimalValue Amount=4;
+    
+    }
+
+    message NprQuotationEntry{
+        int64 Id=1;
+        NprDecimalValue UnitPrice=2;
+        NprDecimalValue DiscountAmount=3;
+        NprDecimalValue DiscountPercentage=4;
+        NprDiscountModes DiscountMode=5;
+        int64 ItemNodeMeasurementUnitId=6;
+        int64 ItemNodeMeasurementUnitIdDefault=7;
+        NprDecimalValue Quantity=8;
+        NprDecimalValue QuantityDefaultUnit=9;
+        int64 SalesTransactionId=10;
+        repeated NprQuotationEntryTranslation Translations=11;
+        NprDecimalValue TotalTaxAmount=13;
+        NprDecimalValue TotalFeeAmount=14;
+        NprDecimalValue TotalDepositAmount=15;
+        repeated NprQuotationEntryTaxJournalDetail TaxJournalDetails=17;
+        repeated NprQuotationEntryFeeJournalDetail FeeJournalDetails=18;
+        repeated NprQuotationEntryDepositJournalDetail DepositJournalDetails=19;
+        repeated NprQuotationEntryItemNodeIdentifier ItemNodeIdentifiers =20; 
+        int64 ItemNodeId=21;
+        NprDecimalValue SubTotal=22;
+        NprDecimalValue TotalDue=23;
+    } 
+    
+    message NprQuotationEntryTranslation{
+        int64 Id =1;
+        int64 QuotationEntryId=2;
+        int32 TranslationId=3;
+        string Note=4;
+    }
+
+    message NprQuotationEntryItemNodeIdentifier{
+        int64 Id=1;
+        int64 ItemNodeIdentifierId=2;
+        int64 QuotationEntryId=3;
+        string Value=4;
+    }
+    
+    enum NprDiscountModes{
+        Percent=0;
+        Amount=1;
+    }
+    message NprQuotationEntryTaxJournalDetail {
+        int64 Id=10;
+        int64 QuotationEntryId=1;
+        int64 TaxJournalDetailId=2;
+        NprSalesTransactionAmountSources Source=3;
+        NprDecimalValue Amount=4;
+    
+    }
+
+    message NprQuotationEntryFeeJournalDetail {
+        int64 Id=10;
+        int64 QuotationEntryId=1;
+        int64 FeeJournalDetailId=2;
+        NprSalesTransactionAmountSources Source=3;
+        NprDecimalValue Amount=4;
+    
+    }
+
+    message NprQuotationEntryDepositJournalDetail {
+        int64 Id=10;
+        int64 QuotationEntryId=1;
+        int64 DepositJournalDetailId=2;
+        NprSalesTransactionAmountSources Source=3;
+        NprDecimalValue Amount=4;
+    
+    }
+
+    enum NprSalesTransactionAmountSources {
+        UNDEFINED =0;
+        BRANCH=1;
+        CLIENT_OR_SUPPLIER=2;
+        ENTITY_DEFAULT=3;
+    }
+    enum NprSaleBuyParties {
+        GUEST_SALE_BUY_PARTY =0;
+        SUPPLIER_SALE_BUY_PARTY=1;
+    } 
+
+    enum NprSaleSellParties{
+        GUEST_SALE_SELL_PARTY =0;
+        CLIENT_SALE_SELL_PARTY=1;
+    } 
+
+    enum NprSaleParties{
+        GUEST_SALE_PARTY =0;
+        CLIENT_SALE_PARTY=1;
+        SUPPLIER_SALE_PARTY=2;
+    } 
+
+    message NprSalesTransactionTranslation {
+            int64 Id =1;
+            string Remarks =2;
+            int64 SalesTransactionId =3; 
+            int32 TranslationId =5; 
+    }
+ 
+// NxSalesTransactionCustomFieldService 
+    service NxSalesTransactionCustomFieldService {  
+        rpc DeleteSalesTransactionCustomField (NprSalesTransactionCustomFieldDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewSalesTransactionCustomField (NprSalesTransactionCustomFieldAddRequest) returns (NprRecordAddResponse); 
+    }
+     
+   
+
+    message NprSalesTransactionCustomField {
+        int64 Id =1; 
+        int64 SalesTransactionId =4;
+        int64 SalesTransactionTemplateCustomFieldId=5;
+        NprCustomFieldValueTypes ValueType =6;
+        google.protobuf.Timestamp DatetimeValue =7;
+        NprDecimalValue FloatNumberValue =8;
+        google.protobuf.Int64Value IntegerValue=10;
+        string Value=11;
+        google.protobuf.BoolValue YesNoValue=12;
+    }
+  
+    message NprSalesTransactionCustomFieldListRequest{
+        PassportInfo Passport =1;
+        repeated int64 SalesTransactionCustomFieldIdsRequired =4;
+    }
+
+    message NprSalesTransactionCustomFieldListResponse{
+        repeated NprSalesTransactionCustomField SalesTransactionCustomFields =1;
+        bool HasExpiryDate =2;
+        ResponseStatus Status =4; 
+        bool AllowAnonymousNames=10;
+        bool AllowSuppliers=11;
+        bool AllowClients=12;
+    }
+
+    message NprSalesTransactionCustomFieldImageRequest{ 
+        PassportInfo Passport =1;
+        int64 RecordId =2;  
+        bool GetThumbnail =3;
+    }
+     
+    message NprSalesTransactionCustomFieldAddRequest{ 
+        int64 SalesTransactionId =4;
+        string ShortDescription =5;
+        string FullDescription =6;
+        FileData CustomField =7;
+        PassportInfo Passport =8;
+
+    }
+     
+
+    message NprSalesTransactionCustomFieldDeleteRequest{
+        PassportInfo Passport =1;
+        int64 CustomFieldIdRequired =3;
+    }
+     
+// NxSalesTransactionAttachmentService 
+    service NxSalesTransactionAttachmentService { 
+        rpc SearchSalesTransactionAttachments (NprSalesTransactionAttachmentSearchRequest) returns (NprSalesTransactionAttachmentSearchResponse);
+        rpc GetSalesTransactionAttachments (NprSalesTransactionAttachmentListRequest) returns (NprSalesTransactionAttachmentListResponse); 
+        rpc GetSalesTransactionAttachmentFiles (NprSalesTransactionAttachmentFileRequest) returns (stream NprFileDataResponse); 
+        rpc DeleteSalesTransactionAttachment (NprSalesTransactionAttachmentDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewSalesTransactionAttachment (stream NprSalesTransactionAttachmentAddRequest) returns (NprRecordAddResponse); 
+    }
+     
+    message NprSalesTransactionAttachmentSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprSalesTransactionAttachmentSearchResponse{
+        repeated NprSalesTransactionAttachment SalesTransactionAttachments =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprSalesTransactionAttachment {
+        int64 Id =1;
+        NprAttachmentTypes AttachmentType =4;
+        string RealFileName =9; 
+        google.protobuf.Timestamp StoreDate =10; 
+        int64 SalesTransactionId =11;
+        repeated NprSalesTransactionAttachmentTranslation Translations =12;
+        int64 FileSize =15;
+        string StoredFileName =16; 
+    }
+
+    message NprSalesTransactionAttachmentTranslation {
+        int64 Id =1;
+        string ShortDescription =2;
+        string FullDescription =3;
+        int64 SalesTransactionAttachmentId =4; 
+        int32 TranslationId =5; 
+    }
+
+    message NprSalesTransactionAttachmentListRequest{
+        PassportInfo Passport =1;
+        repeated int64 SalesTransactionAttachmentIdsRequired =4;
+    }
+
+    message NprSalesTransactionAttachmentListResponse{
+        repeated NprSalesTransactionAttachment SalesTransactionAttachments =1;
+        ResponseStatus Status =2; 
+    }
+
+    message NprSalesTransactionAttachmentFileRequest{ 
+        PassportInfo Passport =1;
+        int64 RecordId =2;  
+    }
+     
+    message NprSalesTransactionAttachmentAddRequest{ 
+        NprAttachmentTypes AttachmentType =2;
+        int64 SalesTransactionId =4;
+        string ShortDescription =5;
+        string FullDescription =6;
+        FileData AttachmentData =7;
+        PassportInfo Passport =8; 
+    }
+     
+    message NprSalesTransactionAttachmentDeleteRequest{
+        PassportInfo Passport =1;
+        int64 NodeAttachmentIdRequired =3;
+    }
+
+
+         
+// CostCenterNodeService
+    service NxCostCenterNodeService {
+        rpc GetAllGroupsAsTree (NprCostCenterGroupTreeRequest) returns (NprCostCenterNodeListResponse); 
+        rpc GetCostCenterNodes (NprCostCenterNodeListRequest) returns (NprCostCenterNodeListResponse); 
+        rpc CheckIfCostCenterIsUsed (NprCostCenterIsUsedCheckRequest) returns (NprItemUseValidationResult); 
+        rpc GetCostCenterNodeByCode (NprCostCenterNodeByCodeRequest) returns (NprCostCenterNodeListResponse); 
+        rpc GetCostCenterNodeByCodeOrNumber (NprCostCenterNodeByCodeOrNumberRequest) returns (NprCostCenterNodeListResponse); 
+        rpc DeleteCostCenterNodeFullStructure (NprCostCenterNodeDeleteRequest) returns (ResponseStatus); 
+        rpc GetNewSuspectNumber (NewSuspectNumberRequest) returns (NprSuspectNumberResponse);
+        rpc SearchCostCenterNodes (NprCostCenterNodeSearchRequest) returns (NprCostCenterNodeSearchResponse);
+        rpc AddNewCostCenterNode (NprCostCenterNodeAddRequest) returns (NprCostCenterNodeRecordResponse); 
+        rpc UpdateCostCenterNode (NprCostCenterNodeUpdateRequest) returns (NprCostCenterNodeRecordResponse); 
+    }
+
+    message NprCostCenterNodeRecordResponse{ 
+        int64 RecordId =2;
+        ResponseStatus Status =3;  
+        NprCostCenterNode ResultCostCenterNode=5;
+    }
+
+    message NprCostCenterIsUsedCheckRequest{
+        PassportInfo Passport =1;
+        int64 CostCenterNodeId =2; 
+    }
+
+    message NprCostCenterNodeSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2; 
+        NprCostCenterNodeGroupType GroupType =4; 
+    }
+     
+    message NprCostCenterNodeSearchResponse{
+        repeated NprCostCenterNode CostCenterNodes =1;
+        ResponseStatus Status =3;  
+    } 
+     
+    message NprCostCenterNodeUpdateRequest{  
+        int64 RecordId =1;  
+        string Name =2; 
+        string Description =3;
+        bool CanHoldTransableCostCenterNodes=4;
+        string Code =5;
+        int64 Number =8; 
+        PassportInfo Passport =9;     
+        bool ReturnUpdatedNode = 27;
+    }
+     
+    message NprCostCenterNodeAddRequest{  
+        bool CanHoldTransableCostCenterNodes=1;
+        string Name =2; 
+        string Description =3;
+        PassportInfo Passport =4;    
+        google.protobuf.Int64Value ParentId =8;
+        int64 EntityId =9; 
+        string Code =12;
+        google.protobuf.Timestamp CreationDate =23; 
+        NprCostCenterNodeTypes NodeType=21;
+        NprSuspectNumber Number =25;
+        google.protobuf.StringValue TempId =26; 
+        bool ReturnAddedNode = 27;
+    }
+     
+    message NprCostCenterNodeListResponse{
+        repeated NprCostCenterNode Nodes =1;
+        ResponseStatus Status =2; 
+    }
+  
+    message NprCostCenterGroupTreeRequest{
+        PassportInfo Passport =1;
+    }
+  
+    message NprCostCenterNodeDeleteRequest{
+        PassportInfo Passport =1;
+        int64 NodeIdRequired =3;
+    }
+     
+    message NprCostCenterNodeListRequest{
+        PassportInfo Passport =1;
+        repeated int64 NodeIdsRequired =3;
+        google.protobuf.Int64Value ParentNodeId =4;
+        NprCostCenterNodeGroupType IncludedTypes =5 ;  
+    }
+    
+    enum NprCostCenterNodeGroupType{
+        ALL_COST_CENTER_NODE_GROUP_TYPES =0;
+        TRANSABLE_COST_CENTER_NODE_GROUP_TYPE =1;
+        GROUP_COST_CENTER_NODE_GROUP_TYPE =2;
+    }
+    
+    message NprCostCenterNodeByCodeRequest{
+        PassportInfo Passport =1;
+        string CodeRequired =3; 
+    } 
+     
+    message NprCostCenterNodeByCodeOrNumberRequest{
+        PassportInfo Passport =1;
+        string CodeOrNumberRequired =3; 
+    }
+      
+    message NprCostCenterNode{ 
+           repeated NprCostCenterNode Nodes =3;
+           repeated NprCostCenterNodeTranslation Translations =5;
+           int64 Id =7;
+           google.protobuf.Int64Value ParentId =8;
+           int64 EntityId =9; 
+           string NodeParentPath =11;
+           string Code =12;
+           string NodeFullPath =13;
+           string NodeFullPathForUi =14;
+           int64 AllChildrenStoredCount =15;
+           int64 DirectChildrenStoredCount =16;
+           int64 AllChildrenGroupsStoredCount =18;
+           int64 DirectChildrenGroupsStoredCount =20;
+           bool CanHoldTransableNodes =4;
+           google.protobuf.Timestamp CreationDate =23; 
+           NprCostCenterNodeTypes NodeType=21;
+           int32 LevelNumber =22;
+           google.protobuf.Timestamp ModifyDate =24;
+           NprSuspectNumber Number =25;
+           google.protobuf.StringValue TempId =26; 
+    }
+     
+
+    enum NprCostCenterNodeTypes {
+        TRANSABLE_COST_CENTER_NODE = 0;
+        GROUP_COST_CENTER_NODE =1;
+    }
+      
+    message NprCostCenterNodeTranslation {
+            int64 Id =1;
+            string Name =2;
+            int64 CostCenterNodeId =3;
+            string Description =4;
+            int32 TranslationId =5; 
+    }
+    
+
+	
+    
+// GlobalItemNodeService
+    service NxGlobalItemNodeService {
+        rpc GetAllGroupsAsTree (NprGlobalItemNodeGroupTreeRequest) returns (NprGlobalItemNodeListResponse); 
+        rpc GetGlobalItemNodes (NprGlobalItemNodeListRequest) returns (NprGlobalItemNodeListResponse); 
+        rpc GetGlobalItemNodeByCodeTempAddSKU (NprGlobalItemNodeByCodeTempAddSKURequest) returns (NprGlobalItemNodeListResponse); 
+        rpc GetGlobalItemNodeByGlobalItemNodeMeasurementUnit (NprGlobalItemNodeByGlobalItemNodeMeasurementUnitRequest) returns (NprGlobalItemNodeListResponse); 
+        rpc GetGlobalItemNodeByCodeTempAddSKUOrNumber (NprGlobalItemNodeByCodeTempAddSKUOrNumberRequest) returns (NprGlobalItemNodeListResponse); 
+        rpc GetGlobalItemNodeByBarcode (NprGlobalItemNodeByBarcodeRequest) returns (NprGlobalItemNodeListResponse); 
+        rpc DeleteGlobalItemNodeFullStructure (NprGlobalItemNodeDeleteRequest) returns (ResponseStatus); 
+        rpc GetNewSuspectNumber (NewSuspectNumberRequest) returns (NprSuspectNumberResponse);
+        rpc SearchGlobalItemNodes (NprGlobalItemNodeSearchRequest) returns (NprGlobalItemNodeSearchResponse);
+        rpc AddNewGlobalItemNode (stream NprGlobalItemNodeAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateGlobalItemNode (stream NprGlobalItemNodeUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc GetGlobalItemNodeAvatar (NprGlobalItemNodeAvatarRequest) returns (stream NprFileDataResponse); 
+ 
+    }
+
+    message NprGlobalItemNodeSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+        NprVariantStatus VariantStatus =3;
+        NprItemNodeGroupType GroupType =4;
+        bool PopulateMeasurementUnitsData=6;
+    }
+
+
+    message NprGlobalItemNodeSearchResponse{
+        repeated NprGlobalItemNode GlobalItemNodes =1;
+        ResponseStatus Status =3;  
+    } 
+
+    message NprGlobalItemNodeAvatarRequest{ 
+        PassportInfo Passport =1;
+        int64 RecordId =2;  
+        bool GetThumbnail =3;
+    }
+
+    message NprGlobalItemNodeUpdateRequest{  
+        int64 RecordId =1; 
+        repeated NprGlobalItemNodeTranslation Translations =2;
+        string CodeTempAddSKU =5;
+        google.protobuf.StringValue SKU =6;
+        bool CanHoldTransableGlobalItemNodes =10;
+        int64 Number =11;
+        NprItemNodeUpdateAvatarStatus AvatarStatus =12;
+        FileData Avatar =13;
+        PassportInfo Passport =14;
+        repeated int64 TagIds =15;
+        repeated NprGlobalItemNodeMeasurementUnitEntry MeasurementUnits =16;
+        repeated int64 IdentifierIds =17;
+        bool IsVariant = 18;
+        google.protobuf.Int64Value VariantParentNodeId =19;
+        repeated NprGlobalItemNodeSpecificationEntry Specifications =20;
+	    string LogoPath =21;
+		repeated string images =42;
+    }
+
+     
+
+    message NprGlobalItemNodeAddRequest{ 
+        NprGlobalItemNodeTypes NodeType =1;
+        NprSuspectNumber Number =2;
+        repeated NprGlobalItemNodeAddTranslation Translations =3;
+        google.protobuf.StringValue CodeTempAddSKU =4;
+        string TempId =6;
+        google.protobuf.StringValue SKU =7;
+		int64 RepositoryId =8;
+        bool CanHoldTransableGlobalItemNodes =9;
+        google.protobuf.Int64Value ParentId =10;
+        bool HasAvatar =11;
+        FileData Avatar =12;
+        bool ReturnCreatedNode =13;
+        PassportInfo Passport =14;
+        repeated int64 TagIds =15;
+        repeated NprGlobalItemNodeMeasurementUnitEntry MeasurementUnits =16;
+        repeated int64 IdentifierIds =17;
+        bool IsVariant = 18;
+        google.protobuf.Int64Value VariantParentNodeId =19;
+        repeated NprGlobalItemNodeSpecificationEntry Specifications =20;
+    }
+
+     message NprGlobalItemNodeAddTranslation {
+            string Name =2;
+            string Description =4;
+            int32 TranslationId =5;
+            string Notes =6;
+    }
+     
+   
+    message NprGlobalItemNodeListResponse{
+        repeated NprGlobalItemNode Nodes =1;
+        ResponseStatus Status =2; 
+    }
+  
+    message NprGlobalItemNodeGroupTreeRequest{
+        PassportInfo Passport =1;
+    }
+  
+    message NprGlobalItemNodeDeleteRequest{
+        PassportInfo Passport =1;
+        int64 NodeIdRequired =3;
+    }
+     
+    message NprGlobalItemNodeListRequest{
+        PassportInfo Passport =1;
+        repeated int64 NodeIdsRequired =3;
+        google.protobuf.Int64Value ParentNodeId =4;
+        NprItemNodeGroupType IncludedTypes =5 ; 
+        bool PopulateMeasurementUnitsData=6;
+    }
+    
+    message NprGlobalItemNodeByCodeTempAddSKURequest{
+        PassportInfo Passport =1;
+        string CodeTempAddSKURequired =3;
+        bool PopulateMeasurementUnitsData=6;
+    } 
+    
+    message NprGlobalItemNodeByGlobalItemNodeMeasurementUnitRequest{
+        PassportInfo Passport =1;
+        repeated int64 GlobalItemNodeMeasurementUnitIds =2;
+        bool PopulateMeasurementUnitsData=3;
+    }
+    
+    message NprGlobalItemNodeByCodeTempAddSKUOrNumberRequest{
+        PassportInfo Passport =1;
+        string CodeTempAddSKUOrNumberRequired =3;
+        bool PopulateMeasurementUnitsData=6;
+    }
+
+    message NprGlobalItemNodeByBarcodeRequest{
+        PassportInfo Passport =1;
+        string BarcodeRequired =3;
+        bool PopulateMeasurementUnitsData=6;
+    }
+     
+
+    message NprGlobalItemNode{ 
+           repeated NprGlobalItemNodeSpecification Specifications =1;
+           repeated NprGlobalItemNodeIdentifier Identifiers =2;
+           repeated NprGlobalItemNode Nodes =3;
+           bool CanHoldTransableGlobalItemNodes =4;
+           repeated NprGlobalItemNodeTranslation Translations =5;
+           repeated NprGlobalItemNodeMeasurementUnit  MeasurementUnits =6;
+           int64 Id =7;
+           google.protobuf.Int64Value ParentId =8;
+           int64 RepositoryId =9;
+           NprGlobalItemNodeTypes GlobalItemNodeType =10;
+           string NodeParentPath =11;
+           string CodeTempAddSKU =12;
+           string NodeFullPath =13;
+           string NodeFullPathForUi =14;
+           int64 AllChildrenStoredCount =15;
+           int64 DirectChildrenStoredCount =16;
+           int64 DirectChildrenTransableCount =17;
+           int64 AllChildrenGroupsStoredCount =18;
+           int64 AllChildrenTransableCount =19;
+           int64 DirectChildrenGroupsStoredCount =20;
+           bool IsGroup =21;
+           int32 LevelNumber =22;
+           google.protobuf.Timestamp CreationDate =23; 
+           google.protobuf.Timestamp ModifyDate =24;
+           NprSuspectNumber Number =25;  
+           google.protobuf.Int64Value AvatarFileSize =27;
+           google.protobuf.StringValue AvatarStoredFileName =28;
+           google.protobuf.Int64Value AvatarThumbnailFileSize =29;
+           google.protobuf.Timestamp AvatarThumbnailFileStoreDate =30;
+           google.protobuf.StringValue AvatarThumbnailStoredFileName =31;
+           bool HasAvatar =32;
+           google.protobuf.Timestamp AvatarFileStoreDate =33;
+           repeated NprGlobalItemNodeTag  Tags =34;
+           repeated NprGlobalItemNodeMedia MediaItems =35;
+           repeated NprGlobalItemNodeAttachment Attachments =36; 
+           bool IsVariant = 38;
+           google.protobuf.Int64Value VariantParentNodeId =39;
+           google.protobuf.StringValue SKU =40;
+    }
+    
+
+    message  NprGlobalItemNodeMeasurementUnit {
+        int64 Id =1;
+        int64 MeasurementUnitId =2;
+        int64 GlobalItemNodeId =3;
+        string Barcode =4;
+        bool IsLinkedToDynamicBarcode =5;
+        google.protobuf.Int64Value DynamicBarcodeId =6;
+        bool IsLinkedToElectronicScale =7;
+        google.protobuf.Int64Value ElectronicScaleId =8;
+        NprDecimalValue QuantityPerUnit =9;
+        bool IsDefault =10;
+        NprMeasurementUnit MeasurementUnitData =11;
+    }
+
+    message  NprGlobalItemNodeTag {
+        int64 Id =1;
+        int64 TagId =2;
+        int64 GlobalItemNodeId =3; 
+    }
+
+    message NprGlobalItemNodeIdentifier {
+        int64 Id =1;
+        int64 IdentifierId =2;
+        google.protobuf.Timestamp CreationDate =3;
+        google.protobuf.Timestamp ModifyDate =4;
+        int64 GlobalItemNodeId =5;
+        bool IsMandatory =6;
+    }
+
+    message NprGlobalItemNodeSpecification {
+            int64 Id =1;
+            int64 SpecificationId =2;
+            int64 GlobalItemNodeId =5; 
+            google.protobuf.Int64Value IdParent = 8;
+            bool IsRelatedToParentFeature = 9;
+            google.protobuf.StringValue Value = 10;
+            NprSpecificationValueTypes ValueType = 11;
+            google.protobuf.BoolValue YesNoValue = 12;
+            NprDecimalValue FloatNumberValue = 13;
+            google.protobuf.Timestamp DateTimeValue = 14;
+            google.protobuf.Int64Value IntegerValue = 15;
+    }
+
+    message NprGlobalItemNodeSpecificationEntry {
+            int64 Id =1;
+            int64 SpecificationId =2;
+            int64 GlobalItemNodeId =5; 
+            google.protobuf.Int64Value IdParent = 8;
+            bool IsRelatedToParentFeature = 9;
+            google.protobuf.StringValue Value = 10;
+            NprSpecificationValueTypes ValueType = 11;
+            google.protobuf.BoolValue YesNoValue = 12;
+            NprDecimalValue FloatNumberValue = 13;
+            google.protobuf.Timestamp DateTimeValue = 14;
+            google.protobuf.Int64Value IntegerValue = 15;
+    }
+      
+    message NprGlobalItemNodeMeasurementUnitEntry {
+            int64 Id =1;
+            int64 MeasurementUnitId =2;
+            int64 GlobalItemNodeId =3; 
+            string Barcode = 4;
+            NprDecimalValue QuantityPerUnit = 5; 
+            bool IsLinkedToElectronicScale = 6; 
+            google.protobuf.Int64Value DynamicBarcodeId = 7; 
+            google.protobuf.Int64Value ElectronicScaleId = 8; 
+            bool IsDefault =9 ; 
+            bool IsLinkedToDynamicBarcode =10 ; 
+
+    }
+    message NprGlobalItemNodeTranslation {
+            int64 Id =1;
+            string Name =2;
+            int64 GlobalItemNodeId =3;
+            string Description =4;
+            int32 TranslationId =5;
+            string Notes =6;
+    }
+
+    enum NprGlobalItemNodeTypes { 
+        Material_Global_Item_Node =0; 
+        Service_Global_Item_Node =1; 
+        Group_Global_Item_Node =2;
+    }
+
+  
+  
+// NxGlobalItemNodeMediaService 
+    service NxGlobalItemNodeMediaService { 
+        rpc SearchGlobalItemNodeMedias (NprGlobalItemNodeMediaSearchRequest) returns (NprGlobalItemNodeMediaSearchResponse);
+        rpc GetGlobalItemNodeMedias (NprGlobalItemNodeMediaListRequest) returns (NprGlobalItemNodeMediaListResponse); 
+        rpc GetGlobalItemNodeMediaImages (NprGlobalItemNodeMediaImageRequest) returns (stream NprFileDataResponse); 
+        rpc DeleteGlobalItemNodeMedia (NprGlobalItemNodeMediaDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewGlobalItemNodeMedia (stream NprGlobalItemNodeMediaAddRequest) returns (NprRecordAddResponse); 
+    }
+     
+    message NprGlobalItemNodeMediaSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprGlobalItemNodeMediaSearchResponse{
+        repeated NprGlobalItemNodeMedia GlobalItemNodeMedias =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprGlobalItemNodeMedia {
+        int64 Id =1;
+        NprMediaTypes MediaType =4;
+        google.protobuf.Timestamp ThumbnailStoreDate =8;
+        string RealFileName =9; 
+        google.protobuf.Timestamp StoreDate =10; 
+        int64 GlobalItemNodeId =11;
+        repeated NprGlobalItemNodeMediaTranslation Translations =12;
+        google.protobuf.Int64Value ThumbnailFileSize =13;
+        string ThumbnailStoredFileName =14;
+        int64 FileSize =15;
+        string StoredFileName =16; 
+    }
+
+    message NprGlobalItemNodeMediaTranslation {
+        int64 Id =1;
+        string ShortDescription =2;
+        string FullDescription =3;
+        int64 GlobalItemNodeMediaId =4; 
+        int32 TranslationId =5; 
+    }
+
+    message NprGlobalItemNodeMediaListRequest{
+        PassportInfo Passport =1;
+        repeated int64 GlobalItemNodeMediaIdsRequired =4;
+    }
+
+    message NprGlobalItemNodeMediaListResponse{
+        repeated NprGlobalItemNodeMedia GlobalItemNodeMedias =1;
+        ResponseStatus Status =2; 
+    }
+
+    message NprGlobalItemNodeMediaImageRequest{ 
+        PassportInfo Passport =1;
+        int64 RecordId =2;  
+        bool GetThumbnail =3;
+    }
+     
+    message NprGlobalItemNodeMediaAddRequest{ 
+        NprMediaTypes MediaType =2;
+        int64 GlobalItemNodeId =4;
+        string ShortDescription =5;
+        string FullDescription =6;
+        FileData MediaData =7;
+        PassportInfo Passport =8;
+
+    }
+
+
+     
+    message NprGlobalItemNodeMediaDeleteRequest{
+        PassportInfo Passport =1;
+        int64 NodeMediaIdRequired =3;
+    }
+     
+// NxGlobalItemNodeAttachmentService 
+    service NxGlobalItemNodeAttachmentService { 
+        rpc SearchGlobalItemNodeAttachments (NprGlobalItemNodeAttachmentSearchRequest) returns (NprGlobalItemNodeAttachmentSearchResponse);
+        rpc GetGlobalItemNodeAttachments (NprGlobalItemNodeAttachmentListRequest) returns (NprGlobalItemNodeAttachmentListResponse); 
+        rpc GetGlobalItemNodeAttachmentFiles (NprGlobalItemNodeAttachmentFileRequest) returns (stream NprFileDataResponse); 
+        rpc DeleteGlobalItemNodeAttachment (NprGlobalItemNodeAttachmentDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewGlobalItemNodeAttachment (stream NprGlobalItemNodeAttachmentAddRequest) returns (NprRecordAddResponse); 
+    }
+     
+    message NprGlobalItemNodeAttachmentSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprGlobalItemNodeAttachmentSearchResponse{
+        repeated NprGlobalItemNodeAttachment GlobalItemNodeAttachments =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprGlobalItemNodeAttachment {
+        int64 Id =1;
+        NprAttachmentTypes AttachmentType =4;
+        string RealFileName =9; 
+        google.protobuf.Timestamp StoreDate =10; 
+        int64 GlobalItemNodeId =11;
+        repeated NprGlobalItemNodeAttachmentTranslation Translations =12;
+        int64 FileSize =15;
+        string StoredFileName =16; 
+    }
+
+    message NprGlobalItemNodeAttachmentTranslation {
+        int64 Id =1;
+        string ShortDescription =2;
+        string FullDescription =3;
+        int64 GlobalItemNodeAttachmentId =4; 
+        int32 TranslationId =5; 
+    }
+
+    message NprGlobalItemNodeAttachmentListRequest{
+        PassportInfo Passport =1;
+        repeated int64 GlobalItemNodeAttachmentIdsRequired =4;
+    }
+
+    message NprGlobalItemNodeAttachmentListResponse{
+        repeated NprGlobalItemNodeAttachment GlobalItemNodeAttachments =1;
+        ResponseStatus Status =2; 
+    }
+
+    message NprGlobalItemNodeAttachmentFileRequest{ 
+        PassportInfo Passport =1;
+        int64 RecordId =2;  
+    }
+     
+    message NprGlobalItemNodeAttachmentAddRequest{ 
+        NprAttachmentTypes AttachmentType =2;
+        int64 GlobalItemNodeId =4;
+        string ShortDescription =5;
+        string FullDescription =6;
+        FileData AttachmentData =7;
+        PassportInfo Passport =8; 
+    }
+
+ 
+    message NprGlobalItemNodeAttachmentDeleteRequest{
+        PassportInfo Passport =1;
+        int64 NodeAttachmentIdRequired =3;
+    }
+     
+      
+// EntityService
+    service NxEntityService {
+        rpc GetEntities (NprEntityListRequest) returns (NprEntityListResponse); 
+        rpc DeleteEntityFullStructure (NprEntityDeleteRequest) returns (ResponseStatus); 
+        rpc SearchEntities (NprEntitySearchRequest) returns (NprEntitySearchResponse);
+        rpc AddNewEntity (stream NprEntityAddRequest) returns (NprRecordAddResponse);  
+        rpc AddNewEntityWithMainBranch (stream NprEntityAddRequest) returns (NprRecordAddResponse);  
+        rpc UpdateEntity (stream NprEntityUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc GetEntityAvatar (NprEntityAvatarRequest) returns (stream NprFileDataResponse);   
+    }
+
+    message NprEntitySearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+        NprEntitySearchRequestLocation Location =3;
+        int64 RepositoryId =5;
+        int32 PageNumber =6;
+        int32 ItemsPerPage =7;
+        repeated int64 GlobalItemNodeId =8; 
+        google.protobuf.Int64Value PickupOptionTag =9;  
+    }
+    
+    message NprEntitySearchRequestLocation {
+        NprDecimalValue Longitude =6; 
+        NprDecimalValue Latitude =7;
+        google.protobuf.Int32Value SRID =8;	 
+        google.protobuf.StringValue CustomAttributes =9;
+    }
+    message NprEntitySearchResponse{
+        repeated NprEntity Entities =1;
+        ResponseStatus Status =3;  
+    } 
+
+    message NprEntityAvatarRequest{ 
+        PassportInfo Passport =1;
+        int64 RecordId =2;  
+        bool GetThumbnail =3;
+    }
+
+    message NprEntityUpdateRequest{  
+        int64 RecordId =1; 
+        repeated NprEntityTranslation Translations =2; 
+        string LogoPath = 13; 
+        PassportInfo Passport =14; 
+		google.protobuf.Int32Value MaxQtyPerLine = 15;
+	    google.protobuf.Int32Value MaxItemsPerOrder = 16;
+	    NprDecimalValue DeliveryCostPerOrder = 17; 
+    }
+
+     
+
+    message NprEntityAddRequest{ 
+        repeated NprEntityAddTranslation Translations =3;
+        string TempId =6;
+        string LogoPath = 7; 
+        int64 RepositoryId =8;
+        bool ReturnCreatedEntity =13;
+        PassportInfo Passport =14; 
+		google.protobuf.Int32Value MaxQtyPerLine = 15;
+	    google.protobuf.Int32Value MaxItemsPerOrder = 16;
+	    NprDecimalValue DeliveryCostPerOrder = 17; 
+    }
+
+    message NprEntityAddTranslation {
+        string Title =2;
+        int64 EntityId =3;
+        string Description =4;
+        int32 TranslationId =5;
+        string ActivityTypeName =6; 
+    }
+     
+   
+    message NprEntityListResponse{
+        repeated NprEntity Entities =1;
+        ResponseStatus Status =2; 
+    }
+   
+  
+    message NprEntityDeleteRequest{
+        PassportInfo Passport =1;
+        int64 EntityIdRequired =3;
+    }
+     
+    message NprEntityListRequest{
+        PassportInfo Passport =1;
+        repeated int64 EntityIdsRequired =3;
+        google.protobuf.Int64Value RepositoryId =4;
+    }
+       
+    message NprEntity{  
+        repeated NprEntityTranslation Translations =5;
+        int64 Id =7;
+	    string LogoPath = 8; 
+        int64 RepositoryId =9; 
+	    google.protobuf.Int32Value MaxQtyPerLine = 10;
+	    google.protobuf.Int32Value MaxItemsPerOrder = 11;
+	    NprDecimalValue DeliveryCostPerOrder = 12; 
+    }
+      
+    message NprEntityTranslation {
+        int64 Id =1;
+        string Title =2;
+        int64 EntityId =3;
+        string Description =4;
+        int32 TranslationId =5;
+        string ActivityTypeName =6; 
+    }
+    
+	
+// NxEntityLocationService 
+    service NxEntityLocationService { 
+        rpc SearchEntityLocations (NprEntityLocationSearchRequest) returns (NprEntityLocationSearchResponse);
+        rpc GetEntityLocations (NprEntityLocationListRequest) returns (NprEntityLocationListResponse); 
+        rpc DeleteEntityLocation (NprEntityLocationDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewEntityLocation (NprEntityLocationAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateEntityLocation (NprEntityLocationUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+ 
+    message NprEntityLocationSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprEntityLocationSearchResponse{
+        repeated NprEntityLocation EntityLocations =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprEntityLocation {
+        int64 Id =1; 
+        int64 EntityId =4;
+        repeated NprEntityLocationTranslation Translations =5;     
+        NprDecimalValue Longitude =6; 
+        NprDecimalValue Latitude =7;
+        google.protobuf.Int32Value SRID =8;	 
+        google.protobuf.StringValue CustomAttributes =9;
+    } 
+
+    message NprEntityLocationTranslation {
+        int64 Id =1;
+        string Name =2;
+        string Address =3;
+        int64 EntityLocationId =4; 
+        int32 TranslationId =5; 
+    } 
+    
+      
+    message NprEntityLocationListRequest{
+        PassportInfo Passport =1;
+        repeated int64 EntityLocationIdsRequired =2; 
+    }
+
+    message NprEntityLocationListResponse{
+        repeated NprEntityLocation EntityLocations =1;
+        ResponseStatus Status =2; 
+    }
+      
+    message NprEntityLocationAddRequest{ 
+        repeated NprEntityLocationTranslation Translations =4;    
+        PassportInfo Passport =17;
+		google.protobuf.Int32Value SRID =18;
+		google.protobuf.StringValue CustomAttributes =19;
+		NprDecimalValue Longitude =20;
+		NprDecimalValue Latitude =21;
+		
+    }
+
+    message NprEntityLocationDeleteRequest{
+        PassportInfo Passport =1;
+        int64 EntityLocationIdRequired =3;
+    }
+      
+    message NprEntityLocationUpdateRequest{ 
+        int64 RecordId =1;
+       repeated NprEntityLocationTranslation Translations =4;   
+        PassportInfo Passport =17;
+    }
+
+
+	
+// NxPickupOptionService 
+    service NxPickupOptionService { 
+        rpc SearchPickupOptions (NprPickupOptionSearchRequest) returns (NprPickupOptionSearchResponse);
+        rpc GetPickupOptions (NprPickupOptionListRequest) returns (NprPickupOptionListResponse); 
+        rpc DeletePickupOption (NprPickupOptionDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewPickupOption (NprPickupOptionAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdatePickupOption (NprPickupOptionUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+ 
+    message NprPickupOptionSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+		string Tag1=5;
+	    string Tag2=6;
+    }
+
+    message NprPickupOptionSearchResponse{
+        repeated NprPickupOption PickupOptions =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprPickupOption {
+        int64 Id =1; 
+        int64 EntityId =4;
+        repeated NprPickupOptionTranslation Translations =5;     
+        bool IsActive =18;
+		string Tag1=19;
+		string Tag2=20;
+    } 
+
+    message NprPickupOptionTranslation {
+        int64 Id =1;
+        string Name =2; 
+        int64 PickupOptionId =4; 
+        int32 TranslationId =5; 
+    } 
+    
+      
+    message NprPickupOptionListRequest{
+        PassportInfo Passport =1;
+        repeated int64 PickupOptionIdsRequired =2; 
+    }
+
+    message NprPickupOptionListResponse{
+        repeated NprPickupOption PickupOptions =1;
+        ResponseStatus Status =2; 
+        string Tag1=5;
+        string Tag2=6;
+    }
+      
+    message NprPickupOptionAddRequest{ 
+        repeated NprPickupOptionTranslation Translations =4;    
+        PassportInfo Passport =17;
+		bool IsActive =18;
+        string Tag1=5;
+        string Tag2=6;
+	 
+		
+    }
+
+    message NprPickupOptionDeleteRequest{
+        PassportInfo Passport =1;
+        int64 PickupOptionIdRequired =3;
+    }
+      
+    message NprPickupOptionUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprPickupOptionTranslation Translations =4;   
+	    string Tag1=5;
+	    string Tag2=6;
+        PassportInfo Passport =17;
+	    bool IsActive =18;
+    }
+
+
+
+		
+// NxDeliveryProviderService 
+    service NxDeliveryProviderService { 
+        rpc SearchDeliveryProviders (NprDeliveryProviderSearchRequest) returns (NprDeliveryProviderSearchResponse);
+        rpc GetDeliveryProviders (NprDeliveryProviderListRequest) returns (NprDeliveryProviderListResponse); 
+        rpc DeleteDeliveryProvider (NprDeliveryProviderDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewDeliveryProvider (NprDeliveryProviderAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateDeliveryProvider (NprDeliveryProviderUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+ 
+    message NprDeliveryProviderSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+		string Tag1=5;
+	    string Tag2=6;
+    }
+
+    message NprDeliveryProviderSearchResponse{
+        repeated NprDeliveryProvider DeliveryProviders =1;
+        ResponseStatus Status =3;  
+
+    } 
+
+    message NprDeliveryProvider {
+        int64 Id =1; 
+        int64 EntityId =4;
+        repeated NprDeliveryProviderTranslation Translations =5;     
+        bool IsActive =18;
+		string Tag1=19;
+		string Tag2=20;
+    } 
+
+    message NprDeliveryProviderTranslation {
+        int64 Id =1;
+        string Name =2; 
+        int64 DeliveryProviderId =4; 
+        int32 TranslationId =5; 
+    } 
+    
+      
+    message NprDeliveryProviderListRequest{
+        PassportInfo Passport =1;
+        repeated int64 DeliveryProviderIdsRequired =2; 
+    }
+
+    message NprDeliveryProviderListResponse{
+        repeated NprDeliveryProvider DeliveryProviders =1;
+        ResponseStatus Status =2; 
+        string Tag1=5;
+        string Tag2=6;
+    }
+      
+    message NprDeliveryProviderAddRequest{ 
+        repeated NprDeliveryProviderTranslation Translations =4;    
+        PassportInfo Passport =17;
+		bool IsActive =18;
+        string Tag1=5;
+        string Tag2=6;
+	 
+		
+    }
+
+    message NprDeliveryProviderDeleteRequest{
+        PassportInfo Passport =1;
+        int64 DeliveryProviderIdRequired =3;
+    }
+      
+    message NprDeliveryProviderUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprDeliveryProviderTranslation Translations =4;   
+	    string Tag1=5;
+	    string Tag2=6;
+        PassportInfo Passport =17;
+	    bool IsActive =18;
+    }
+
+	

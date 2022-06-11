@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option csharp_namespace = "Nx.Server.Protos";
+import "common.proto"; 
+
+ 
+
+package NxServer;
+
+service AuthorizeService {
+    rpc GetToken(AuthRequestMessage) returns (AuthResponseMessage);
+}
+
+message AuthRequestMessage{
+    string Email=1;
+    string Password=2;
+}
+
+message AuthResponseMessage{
+    AuthorizationResult Result=1;
+    string Token=2;
+    ErrorMessage ErrMsg =3;
+}
+enum AuthorizationResult {
+    AUTHORIZATION_FAILED=0;
+    AUTHORIZATION_SUCCEED=1;
+    AUTHORIZATION_ERROR=2;
+}
+
+ 

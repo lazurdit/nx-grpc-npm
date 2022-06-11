@@ -1,0 +1,98 @@
+syntax ="proto3";
+
+option csharp_namespace ="Nx.Server.Services.Erp";
+
+//import "google/protobuf/empty.proto"; 
+import "common.proto";
+import "google/protobuf/timestamp.proto"; 
+import "erp/acct.proto";
+
+package NxServer;
+ 
+// NxFiscalPeriodService 
+    service NxFiscalPeriodService {
+        rpc GetFiscalPeriodList (NprFiscalPeriodListRequest) returns (NprFiscalPeriodListResponse);
+        rpc AddNewFiscalPeriod (NprFiscalPeriodAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateFiscalPeriod (NprFiscalPeriodUpdateRequest) returns (NprRecordUpdateResponse); 
+        rpc DeleteFiscalPeriod (NprFiscalPeriodDeleteRequest) returns (ResponseStatus); 
+    }
+   
+    message NprFiscalPeriodAddRequest{ 
+        int64 FiscalYearId =1;
+        int32 Number =2;
+        string Name=3;
+        NprFiscalPeriodStatuses Status =4;
+        NprFiscalPeriodTypes PeriodType =5;
+        google.protobuf.Timestamp ActiveDate =6; 
+        google.protobuf.Timestamp SuspendDate =7; 
+        google.protobuf.Timestamp TransactionsEndDate =8; 
+        google.protobuf.Timestamp TransactionsStartDate =9; 
+        bool IsDefault=10;
+        PassportInfo Passport =11;
+        string TempId =15;
+    }
+    
+    enum NprFiscalPeriodStatuses {
+        OPEN =0;
+        CLOSED=1;
+    }
+    enum NprFiscalPeriodTypes {
+        NORMAL_PERIOD=0;
+        ADJUSTMENT_PERIOD=1;
+
+    }
+    message NprFiscalPeriodDeleteRequest{
+        PassportInfo Passport =1;
+        int64 FiscalPeriodIdRequired =3;
+    }
+      
+    message NprFiscalPeriodUpdateRequest{ 
+        int64 FiscalYearId =1;
+        int32 Number =2;
+        string Name=3;
+        NprFiscalPeriodStatuses Status =4;
+        NprFiscalPeriodTypes PeriodType =5;
+        google.protobuf.Timestamp ActiveDate =6; 
+        google.protobuf.Timestamp SuspendDate =7; 
+        google.protobuf.Timestamp TransactionsEndDate =8; 
+        google.protobuf.Timestamp TransactionsStartDate =9; 
+        bool IsDefault=10;
+        PassportInfo Passport =11;
+        int64 RecordId =12;
+        string TempId =15;
+    }
+     
+    message NprFiscalPeriodListRequest {
+        PassportInfo Passport =1; 
+        repeated int64 FiscalYearIdsRequired =2;
+        repeated int64 FiscalPeriodIdsRequired =3;
+        bool IncludeSpecificStatus=4;
+        NprFiscalPeriodStatuses StatusToInclude =5;
+        bool IncludeSpecificPeriodType=6;
+        NprFiscalPeriodTypes PeriodType =7;
+        bool DefaultFiscalPeriodsOnly=8; 
+    }
+
+    message NprFiscalPeriodListResponse {
+        repeated NprFiscalPeriod FiscalPeriods =1;
+        ResponseStatus Status =2;
+    } 
+  
+    message NprFiscalPeriod{
+        int64 FiscalYearId =1;
+        int32 Number =2;
+        string Name=3;
+        NprFiscalPeriodStatuses Status =4;
+        NprFiscalPeriodTypes PeriodType =5;
+        google.protobuf.Timestamp ActiveDate =6; 
+        google.protobuf.Timestamp SuspendDate =7; 
+        google.protobuf.Timestamp TransactionsEndDate =8; 
+        google.protobuf.Timestamp TransactionsStartDate =9; 
+        bool IsDefault=10;
+        PassportInfo Passport =11;
+        int64 Id =12;
+        google.protobuf.Timestamp CreationDate =13; 
+        google.protobuf.Timestamp ModifyDate =14;
+        string TempId =15;
+    }
+

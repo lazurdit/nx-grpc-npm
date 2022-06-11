@@ -1,0 +1,58 @@
+{
+	"name": "nx-grpc-ts",
+	"version": "0.01.091",
+	"description": "Node package source for @lazurdit/nx-grpc npm package",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"predev": "npm run prettier-format && npm run lint",
+		"prebuild": "npm run prettier-format && npm run lint",
+		"build:doc": "npx typedoc --entryPointStrategy expand",
+		"build:prod": "tsc && npm run build:proto",
+		"build:proto": "sh ./scripts/build_proto.sh",
+		"test": "jest --coverage",
+		"test:watch": "jest --watch",
+		"lint": "eslint . --ext .ts",
+		"lint:fix": "eslint --fix . --ext .ts",
+		"prettier-format": "prettier --config .prettierrc --ignore-path .prettierignore \"src/**/*.ts\" --write",
+		"pack-list": "npx npm-packlist",
+		"npmjs:publish": "sh ./scripts/publish.sh",
+		"npmjs:update": "sh ./scripts/proto_cp.sh",
+		"npmjs:pack": "npm run build:prod && npm run build:proto && sh ./scripts/pack.sh"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/lazurdit/nx-grpc-npm.git"
+	},
+	"keywords": [],
+	"author": "Lazurd IT",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/lazurdit/nx-grpc-npm/issues"
+	},
+	"homepage": "https://github.com/lazurdit/nx-grpc-npm#readme",
+	"devDependencies": {
+		"@types/google-protobuf": "^3.15.6",
+		"@types/jest": "^27.5.1",
+		"@types/node": "^17.0.35",
+		"@typescript-eslint/eslint-plugin": "^5.25.0",
+		"@typescript-eslint/parser": "^5.25.0",
+		"dotenv": "^16.0.1",
+		"eslint": "^8.16.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"grpc_tools_node_protoc_ts": "^5.3.2",
+		"grpc-tools": "^1.11.2",
+		"husky": "^8.0.1",
+		"jest": "^28.1.0",
+		"prettier": "^2.6.2",
+		"supertest": "^6.2.3",
+		"ts-jest": "^28.0.2",
+		"ts-node": "^10.8.0",
+		"typedoc": "^0.22.15",
+		"typescript": "^4.6.4"
+	},
+	"dependencies": {
+		"grpc": "^1.24.11"
+	}
+}
