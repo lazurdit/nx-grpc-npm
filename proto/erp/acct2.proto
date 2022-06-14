@@ -6,6 +6,8 @@ option csharp_namespace ="Nx.Server.Services.Erp";
 import "common.proto";
 import "google/protobuf/timestamp.proto"; 
 import "erp/acct.proto";
+import "google/protobuf/empty.proto"; 
+import "google/protobuf/wrappers.proto";
 
 package NxServer;
  
@@ -96,3 +98,108 @@ package NxServer;
         string TempId =15;
     }
 
+
+	 
+// NxNewHyperService 
+    service NxNewHyperService {
+        rpc ApplyCoupon (NprFiscalPeriodListRequest) returns (NprFiscalPeriodListResponse);
+     
+    }
+
+
+message NprOrderFullItemOptionChoice {
+  int64 id=1;
+  NprDecimalValue price=2;
+  string title_en=3;
+  string title_ar=4;
+  google.protobuf.StringValue value=5;
+  NprDecimalValue qty=6;
+}
+
+
+message OrderFullItemAddition {
+  int64 id=1;
+  string ui_type=2; // = ;
+  NprDecimalValue unit_price=3;
+  string title_en=4;
+  string title_ar=5;
+  NprDecimalValue selected_qty=6; 
+  NprOrderFullItemOptionChoice selected_choice=7;
+  NprDecimalValue qty=8;
+  google.protobuf.StringValue value = 9;
+}
+
+
+message OrderFullItemOption {
+  int64 id=1;
+  string ui_type=2; //= ;  NprDecimalValue unit_price=3;
+  string title_en =4;
+  string title_ar =5;
+  NprDecimalValue selected_qty=6; 
+  NprOrderFullItemOptionChoice selected_choice=7;
+  NprDecimalValue qty=8;
+  google.protobuf.StringValue value = 9;
+}
+
+
+message OrderProductImage {
+ string  src=1 ;
+}
+
+
+message OrderFullItem {
+  int64 id=1;
+  string title_en=3;
+  string title_ar=4;
+  string description_en = 5;
+  string description_ar = 6;
+  NprDecimalValue base_price = 7;
+  OrderProductImage main_img = 8;
+  string unit_en = 9;
+  string unit_ar = 10;
+  repeated OrderFullItemOption options = 11;
+  repeated OrderFullItemAddition additions = 12;
+  NprDecimalValue qty = 13;
+}
+
+
+message OrderCart {
+  int64 id=1; 
+  repeated OrderFullItem items = 2;
+  NprShopModel shop_data = 3;
+  NprDecimalValue base_price = 4;
+  NprDecimalValue total_price = 5;
+  NprDecimalValue discount_amount = 6;
+  NprDecimalValue total_after_discount = 7;
+  NprDecimalValue delivery_amount = 8;
+  google.protobuf.StringValue lng = 9;
+  google.protobuf.StringValue lat = 10;
+  int32 selected_pickup_option = 11;
+  string payment_option = 12;
+  int32 preparation_time = 13;
+  bool hyper_delivery = 14;
+}
+
+
+ 
+message NprShopModel {
+ int64 id = 1;
+  string title_en = 2;
+  string title_ar = 3;
+  NprDecimalValue max_order_amount = 4;
+  NprDecimalValue max_order_quantity = 5;
+  string logo = 6;
+  repeated CategoryModel categories =7; 
+  repeated int64 pickup_options = 8;
+}
+ 
+message CategoryModel {
+  int64 id= 1;
+  google.protobuf.Int64Value parent_id = 2;
+  google.protobuf.Int64Value global_category_id= 3;
+  bool is_global_category= 4;
+  string title_en= 5;
+  string title_ar= 6;
+  int32 level= 7;
+  string node_path= 8;
+}

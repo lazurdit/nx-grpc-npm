@@ -4311,4 +4311,82 @@ package NxServer;
 	    bool IsActive =18;
     }
 
+
+// NxCouponService 
+    service NxCouponService { 
+        rpc SearchCoupons (NprCouponSearchRequest) returns (NprCouponSearchResponse);
+        rpc GetCoupons (NprCouponListRequest) returns (NprCouponListResponse); 
+        rpc DeleteCoupon (NprCouponDeleteRequest) returns (ResponseStatus); 
+        rpc AddNewCoupon (NprCouponAddRequest) returns (NprRecordAddResponse); 
+        rpc UpdateCoupon (NprCouponUpdateRequest) returns (NprRecordUpdateResponse); 
+    }
+    message NprCouponSearchRequest{
+        PassportInfo Passport =1;
+        string SearchText =2;
+    }
+
+    message NprCouponSearchResponse{
+        repeated NprCoupon Coupons =1;
+        ResponseStatus Status =3;   
+    } 
+
+    message NprCoupon{
+        int64 Id =1;
+        google.protobuf.Timestamp CreationDate =2;
+        google.protobuf.Timestamp ModifyDate =3;
+        repeated NprCouponTranslation Translations =8;
+		string Code=9;
+		string type=10;
+		NprDecimalValue DiscountAmount=11;
+		int32 TotalCoupons = 12;
+		int32 AmountPerCustomer=13;
+		google.protobuf.Timestamp StartDate = 14;
+		google.protobuf.Timestamp EndDate = 15;
+    }
+
+    message NprCouponTranslation {
+        int64 Id =1;
+        int64 CouponId =3; 
+        int32 TranslationId =5; 
+        string Name =6;
+		string Description = 7;
+    }
+    message NprCouponListRequest{
+        PassportInfo Passport =1;
+        repeated int64 CouponIdsRequired =3;
+    }
+    message NprCouponListResponse{
+        repeated NprCoupon Coupons =1;
+        ResponseStatus Status =2; 
+    }
+    
+    message NprCouponAddRequest{ 
+        repeated NprCouponTranslation Translations =4;
+	    string Code=9;
+		string type=10;
+		NprDecimalValue DiscountAmount=11;
+		int32 TotalCoupons = 12;
+		int32 AmountPerCustomer=13;
+		google.protobuf.Timestamp StartDate = 14;
+		google.protobuf.Timestamp EndDate = 15;
+        PassportInfo Passport =17;
+    } 
 	
+    message NprCouponDeleteRequest{
+        PassportInfo Passport =1;
+        int64 CouponIdRequired =3;
+    }
+      
+    message NprCouponUpdateRequest{ 
+        int64 RecordId =1;
+        repeated NprCouponTranslation Translations =4;    
+        string Code=9;
+		string type=10;
+		NprDecimalValue DiscountAmount=11;
+		int32 TotalCoupons = 12;
+		int32 AmountPerCustomer=13;
+		google.protobuf.Timestamp StartDate = 14;
+		google.protobuf.Timestamp EndDate = 15;
+        PassportInfo Passport =17;
+    }
+    

@@ -1,6 +1,6 @@
 {
 	"name": "nx-grpc-ts",
-	"version": "0.01.091",
+	"version": "0.1.97",
 	"description": "Node package source for @lazurdit/nx-grpc npm package",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -8,7 +8,7 @@
 		"predev": "npm run prettier-format && npm run lint",
 		"prebuild": "npm run prettier-format && npm run lint",
 		"build:doc": "npx typedoc --entryPointStrategy expand",
-		"build:prod": "tsc && npm run build:proto",
+		"build:prod": "npm --no-git-tag-version version patch && tsc && npm run build:proto",
 		"build:proto": "sh ./scripts/build_proto.sh",
 		"test": "jest --coverage",
 		"test:watch": "jest --watch",
