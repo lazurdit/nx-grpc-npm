@@ -158,11 +158,36 @@ service NxNewHyperServices {
 	rpc FindManyShopModelByShopId(HprIDRequest) returns (HprShopModelListResponse) ;
 	rpc FindByIdShopModel(HprIDRequest) returns (HprShopModelListResponse) ;  
 
+	rpc SearchShops(ShopSearchRequest) returns (HprShopListModelListResponse) ;  
+	rpc SearchItems(ItemSearchRequest) returns (HprItemModelListResponse) ;
+	rpc SearchProducts(ItemSearchRequest) returns (HprProductListResponse) ;  
 
-
-	rpc FindAllOrdersByShopId(HprIDRequest) returns (HprOrderCartListResponse);; 
-	rpc FindOneOrderById(HprIDRequest)returns (HprOrderCartListResponse);;
+	rpc FindAllOrdersByShopId(HprIDRequest) returns (HprOrderCartListResponse); 
+	rpc FindOneOrderById(HprIDRequest)returns (HprOrderCartListResponse);
 }
+
+message ShopSearchRequest {
+	PassportInfo Passport = 1;
+	repeated google.protobuf.Int64Value GlobalCategoryId = 2;
+    google.protobuf.Int64Value PageNumber =3;
+    google.protobuf.Int64Value QtyPerPage =4;
+    google.protobuf.StringValue SearchText=5;
+    google.protobuf.StringValue Lng =6;
+    google.protobuf.StringValue Lat =7;
+    repeated google.protobuf.Int64Value PickupOptions =8;
+}
+
+message ItemSearchRequest {
+	PassportInfo Passport = 1;
+	repeated google.protobuf.Int64Value GlobalCategoryId = 2;
+    google.protobuf.Int64Value PageNumber =3;
+    google.protobuf.Int64Value QtyPerPage =4;
+    google.protobuf.StringValue SearchText=5;
+    google.protobuf.StringValue Lng =6;
+    google.protobuf.StringValue Lat =7;
+    repeated google.protobuf.Int64Value PickupOptions =8;
+}
+
 
 message HprDeliveryCostResponse {
 	NprDecimalValue DeliveryCost = 1;
