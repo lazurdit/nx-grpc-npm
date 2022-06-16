@@ -6,7 +6,7 @@ option csharp_namespace ="Nx.Server.Services.Erp";
 import "common.proto";
 import "google/protobuf/timestamp.proto"; 
 import "erp/acct.proto";
-import "google/protobuf/empty.proto"; 
+//import "google/protobuf/empty.proto"; 
 import "google/protobuf/wrappers.proto";
 
 package NxServer;
@@ -110,7 +110,7 @@ service NxNewHyperServices {
 	
 	rpc CreateCoupon(HprCreateCouponDto) returns (NprRecordAddResponse);
 	rpc FindAllCouponByShopId(HprIDRequest) returns (HprCouponListResponse);
-	rpc FindOneCouponById(HprIDRequest) returns (HprCategoryModelListResponse);
+	rpc FindOneCouponById(HprIDRequest) returns (HprCouponListResponse);
 	rpc UpdateCoupon(HprUpdateCouponDto) returns (NprRecordUpdateResponse);
 	rpc RemoveCoupon(HprIDRequest) returns (ResponseStatus); 
 
@@ -141,6 +141,7 @@ service NxNewHyperServices {
 	rpc FindAllProductFilesByProductId(HprIDRequest) returns (HprItemFileListResponse) ;
 	rpc RemoveProductFile(HprIDRequest) returns (ResponseStatus);
 	rpc FindManyProductsByShopId(HprIDRequest) returns (HprFullItemListResponse) ;
+	rpc FindFullItemById(HprIDRequest) returns (HprFullItemListResponse) ;
 	
 	rpc CreateUnit(HprCreateUnitDto) returns (NprRecordAddResponse);
 	rpc RemoveUnit(HprIDRequest) returns (ResponseStatus);
@@ -158,15 +159,15 @@ service NxNewHyperServices {
 	rpc FindManyShopModelByShopId(HprIDRequest) returns (HprShopModelListResponse) ;
 	rpc FindByIdShopModel(HprIDRequest) returns (HprShopModelListResponse) ;  
 
-	rpc SearchShops(ShopSearchRequest) returns (HprShopListModelListResponse) ;  
-	rpc SearchItems(ItemSearchRequest) returns (HprItemModelListResponse) ;
-	rpc SearchProducts(ItemSearchRequest) returns (HprProductListResponse) ;  
+	rpc SearchShops(HprShopSearchRequest) returns (HprShopListModelListResponse) ;  
+	rpc SearchItems(HprItemSearchRequest) returns (HprItemModelListResponse) ;
+	rpc SearchProducts(HprItemSearchRequest) returns (HprProductListResponse) ;  
 
 	rpc FindAllOrdersByShopId(HprIDRequest) returns (HprOrderCartListResponse); 
 	rpc FindOneOrderById(HprIDRequest)returns (HprOrderCartListResponse);
 }
 
-message ShopSearchRequest {
+message HprShopSearchRequest {
 	PassportInfo Passport = 1;
 	repeated google.protobuf.Int64Value GlobalCategoryId = 2;
     google.protobuf.Int64Value PageNumber =3;
@@ -177,7 +178,7 @@ message ShopSearchRequest {
     repeated google.protobuf.Int64Value PickupOptions =8;
 }
 
-message ItemSearchRequest {
+message HprItemSearchRequest {
 	PassportInfo Passport = 1;
 	repeated google.protobuf.Int64Value GlobalCategoryId = 2;
     google.protobuf.Int64Value PageNumber =3;
@@ -565,6 +566,7 @@ message HprOrder {
 	NprDecimalValue DiscountAmount =14;
 	google.protobuf.Timestamp DateCreated =15;
 	google.protobuf.BoolValue IsArchived =16;
+	HprShopLocation Location =17;
 }
 
 message HprOrderCart {
@@ -581,6 +583,7 @@ message HprOrderCart {
 	int64 SelectedPickupOption =11; 
 	int64 PreparationTime =13;
 	google.protobuf.BoolValue HyperDelivery =14;
+	HprShopLocation Location=15;
 }
 
 message HprOrderFullItem {
@@ -750,19 +753,21 @@ message HprUnitModel {
 	google.protobuf.BoolValue IsArchived =7;
 }
 
-message HprUpdateAdditionsDto {
-	int64 Id =1;
-	HprUiType UiType =2;
-	bool Required =3;
-	bool CanSpecifyQty =4;
-	NprDecimalValue MinQty =5;
-	NprDecimalValue MaxQty =6;
-	NprDecimalValue FreeQty =7;
-	NprDecimalValue UnitPrice =8;
-	string TitleEn =9;
-	string TitleAr =10;
-	repeated HprFullItemOptionChoice Choices =11;
-	PassportInfo Passport =12;
+message HprUpdateAdditionsDto { 
+	string Id =1;
+	string ItemId =2;
+	string NameEn =3;
+	string NameAr =4;
+	string Type =5;
+	NprDecimalValue Price =6;
+	repeated HprChoices Choices =7; 
+	bool CanSpecifyQty =8;
+	NprDecimalValue MinQty =9;
+	NprDecimalValue MaxQty =10;
+	NprDecimalValue FreeQty =11;
+	google.protobuf.BoolValue IsArchived =12;
+	bool Required =13;
+	PassportInfo Passport =14; 
 }
 
 message HprUpdateCouponDto {
