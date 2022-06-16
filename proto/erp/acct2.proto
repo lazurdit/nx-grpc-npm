@@ -580,7 +580,7 @@ message HprOrderCart {
 	string Lat =10;
 	int64 SelectedPickupOption =11; 
 	int64 PreparationTime =13;
-	google.protobuf.BoolValue MaeanaDelivery =14;
+	google.protobuf.BoolValue HyperDelivery =14;
 }
 
 message HprOrderFullItem {
