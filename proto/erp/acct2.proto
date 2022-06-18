@@ -204,13 +204,14 @@ service NxNewHyperServices {
 	message HprCreateStoreRequest{
 		PassportInfo Passport = 1;
 		repeated google.protobuf.Int64Value Global_category_to_apply = 2;
-		string Shop_Name = 3;
 		int32 max_order_per_line = 4;
 		int32 max_order_amount = 5;
 		HprDefaultPickupOption default_pickup_option = 6;
 		HprDefaultDeliveryProvider default_delivery_provider = 7;
 		NprDecimalValue delivery_cost_per_order = 8;
 		google.protobuf.StringValue Shop_Logo=9;
+		string Shop_Name_Ar = 10;
+		string Shop_Name_En = 11; 
 	} 
 
 	message HprApplyGlobalCategoryOnShopRequest{
