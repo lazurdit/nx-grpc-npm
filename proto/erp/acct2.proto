@@ -12,101 +12,106 @@ import "google/protobuf/wrappers.proto";
 package NxServer;
  
 // NxFiscalPeriodService 
-    service NxFiscalPeriodService {
-        rpc GetFiscalPeriodList (NprFiscalPeriodListRequest) returns (NprFiscalPeriodListResponse);
-        rpc AddNewFiscalPeriod (NprFiscalPeriodAddRequest) returns (NprRecordAddResponse); 
-        rpc UpdateFiscalPeriod (NprFiscalPeriodUpdateRequest) returns (NprRecordUpdateResponse); 
-        rpc DeleteFiscalPeriod (NprFiscalPeriodDeleteRequest) returns (ResponseStatus); 
-    }
-   
-    message NprFiscalPeriodAddRequest{ 
-        int64 FiscalYearId =1;
-        int32 Number =2;
-        string Name=3;
-        NprFiscalPeriodStatuses Status =4;
-        NprFiscalPeriodTypes PeriodType =5;
-        google.protobuf.Timestamp ActiveDate =6; 
-        google.protobuf.Timestamp SuspendDate =7; 
-        google.protobuf.Timestamp TransactionsEndDate =8; 
-        google.protobuf.Timestamp TransactionsStartDate =9; 
-        bool IsDefault=10;
-        PassportInfo Passport =11;
-        string TempId =15;
-    }
-    
-    enum NprFiscalPeriodStatuses {
-        OPEN =0;
-        CLOSED=1;
-    }
-    enum NprFiscalPeriodTypes {
-        NORMAL_PERIOD=0;
-        ADJUSTMENT_PERIOD=1;
-
-    }
-    message NprFiscalPeriodDeleteRequest{
-        PassportInfo Passport =1;
-        int64 FiscalPeriodIdRequired =3;
-    }
-      
-    message NprFiscalPeriodUpdateRequest{ 
-        int64 FiscalYearId =1;
-        int32 Number =2;
-        string Name=3;
-        NprFiscalPeriodStatuses Status =4;
-        NprFiscalPeriodTypes PeriodType =5;
-        google.protobuf.Timestamp ActiveDate =6; 
-        google.protobuf.Timestamp SuspendDate =7; 
-        google.protobuf.Timestamp TransactionsEndDate =8; 
-        google.protobuf.Timestamp TransactionsStartDate =9; 
-        bool IsDefault=10;
-        PassportInfo Passport =11;
-        int64 RecordId =12;
-        string TempId =15;
-    }
-     
-    message NprFiscalPeriodListRequest {
-        PassportInfo Passport =1; 
-        repeated int64 FiscalYearIdsRequired =2;
-        repeated int64 FiscalPeriodIdsRequired =3;
-        bool IncludeSpecificStatus=4;
-        NprFiscalPeriodStatuses StatusToInclude =5;
-        bool IncludeSpecificPeriodType=6;
-        NprFiscalPeriodTypes PeriodType =7;
-        bool DefaultFiscalPeriodsOnly=8; 
-    }
-
-    message NprFiscalPeriodListResponse {
-        repeated NprFiscalPeriod FiscalPeriods =1;
-        ResponseStatus Status =2;
-    } 
+  service NxFiscalPeriodService {
+    rpc GetFiscalPeriodList (NprFiscalPeriodListRequest) returns (NprFiscalPeriodListResponse);
+    rpc AddNewFiscalPeriod (NprFiscalPeriodAddRequest) returns (NprRecordAddResponse); 
+    rpc UpdateFiscalPeriod (NprFiscalPeriodUpdateRequest) returns (NprRecordUpdateResponse); 
+    rpc DeleteFiscalPeriod (NprFiscalPeriodDeleteRequest) returns (ResponseStatus); 
+  }
   
-    message NprFiscalPeriod{
-        int64 FiscalYearId =1;
-        int32 Number =2;
-        string Name=3;
-        NprFiscalPeriodStatuses Status =4;
-        NprFiscalPeriodTypes PeriodType =5;
-        google.protobuf.Timestamp ActiveDate =6; 
-        google.protobuf.Timestamp SuspendDate =7; 
-        google.protobuf.Timestamp TransactionsEndDate =8; 
-        google.protobuf.Timestamp TransactionsStartDate =9; 
-        bool IsDefault=10;
-        PassportInfo Passport =11;
-        int64 Id =12;
-        google.protobuf.Timestamp CreationDate =13; 
-        google.protobuf.Timestamp ModifyDate =14;
-        string TempId =15;
-    }
-    
+  message NprFiscalPeriodAddRequest{ 
+    int64 FiscalYearId =1;
+    int32 Number =2;
+    string Name=3;
+    NprFiscalPeriodStatuses Status =4;
+    NprFiscalPeriodTypes PeriodType =5;
+    google.protobuf.Timestamp ActiveDate =6; 
+    google.protobuf.Timestamp SuspendDate =7; 
+    google.protobuf.Timestamp TransactionsEndDate =8; 
+    google.protobuf.Timestamp TransactionsStartDate =9; 
+    bool IsDefault=10;
+    PassportInfo Passport =11;
+    string TempId =15;
+  }
+  
+  enum NprFiscalPeriodStatuses {
+    OPEN =0;
+    CLOSED=1;
+  }
+  enum NprFiscalPeriodTypes {
+    NORMAL_PERIOD=0;
+    ADJUSTMENT_PERIOD=1;
+
+  }
+  message NprFiscalPeriodDeleteRequest{
+    PassportInfo Passport =1;
+    int64 FiscalPeriodIdRequired =3;
+  }
+   
+  message NprFiscalPeriodUpdateRequest{ 
+    int64 FiscalYearId =1;
+    int32 Number =2;
+    string Name=3;
+    NprFiscalPeriodStatuses Status =4;
+    NprFiscalPeriodTypes PeriodType =5;
+    google.protobuf.Timestamp ActiveDate =6; 
+    google.protobuf.Timestamp SuspendDate =7; 
+    google.protobuf.Timestamp TransactionsEndDate =8; 
+    google.protobuf.Timestamp TransactionsStartDate =9; 
+    bool IsDefault=10;
+    PassportInfo Passport =11;
+    int64 RecordId =12;
+    string TempId =15;
+  }
+   
+  message NprFiscalPeriodListRequest {
+    PassportInfo Passport =1; 
+    repeated int64 FiscalYearIdsRequired =2;
+    repeated int64 FiscalPeriodIdsRequired =3;
+    bool IncludeSpecificStatus=4;
+    NprFiscalPeriodStatuses StatusToInclude =5;
+    bool IncludeSpecificPeriodType=6;
+    NprFiscalPeriodTypes PeriodType =7;
+    bool DefaultFiscalPeriodsOnly=8; 
+  }
+
+  message NprFiscalPeriodListResponse {
+    repeated NprFiscalPeriod FiscalPeriods =1;
+    ResponseStatus Status =2;
+  } 
+ 
+  message NprFiscalPeriod{
+    int64 FiscalYearId =1;
+    int32 Number =2;
+    string Name=3;
+    NprFiscalPeriodStatuses Status =4;
+    NprFiscalPeriodTypes PeriodType =5;
+    google.protobuf.Timestamp ActiveDate =6; 
+    google.protobuf.Timestamp SuspendDate =7; 
+    google.protobuf.Timestamp TransactionsEndDate =8; 
+    google.protobuf.Timestamp TransactionsStartDate =9; 
+    bool IsDefault=10;
+    PassportInfo Passport =11;
+    int64 Id =12;
+    google.protobuf.Timestamp CreationDate =13; 
+    google.protobuf.Timestamp ModifyDate =14;
+    string TempId =15;
+  }
+  
 
 	 
 // NxNewHyperService 
-service NxNewHyperServices {
+service NxNewHyperServices { 
+	rpc SetStoreGlobalCategoryArchive (HprSetEntityGlobalCategoryArchiveRequest) returns (HprSetEntityGlobalCategoryArchiveResponse);
+	rpc SetStoreArchive (HprSetEntityArchiveRequest) returns (HprSetEntityArchiveResponse);
+	rpc CreateStore (HprCreateStoreRequest) returns (NprRecordAddResponse);
+	rpc ApplyGlobalCategoryOnShop (HprApplyGlobalCategoryOnShopRequest) returns (HprApplyGlobalCategoryOnShopResponse);
 
 	rpc CalculateCartDeliveryCost(HprCartInput) returns (HprDeliveryCostResponse);
 	rpc FindCategoryByID(HprIDRequest) returns (HprCategoryModelListResponse);
 	rpc FindAllShopCategories(HprIDRequest) returns (HprCategoryModelListResponse);
 	rpc FindCategoriesByParentId(HprIDRequest) returns (HprCategoryModelListResponse);
+	rpc FindCategoriesByIds(HprIdsRequest) returns (HprCategoryModelListResponse);
 	
 	rpc CreateCoupon(HprCreateCouponDto) returns (NprRecordAddResponse);
 	rpc FindAllCouponByShopId(HprIDRequest) returns (HprCouponListResponse);
@@ -114,7 +119,7 @@ service NxNewHyperServices {
 	rpc UpdateCoupon(HprUpdateCouponDto) returns (NprRecordUpdateResponse);
 	rpc RemoveCoupon(HprIDRequest) returns (ResponseStatus); 
 
-	rpc CreateGlobalCategory(HprGlobalCategory) returns (NprRecordAddResponse);  
+	rpc CreateGlobalCategory(HprGlobalCategory) returns (NprRecordAddResponse); 
 	rpc FindAllGlobalCategory(PassportInfo) returns (HprCategoryModelListResponse);
 	rpc RemoveGlobalCategory(HprIDRequest) returns (ResponseStatus); 
 	rpc FindOneGlobalCategory(HprIDRequest) returns (HprCategoryModelListResponse);
@@ -127,18 +132,20 @@ service NxNewHyperServices {
 	rpc FindOneProductById(HprIDRequest) returns (HprProductListResponse) ;
 	rpc RemoveProduct(HprIDRequest) returns (ResponseStatus);
 	rpc UpdateProduct(HprUpdateProductDto) returns (NprRecordUpdateResponse);
+	rpc CreateProduct(HprProduct) returns (NprRecordAddResponse);
 	
 	rpc CreateProductOption(HprItemOption) returns (NprRecordAddResponse);
 	rpc FindAllProductOptionsByProdctId(HprIDRequest) returns (HprItemOptionListResponse) ;
 	rpc RemoveProductOptions(HprIDRequest) returns (ResponseStatus);
-	rpc UpdateProductOption(    HprUpdateOptionsDto   ) returns (NprRecordUpdateResponse);
+	rpc UpdateProductOption(  HprUpdateOptionsDto  ) returns (NprRecordUpdateResponse);
 	
 	rpc FindAllProductAdditionsByProdctId(HprIDRequest) returns (HprItemAdditionListResponse) ;
 	rpc RemoveProductAdditions(HprIDRequest) returns (ResponseStatus);
 	rpc CreateProductAddition(HprItemAddition) returns (NprRecordAddResponse);
-	rpc UpdateProductAddition(  HprUpdateAdditionsDto  ) returns (NprRecordUpdateResponse);
+	rpc UpdateProductAddition( HprUpdateAdditionsDto ) returns (NprRecordUpdateResponse);
 	
-	rpc FindAllProductFilesByProductId(HprIDRequest) returns (HprItemFileListResponse) ;
+	rpc CreateProductFile(HprItemImage) returns (NprRecordAddResponse);
+	rpc FindAllProductFilesByProductId(HprIDRequest) returns (HprItemImageListResponse) ;
 	rpc RemoveProductFile(HprIDRequest) returns (ResponseStatus);
 	rpc FindManyProductsByShopId(HprIDRequest) returns (HprFullItemListResponse) ;
 	rpc FindFullItemById(HprIDRequest) returns (HprFullItemListResponse) ;
@@ -151,42 +158,92 @@ service NxNewHyperServices {
 	
 	rpc CreateStoreSettingLocation(HprShopLocation) returns (NprRecordAddResponse);
 	rpc FindStoreSettingLocationsByStoreId(HprIDRequest) returns (HprShopLocationListResponse); ; 
-	rpc FindOneStoreSettingByStoreId(HprIDRequest) returns (HprShopSettings) ;
+	rpc FindOneStoreSettingByStoreId(HprIDRequest) returns (HprShopSettingsResponse) ;
 	rpc UpdateStoreSetting(HprUpdateStoreSettingDto) returns (NprRecordUpdateResponse);
 	rpc RemoveStoreSettingLocation(HprIDRequest) returns (ResponseStatus);
  
-	rpc FindManyShopListByShopId(HprIDRequest) returns (HprShopListModelListResponse) ;  
+	rpc FindManyShopListByShopId(HprIDRequest) returns (HprShopListModelListResponse) ; 
 	rpc FindManyShopModelByShopId(HprIDRequest) returns (HprShopModelListResponse) ;
-	rpc FindByIdShopModel(HprIDRequest) returns (HprShopModelListResponse) ;  
+	rpc FindByIdShopModel(HprIDRequest) returns (HprShopModelListResponse) ; 
 
-	rpc SearchShops(HprShopSearchRequest) returns (HprShopListModelListResponse) ;  
-	rpc SearchItems(HprItemSearchRequest) returns (HprItemModelListResponse) ;
-	rpc SearchProducts(HprItemSearchRequest) returns (HprProductListResponse) ;  
+	rpc SearchShops(HprShopSearchRequest) returns (HprShopListModelListResponse) ; 
+	rpc SearchItems(HprItemSearchRequest) returns (HprItemListModelListResponse) ;
+	rpc SearchProducts(HprItemSearchRequest) returns (HprProductListResponse) ; 
 
 	rpc FindAllOrdersByShopId(HprIDRequest) returns (HprOrderCartListResponse); 
 	rpc FindOneOrderById(HprIDRequest)returns (HprOrderCartListResponse);
+	rpc CreateOrder(HprCreateOrderRequest) returns (HprCreateOrderResponse);
+	rpc DeleteOrder(HprIDRequest) returns (ResponseStatus);
+	
+	rpc ApplyCoupon(HprApplyCouponRequest) returns (HprApplyCouponResponse);
 }
+	message HprCreateOrderRequest{
+		PassportInfo Passport = 1;
+		HprCartInput CART_INPUT = 2;	
+	} 
+		message HprCreateOrderResponse{
+		ResponseStatus Status = 1;
+		int64 Record_Id = 2;
+		HprOrderCart ORDER_CART = 3;	
+	} 
+
+
+	message HprSetEntityGlobalCategoryArchiveRequest{
+		PassportInfo Passport = 1;
+		int64 CATEGORY_ID = 2;	
+	} 
+	message HprSetEntityGlobalCategoryArchiveResponse{
+		ResponseStatus Status = 2;
+	}
+	message HprSetEntityArchiveRequest{
+		PassportInfo Passport = 1;
+	} 
+	message HprSetEntityArchiveResponse{
+		ResponseStatus Status = 2;
+	}
+	message HprCreateStoreRequest{
+		PassportInfo Passport = 1;
+		repeated google.protobuf.Int64Value Global_category_to_apply = 2;
+		string Shop_Name = 3;
+		int32 max_order_per_line = 4;
+		int32 max_order_amount = 5;
+		HprDefaultPickupOption default_pickup_option = 6;
+		HprDefaultDeliveryProvider default_delivery_provider = 7;
+		NprDecimalValue delivery_cost_per_order = 8;
+		google.protobuf.StringValue Shop_Logo=9;
+	} 
+
+	message HprApplyGlobalCategoryOnShopRequest{
+		PassportInfo Passport = 1;
+		int64 CATEGORY_ID = 2;	
+	} 
+	message HprApplyGlobalCategoryOnShopResponse{
+		ResponseStatus Status = 2;
+	}
 
 message HprShopSearchRequest {
 	PassportInfo Passport = 1;
 	repeated google.protobuf.Int64Value GlobalCategoryId = 2;
-    google.protobuf.Int64Value PageNumber =3;
-    google.protobuf.Int64Value QtyPerPage =4;
-    google.protobuf.StringValue SearchText=5;
-    google.protobuf.StringValue Lng =6;
-    google.protobuf.StringValue Lat =7;
-    repeated google.protobuf.Int64Value PickupOptions =8;
+	google.protobuf.Int64Value PageNumber =3;
+	google.protobuf.Int64Value QtyPerPage =4;
+	google.protobuf.StringValue SearchText=5;
+	google.protobuf.StringValue Lng =6;
+	google.protobuf.StringValue Lat =7;
+	repeated google.protobuf.Int64Value PickupOptions =8;
 }
 
 message HprItemSearchRequest {
 	PassportInfo Passport = 1;
 	repeated google.protobuf.Int64Value GlobalCategoryId = 2;
-    google.protobuf.Int64Value PageNumber =3;
-    google.protobuf.Int64Value QtyPerPage =4;
-    google.protobuf.StringValue SearchText=5;
-    google.protobuf.StringValue Lng =6;
-    google.protobuf.StringValue Lat =7;
-    repeated google.protobuf.Int64Value PickupOptions =8;
+	google.protobuf.Int64Value PageNumber =3;
+	google.protobuf.Int64Value QtyPerPage =4;
+	google.protobuf.StringValue SearchText=5;
+	google.protobuf.StringValue Lng =6;
+	google.protobuf.StringValue Lat =7;
+	repeated google.protobuf.Int64Value PickupOptions =8;
+	NprDecimalValue min_cost = 9;
+	NprDecimalValue max_cost = 10;
+	google.protobuf.StringValue id =11;
 }
 
 
@@ -197,75 +254,114 @@ message HprDeliveryCostResponse {
 
 message HprOrderCartListResponse{
 	repeated HprOrderCart OrderCarts =1;
+	ResponseStatus Status = 2;
 }
 
 message HprFullItemListResponse{
 	repeated HprFullItem FullItems =1;
+	ResponseStatus Status = 2;
 }
  
 message HprShopLocationListResponse{
 	repeated HprShopLocation Locations =1;
+	ResponseStatus Status = 2;
+}
+
+message HprShopSettingsResponse {
+	HprShopSettings Settings =1;
+	ResponseStatus Status = 2;
 }
 
 message HprShopListModelListResponse{
 	repeated HprShopListModel ShopListModels =1;
+	ResponseStatus Status = 2;
 }
 
 message HprShopModelListResponse{
 	repeated HprShopModel ShopModels =1;
+	ResponseStatus Status = 2;
 }
 
 message HprUnitModelListResponse{
 	repeated HprUnitModel UnitModels =1;
+	ResponseStatus Status = 2;
 }
 
-message HprItemFileListResponse{
-	repeated HprItemFile ItemFiles =1;
+message HprItemImageListResponse{
+	repeated HprItemImage ItemFiles =1;
+	ResponseStatus Status = 2;
 }
 
 message HprItemFile { 
 	string FileUrl = 1; 
+	PassportInfo Passport = 2;
 }
 message HprItemAdditionListResponse{
 	repeated HprItemAddition ItemAdditions =1;
+	ResponseStatus Status = 2;
 }
 
 
 message HprItemOptionListResponse{
 	repeated HprItemOption ItemOptions =1;
+	ResponseStatus Status = 2;
 }
 
 
 message HprProductListResponse{
 	repeated HprProduct Products =1;
+	ResponseStatus Status = 2;
 }
 
 
 message HprItemModelListResponse{
 	repeated HprItemModel ItemListModel =1;
+	ResponseStatus Status = 2;
 }
 
 message HprItemListModelListResponse{
 	repeated HprItemListModel ItemListModel =1;
+	ResponseStatus Status = 2;
 }
 
 message HprCouponFindRequest {
-	PassportInfo Passpor=1;
+	PassportInfo Passport=1;
 	optional string CouponText = 2;
 	optional string ShopId = 3;
 }
+message HprApplyCouponRequest {
+	PassportInfo Passport=1;
+  google.protobuf.Int64Value MEMBER_ID =2;
+  string COUPON =3;
+  HprCartInput Cart=4;
+}
+
+message HprApplyCouponResponse {
+	ResponseStatus Status = 1;
+  HprCoupon COUPON =3;
+  HprCartInput Cart=4;
+}
+
+
 
 message HprIDRequest {
 	PassportInfo Passport =1; 
 	int64 Id =2;
 }
 
-message HprCategoryModelListResponse{
+message HprIdsRequest {
+	PassportInfo Passport =1; 
+	repeated int64 Id =2;
+}
+
+ message HprCategoryModelListResponse{
 	repeated HprCategoryModel CategoryList =1;
+	ResponseStatus Status = 2;
 }
 
 message HprCouponListResponse{
 	repeated HprCoupon CouponList =1;
+	ResponseStatus Status = 2;
 }
  
 
@@ -382,6 +478,7 @@ message HprCreateUnitDto {
 	string TitleAr =3;
 	google.protobuf.BoolValue IsArchived =4;
 	PassportInfo Passport =5;
+	google.protobuf.Int64Value Id =6;
 }
 
 message HprCustomOptionsModel {
@@ -406,7 +503,7 @@ message HprFullItem {
 	HprProductImage MainImg =8;
 	string UnitEn =9;
 	string UnitAr =10;
-	repeated HprProductImage OtherImages  =11;
+	repeated HprProductImage OtherImages =11;
 	repeated HprFullItemOption Options =12;
 	repeated HprFullItemAddition Additions =13;
 	repeated HprCategoryModel Category =14;
@@ -508,6 +605,7 @@ message HprItemImage {
 	string ImageUrl =3;
 	string Name =4;
 	google.protobuf.BoolValue IsArchived =5;
+	PassportInfo Passport =6;
 }
 
 message HprItemListModel {
@@ -658,6 +756,7 @@ message HprProduct {
 	google.protobuf.BoolValue IsArcived =17;
 	repeated HprItemAddition Additions =18;
 	google.protobuf.BoolValue IsArchived =19;
+	PassportInfo Passport =20;
 }
 
 enum HprDeliveryOptions{
@@ -718,7 +817,8 @@ message HprShopModel {
 	int64 MaxOrderQuantity =5;
 	string Logo =6;
 	repeated HprCategoryModel Categories =7;
-	repeated int64 PickupOptions =8;
+	repeated int64 PickupOptions =8; 
+	NprDecimalValue DELIVERY_FEES_PER_ORDER =9;
 }
 
 message HprShopSettings {
@@ -836,7 +936,7 @@ message HprUpdateProductDto {
 	repeated HprItemAddition Additions =18;
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
-}
+} 
 
 message HprUpdateStoreSettingDto {
 	int64 ShopId =1;
