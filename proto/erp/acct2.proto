@@ -361,7 +361,7 @@ message HprIdsRequest {
 }
 
 message HprCouponListResponse{
-	repeated HprCoupon CouponList =1;
+	repeated HprCouponDisplayObject CouponList =1;
 	ResponseStatus Status = 2;
 }
  
@@ -441,13 +441,15 @@ message HprCouponDisplayObject {
 	string NameEn =4;
 	string NameAr =5;
 	HprCouponType Type =6;
-	string Description =7;
+	string DescriptionAr =7;
 	NprDecimalValue DiscountAmount =8;
 	NprDecimalValue TotalAmount =9;
 	NprDecimalValue AmountPerCustomer =10;
 	google.protobuf.Timestamp StartDate =11;
 	google.protobuf.BoolValue IsArchived =12;
 	google.protobuf.Timestamp EndDate =13;
+	string DescriptionEn =14;
+	
 }
 
 enum HprCouponType {
@@ -604,9 +606,10 @@ message HprItemImage {
 	string Id =1;
 	string ItemId =2;
 	string ImageUrl =3;
-	string Name =4;
-	google.protobuf.BoolValue IsArchived =5;
-	PassportInfo Passport =6;
+	string NameAr =4;
+	string NameEn =5;
+	google.protobuf.BoolValue IsArchived =6;
+	PassportInfo Passport =7;
 }
 
 message HprItemListModel {
@@ -802,12 +805,13 @@ message HprShopListModel {
 
 message HprShopLocation {
 	int64 Id =1;
-	string Name =2;
 	string Lat =3;
 	string Lng =4;
 	int64 ShopId =5;
 	google.protobuf.BoolValue IsArchived =6;
 	PassportInfo Passport =7;
+	string NameAr =8;
+	string NameEn =9;
 }
 
 message HprShopModel {
@@ -824,13 +828,14 @@ message HprShopModel {
 
 message HprShopSettings {
 	int64 ShopId =1;
-	string Name =2;
 	int64 MaxOrderPerLine =3;
 	int64 MaxOrderAmount =4;
 	HprDefaultPickupOption DefaultPickupOption =5;
 	HprDefaultDeliveryProvider DefaultDeliveryProvider =6;
 	NprDecimalValue DeliveryCostPerOrder =7;
 	repeated HprShopLocation Locations =8;
+	string NameAr =9;
+	string NameEn =10;
 }
 
 enum HprDefaultPickupOption {
@@ -941,7 +946,6 @@ message HprUpdateProductDto {
 
 message HprUpdateStoreSettingDto {
 	int64 ShopId =1;
-	string Name =2;
 	int64 MaxOrderPerLine =3;
 	int64 MaxOrderAmount =4;
 	HprDefaultPickupOption DefaultPickupOption =5;
@@ -949,6 +953,8 @@ message HprUpdateStoreSettingDto {
 	NprDecimalValue DeliveryCostPerOrder =7;
 	repeated HprShopLocation Locations =8;
 	PassportInfo Passport =9;
+	string NameAr =10;
+	string NameEn =11;
 }
 
 message HprUpdateUnitDto {
