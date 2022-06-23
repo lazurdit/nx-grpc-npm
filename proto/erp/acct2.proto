@@ -190,13 +190,16 @@ service NxNewHyperServices {
 
 	message HprSetEntityGlobalCategoryArchiveRequest{
 		PassportInfo Passport = 1;
-		int64 CATEGORY_ID = 2;	
+		int64 Category_Id = 2;	
+		bool New_Archive_Status=3;
+
 	} 
 	message HprSetEntityGlobalCategoryArchiveResponse{
 		ResponseStatus Status = 2;
 	}
 	message HprSetEntityArchiveRequest{
 		PassportInfo Passport = 1;
+		bool New_Archive_Status=2;
 	} 
 	message HprSetEntityArchiveResponse{
 		ResponseStatus Status = 2;
@@ -230,7 +233,7 @@ message HprShopSearchRequest {
 	google.protobuf.StringValue SearchText=5;
 	google.protobuf.StringValue Lng =6;
 	google.protobuf.StringValue Lat =7;
-	repeated google.protobuf.Int64Value PickupOptions =8;
+	HprDefaultPickupOption PickupOptions =8;
 }
 
 message HprItemSearchRequest {
@@ -241,7 +244,7 @@ message HprItemSearchRequest {
 	google.protobuf.StringValue SearchText=5;
 	google.protobuf.StringValue Lng =6;
 	google.protobuf.StringValue Lat =7;
-	repeated google.protobuf.Int64Value PickupOptions =8;
+	HprDefaultPickupOption PickupOptions =8;
 	NprDecimalValue min_cost = 9;
 	NprDecimalValue max_cost = 10;
 	google.protobuf.StringValue id =11;
@@ -332,15 +335,15 @@ message HprCouponFindRequest {
 }
 message HprApplyCouponRequest {
 	PassportInfo Passport=1;
-  google.protobuf.Int64Value MEMBER_ID =2;
-  string COUPON =3;
-  HprCartInput Cart=4;
+	google.protobuf.Int64Value MEMBER_ID =2;
+	string COUPON =3;
+	HprCartInput Cart=4;
 }
 
 message HprApplyCouponResponse {
 	ResponseStatus Status = 1;
-  HprCoupon COUPON =3;
-  HprCartInput Cart=4;
+	HprCoupon COUPON =3;
+	HprCartInput Cart=4;
 }
 
 
@@ -392,7 +395,7 @@ message HprCartFullItemOptionInput {
 
 message HprCartInput {
 	repeated HprCartFullItemInput Items =1;
-	int64 SelectedPickupOption =2; 
+	HprSelectedPickupOption SelectedPickupOption =2; 
 	HprCartShopModelInput Shop =4;
 	NprDecimalValue BasePrice =5;
 	NprDecimalValue TotalPrice =6;
@@ -440,7 +443,7 @@ message HprCouponDisplayObject {
 	string Code =3;
 	string NameEn =4;
 	string NameAr =5;
-	HprCouponType Type =6;
+	HprCouponType Coupon_Type =6;
 	string DescriptionAr =7;
 	NprDecimalValue DiscountAmount =8;
 	NprDecimalValue TotalAmount =9;
@@ -453,10 +456,10 @@ message HprCouponDisplayObject {
 }
 
 enum HprCouponType {
-	FixedValueOnOffer = 0;
-	PercentageOnOffer = 1;
-	FixedValueOnOrder = 2;
-	PercentageOnOrder = 3;
+	Fixed_Value_On_Offer = 0;
+	Percentage_On_Offer = 1;
+	Fixed_Value_On_Delivery = 2;
+	Percentage_On_Delivery = 3;
 }
 
 message HprCreateCouponDto {
@@ -464,7 +467,7 @@ message HprCreateCouponDto {
 	string Code =2;
 	string NameEn =3;
 	string NameAr =4;
-	string Type =5;
+	HprCouponType Coupon_Type =5;
 	string DescriptionAr =6;
 	string DescriptionEn =7;
 	NprDecimalValue DiscountAmount =8;
@@ -571,10 +574,10 @@ message HprGlobalCategory {
 	string TitleEn =2;
 	string TitleAr =3;
 	google.protobuf.Int64Value ParentId =4;
-	google.protobuf.BoolValue IsArchived =5;
-	google.protobuf.Int64Value GlobalCategoryId =6;
-	google.protobuf.BoolValue IsGlobalCategory =7;
+	google.protobuf.BoolValue IsArchived =5; 
 	PassportInfo Passport =8;
+	string DescriptionEn =9;
+	string DescriptionAr =10;
 }
 
 message HprImageModel {
@@ -682,9 +685,10 @@ message HprOrderCart {
 	NprDecimalValue DeliveryAmount =8;
 	string Lng =9;
 	string Lat =10;
-	int64 SelectedPickupOption =11; 
+	HprSelectedPickupOption SelectedPickupOption =11; 
+	google.protobuf.BoolValue Hyper_Delivery =12;
 	int64 PreparationTime =13;
-	google.protobuf.BoolValue HyperDelivery =14;
+	HprSelectedDeliveryProvider SelectedDeliveryProvider =14;
 	HprShopLocation Location=15;
 }
 
@@ -749,24 +753,16 @@ message HprProduct {
 	string DescriptionAr =6;
 	NprDecimalValue BasePrice =7;
 	HprItemImage MainImg =8;
-	HprProductUnitData Unit =9;
-	NprDecimalValue Price =10;
+	HprProductUnitData Unit =9; 
 	repeated HprItemImage OtherImages =11;
 	repeated HprCategoryModel Category =12;
 	string Barcode =13;
 	HprProductPrepareTime PrepareTime =14;
-	HprDeliveryOptions DeliveryOptions =15;
-	repeated HprItemOption Options =16;
-	google.protobuf.BoolValue IsArcived =17;
+	HprDefaultPickupOption PickupOptions =15;
+	repeated HprItemOption Options =16; 
 	repeated HprItemAddition Additions =18;
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
-}
-
-enum HprDeliveryOptions{
-	online=0;
-	fromStore=1;
-	fromStoreAndOnline=2;
 }
 
 message HprProductPrepareTime {
@@ -797,10 +793,9 @@ message HprShopListModel {
 	string SearchText =9;
 	string Lng = 10;
 	string Lat =11;
-	string PickupOption =12;
+	HprDefaultPickupOption PickupOption =12;
 	int64 MaxOrderAmount =13;
-	int64 MaxOrderQuantity =14;
-	repeated int64 PickupOptions =15;
+	int64 MaxOrderQuantity =14; 
 }
 
 message HprShopLocation {
@@ -822,7 +817,7 @@ message HprShopModel {
 	int64 MaxOrderQuantity =5;
 	string Logo =6;
 	repeated HprCategoryModel Categories =7;
-	repeated int64 PickupOptions =8; 
+	HprDefaultPickupOption PickupOptions =8; 
 	NprDecimalValue DELIVERY_FEES_PER_ORDER =9;
 }
 
@@ -839,14 +834,25 @@ message HprShopSettings {
 }
 
 enum HprDefaultPickupOption {
-	delivery =0;
-	pickup =1;
+	delivery_Default_Pickup_Option =0;
+	pickup_Default_Pickup_Option =1;
+	delivery_Or_Pickup_Default_Pickup_Option =2;
 }
 
-enum HprDefaultDeliveryProvider{
-	none =0;
-	hyper =1;
-	store =2;
+enum HprSelectedPickupOption {
+	delivery_selected_Pickup_Option =0;
+	pickup_selected_Pickup_Option =1; 
+}
+
+enum HprDefaultDeliveryProvider{ 
+	hyper_Default_delivery_provider =0;
+	store_Default_delivery_provider =1;
+	hyper_Or_Store_Default_delivery_provider=2;
+}
+
+enum HprSelectedDeliveryProvider{
+	hyper_selected_delivery_provider =0;
+	store_selected_delivery_provider =1;
 }
 
 message HprUnitModel {
@@ -881,7 +887,7 @@ message HprUpdateCouponDto {
 	string Code =2;
 	string NameEn =3;
 	string NameAr =4;
-	string Type =5;
+	HprCouponType Coupon_Type =5;
 	string DescriptionAr =6;
 	string DescriptionEn =7;
 	NprDecimalValue DiscountAmount =8;
@@ -896,12 +902,11 @@ message HprUpdateCouponDto {
 message HprUpdateGlobalCategoryDto {
 	google.protobuf.Int64Value Id =1;
 	string TitleEn =2;
-	string TitleAr =3;
-	google.protobuf.Int64Value ParentId =4;
-	google.protobuf.BoolValue IsArchived =5;
-	google.protobuf.Int64Value GlobalCategoryId =6;
-	google.protobuf.BoolValue IsGlobalCategory =7;
+	string TitleAr =3; 
+	google.protobuf.BoolValue IsArchived =5; 
 	PassportInfo Passport =8;
+	string DescriptionEn =9;
+	string DescriptionAr =10;
 }
 
 message HprUpdateOptionsDto {
@@ -936,9 +941,8 @@ message HprUpdateProductDto {
 	repeated HprCategoryModel Category =12;
 	string Barcode =13;
 	HprProductPrepareTime PrepareTime =14;
-	HprDeliveryOptions DeliveryOptions =15;
-	repeated HprItemOption Options =16;
-	google.protobuf.BoolValue IsArcived =17;
+	HprDefaultPickupOption PickupOptions =15;
+	repeated HprItemOption Options =16; 
 	repeated HprItemAddition Additions =18;
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
