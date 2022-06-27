@@ -132,7 +132,7 @@ service NxNewHyperServices {
 	rpc FindOneProductById(HprIDRequest) returns (HprProductListResponse) ;
 	rpc RemoveProduct(HprIDRequest) returns (ResponseStatus);
 	rpc UpdateProduct(HprUpdateProductDto) returns (NprRecordUpdateResponse);
-	rpc CreateProduct(HprProduct) returns (NprRecordAddResponse);
+	rpc CreateProduct(HprProductAddRequest) returns (NprRecordAddResponse);
 	
 	rpc CreateProductOption(HprItemOption) returns (NprRecordAddResponse);
 	rpc FindAllProductOptionsByProdctId(HprIDRequest) returns (HprItemOptionListResponse) ;
@@ -625,6 +625,7 @@ message HprItemListModel {
 	string UnitEn =7;
 	string UnitAr =8;
 	string Img =9;
+	HprSelectedPickupOption SelectedPickupOption =10; 
 }
 
 message HprItemModel {
@@ -765,6 +766,25 @@ message HprProduct {
 	PassportInfo Passport =20;
 }
 
+
+message HprProductAddRequest {
+	string Id =1;
+	string ShopId =2;
+	string TitleEn =3;
+	string TitleAr =4;
+	string DescriptionEn =5;
+	string DescriptionAr =6;
+	NprDecimalValue BasePrice =7;
+	HprItemImage MainImg =8;
+	int64 MainUnit =9; 
+	repeated HprItemImage OtherImages =11;
+	int64 Category_Id =12;
+	string Barcode =13;
+	HprProductPrepareTime PrepareTime =14;
+	HprDefaultPickupOption PickupOptions =15;
+	google.protobuf.BoolValue IsArchived =19;
+	PassportInfo Passport =20;
+}
 message HprProductPrepareTime {
 	int32 Day =1;
 	int32 Hour =2;

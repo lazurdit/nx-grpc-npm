@@ -431,7 +431,14 @@ package NxServer;
            google.protobuf.StringValue SKU =40;
 		   string LogoPath =41;
 		   repeated string images =42;
-		 
+           google.protobuf.StringValue StringTag1 =43;  
+           google.protobuf.StringValue StringTag2 =44; 
+           NprDecimalValue DecimalTag1 =45;
+           NprDecimalValue DecimalTag2 =46;
+           google.protobuf.Int64Value NumberTag1 =47;
+           google.protobuf.Int64Value NumberTag2 =48; 
+		   bool IsArchived =49; 
+           repeated NprItemNodeLink Links =50; 
     }
     
     message NprSuspectNumberResponse {
@@ -444,6 +451,25 @@ package NxServer;
         NprSuspectNumberContentTypes ContentType =2;
     }
  
+    
+  
+
+    message NprItemNodeLink {
+        int64 Id =1; 
+        string Url =2;
+        google.protobuf.StringValue Tag1 =3;
+        google.protobuf.StringValue Tag2 =4;
+        repeated NprItemNodeLinkTranslation Translations =5;
+    }
+
+    message NprItemNodeLinkTranslation {
+        int64 Id =1;
+        string ShortDescription =2;
+        string FullDescription =3;
+        int64 ItemNodeAttachmentId =4; 
+        int32 TranslationId =5; 
+    }
+
     enum NprSuspectNumberContentTypes { 
         NormalNumberContentType =0; 
         InvalidContentType =1;
