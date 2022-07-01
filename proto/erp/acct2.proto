@@ -346,7 +346,7 @@ message HprApplyCouponRequest {
 
 message HprApplyCouponResponse {
 	ResponseStatus Status = 1;
-	HprCoupon COUPON =3;
+	HprCoupon Coupon =3;
 	HprCartInput Cart=4;
 }
 
@@ -440,8 +440,7 @@ message HprChoices {
 message HprCoupon {
 	bool IsCodeValid =1;
 	string Code =2;
-	NprDecimalValue DiscountAmount =3;
-	HprOrderCart Cart=4;
+	NprDecimalValue DiscountAmount =3; 
 }
 
 message HprCouponDisplayObject {
