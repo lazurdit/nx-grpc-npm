@@ -120,7 +120,7 @@ service NxNewHyperServices {
 	rpc RemoveCoupon(HprIDRequest) returns (ResponseStatus); 
 
 	rpc CreateGlobalCategory(HprGlobalCategory) returns (NprRecordAddResponse); 
-	rpc FindAllGlobalCategory(PassportInfo) returns (HprCategoryModelListResponse);
+	rpc FindAllGlobalCategory(HprOptionalIDRequest) returns (HprCategoryModelListResponse);
 	rpc RemoveGlobalCategory(HprIDRequest) returns (ResponseStatus); 
 	rpc FindOneGlobalCategory(HprIDRequest) returns (HprCategoryModelListResponse);
 	rpc UpdateGlobalCategory( HprUpdateGlobalCategoryDto) returns (NprRecordUpdateResponse);
@@ -357,6 +357,11 @@ message HprIDRequest {
 	int64 Id =2;
 }
 
+message HprOptionalIDRequest {
+	PassportInfo Passport =1; 
+	google.protobuf.Int64Value Id =2;
+}
+
 message HprIdsRequest {
 	PassportInfo Passport =1; 
 	repeated int64 Id =2;
@@ -428,6 +433,7 @@ message HprCategoryModel {
 	string NodePath =8;
 	google.protobuf.Int64Value ShopId =9;
 	google.protobuf.BoolValue IsArchived =10;
+
 }
 
 message HprChoices {
@@ -894,8 +900,9 @@ message HprShopSettings {
 	HprDefaultDeliveryProvider DefaultDeliveryProvider =6;
 	NprDecimalValue DeliveryCostPerOrder =7;
 	repeated HprShopLocation Locations =8;
-	string NameAr =9;
-	string NameEn =10;
+	google.protobuf.StringValue Logo =9;
+	string NameAr =10;
+	string NameEn =11;
 }
 
 enum HprDefaultPickupOption {
@@ -1003,6 +1010,7 @@ message HprUpdateStoreSettingDto {
 	PassportInfo Passport =9;
 	string NameAr =10;
 	string NameEn =11;
+	google.protobuf.StringValue Logo =12;
 }
 
 message HprUpdateUnitDto {

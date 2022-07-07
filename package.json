@@ -1,6 +1,6 @@
 {
 	"name": "nx-grpc-ts",
-	"version": "0.1.141",
+	"version": "0.1.143",
 	"description": "Node package source for @lazurdit/nx-grpc npm package",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -18,7 +18,8 @@
 		"pack-list": "npx npm-packlist",
 		"npmjs:publish": "sh ./scripts/publish.sh",
 		"npmjs:update": "sh ./scripts/proto_cp.sh",
-		"npmjs:pack": "npm run build:prod && npm run build:proto && sh ./scripts/pack.sh"
+		"npmjs:pack": "npm run build:prod && npm run build:proto && sh ./scripts/pack.sh",
+		"buildAndPublish": "npm run build:prod && npm run npmjs:publish"
 	},
 	"repository": {
 		"type": "git",
