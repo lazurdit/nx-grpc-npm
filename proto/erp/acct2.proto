@@ -165,6 +165,7 @@ service NxNewHyperServices {
 	rpc FindManyShopListByShopId(HprIDRequest) returns (HprShopListModelListResponse) ; 
 	rpc FindManyShopModelByShopId(HprIDRequest) returns (HprShopModelListResponse) ;
 	rpc FindByIdShopModel(HprIDRequest) returns (HprShopModelListResponse) ; 
+	rpc SetShopAvailability(HprSetShopAvailabilityRequest) returns (HprSetShopAvailabilityResponse) ; 
 
 	rpc SearchShops(HprShopSearchRequest) returns (HprShopListModelListResponse) ; 
 	rpc SearchItems(HprItemSearchRequest) returns (HprItemListModelListResponse) ;
@@ -177,6 +178,19 @@ service NxNewHyperServices {
 	
 	rpc ApplyCoupon(HprApplyCouponRequest) returns (HprApplyCouponResponse);
 }
+
+	message HprSetShopAvailabilityRequest{
+		PassportInfo Passport = 1;
+		int64 ShopId=2;
+		bool IsAvailable = 3;	
+	} 
+
+	message HprSetShopAvailabilityResponse{
+		ResponseStatus Status = 1;;
+		int64 ShopId=2;
+		bool IsAvailable = 3;	
+	} 
+
 	message HprCreateOrderRequest{
 		PassportInfo Passport = 1;
 		HprCartInput Cart_Input = 2;	
@@ -220,6 +234,7 @@ service NxNewHyperServices {
 		google.protobuf.StringValue Shop_Logo=9;
 		string Shop_Name_Ar = 10;
 		string Shop_Name_En = 11; 
+		bool IsAvailable=12;
 	} 
 
 	message HprApplyGlobalCategoryOnShopRequest{
@@ -283,12 +298,14 @@ message HprShopSettingsResponse {
 
 message HprShopListModelListResponse{
 	repeated HprShopListModel ShopListModels =1;
-	ResponseStatus Status = 2;
+	int64 totalItems = 2;
+	ResponseStatus Status = 3;
 }
 
 message HprShopModelListResponse{
 	repeated HprShopModel ShopModels =1;
-	ResponseStatus Status = 2;
+	int64 totalItems = 2;
+	ResponseStatus Status = 3;
 }
 
 message HprUnitModelListResponse{
@@ -419,7 +436,8 @@ message HprCartInput {
 }
 
 message HprCartShopModelInput {
-	int64 Id =1;
+	int64 Id =1; 
+	google.protobuf.BoolValue IsAvailable =2;
 }
 
 message HprCategoryModel {
@@ -590,6 +608,8 @@ message HprGlobalCategory {
 	PassportInfo Passport =8;
 	string DescriptionEn =9;
 	string DescriptionAr =10;
+	google.protobuf.Int64Value DeliveryDistanceMeters =11;
+
 }
 
 message HprImageModel {
@@ -867,6 +887,7 @@ message HprShopListModel {
 	HprDefaultPickupOption PickupOption =12;
 	int64 MaxOrderAmount =13;
 	int64 MaxOrderQuantity =14; 
+	google.protobuf.BoolValue IsAvailable=15;
 }
 
 message HprShopLocation {
@@ -890,6 +911,7 @@ message HprShopModel {
 	repeated HprCategoryModel Categories =7;
 	HprDefaultPickupOption PickupOptions =8; 
 	NprDecimalValue DELIVERY_FEES_PER_ORDER =9;
+	google.protobuf.BoolValue IsAvailable =10;
 }
 
 message HprShopSettings {
@@ -979,6 +1001,7 @@ message HprUpdateGlobalCategoryDto {
 	PassportInfo Passport =8;
 	string DescriptionEn =9;
 	string DescriptionAr =10;
+	google.protobuf.Int64Value DeliveryDistanceMeters =11;
 }
 
 message HprUpdateOptionsDto {

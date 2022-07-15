@@ -3648,6 +3648,7 @@ package NxServer;
         repeated NprGlobalItemNodeSpecificationEntry Specifications =20;
 	    string LogoPath =21;
 		repeated string images =42;
+        int64 DeliveryDistanceMeters= 43;
     }
 
      
@@ -3672,6 +3673,7 @@ package NxServer;
         bool IsVariant = 18;
         google.protobuf.Int64Value VariantParentNodeId =19;
         repeated NprGlobalItemNodeSpecificationEntry Specifications =20;
+        int64 DeliveryDistanceMeters= 21;
     }
 
      message NprGlobalItemNodeAddTranslation {
@@ -4064,6 +4066,7 @@ package NxServer;
 		google.protobuf.Int32Value MaxQtyPerLine = 15;
 	    google.protobuf.Int32Value MaxItemsPerOrder = 16;
 	    NprDecimalValue DeliveryCostPerOrder = 17; 
+        bool IsAvailable = 18;
     }
 
     message NprEntityAddTranslation {
