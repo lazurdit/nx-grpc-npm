@@ -677,7 +677,7 @@ message HprItemListModel {
 	string UnitEn =7;
 	string UnitAr =8;
 	string Img =9;
-	HprSelectedPickupOption SelectedPickupOption =10; 
+	google.protobuf.BoolValue Is_Out_Of_Stock =10;
 }
 
 message HprItemModel {
@@ -811,11 +811,11 @@ message HprFullProduct {
 	HprCategoryModel Category =12;
 	string Barcode =13;
 	HprProductPrepareTime PrepareTime =14;
-	HprDefaultPickupOption PickupOptions =15;
 	repeated HprItemOption Options =16; 
 	repeated HprItemAddition Additions =18;
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
+	google.protobuf.BoolValue Is_Out_Of_Stock =21;
 }
 
 message HprProduct {
@@ -832,11 +832,11 @@ message HprProduct {
 	repeated HprCategoryModel Category =12;
 	string Barcode =13;
 	HprProductPrepareTime PrepareTime =14;
-	HprDefaultPickupOption PickupOptions =15;
 	repeated HprItemOption Options =16; 
 	repeated HprItemAddition Additions =18;
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
+	google.protobuf.BoolValue Is_Out_Of_Stock =21; 
 }
 
 
@@ -852,9 +852,9 @@ message HprProductAddRequest {
 	int64 Category_Id =12;
 	string Barcode =13;
 	HprProductPrepareTime PrepareTime =14;
-	HprDefaultPickupOption PickupOptions =15;
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
+	google.protobuf.BoolValue Is_Out_Of_Stock =21;
 }
 
 message HprUpdateProductDto {
@@ -870,9 +870,9 @@ message HprUpdateProductDto {
 	int64 Category_Id =12;
 	string Barcode =13;
 	HprProductPrepareTime PrepareTime =14;
-	HprDefaultPickupOption PickupOptions =15;
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
+	google.protobuf.BoolValue Is_Out_Of_Stock =21;
 }
  
 

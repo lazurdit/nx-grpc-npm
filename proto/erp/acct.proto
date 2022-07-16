@@ -327,7 +327,9 @@ package NxServer;
         google.protobuf.Int64Value VariantParentNodeId =19;
         repeated NprItemNodeSpecificationEntry Specifications =20;
 		string LogoPath =21;
-		repeated string images =42;
+		repeated string images =22;
+	    google.protobuf.BoolValue Is_Out_Of_Stock =23;
+
     }
      
     message NewSuspectNumberRequest{
@@ -438,6 +440,7 @@ package NxServer;
            google.protobuf.Int64Value NumberTag2 =48; 
 		   bool IsArchived =49; 
            repeated NprItemNodeLink Links =50; 
+	       google.protobuf.BoolValue Is_Out_Of_Stock =51;
     }
     
     message NprSuspectNumberResponse {
