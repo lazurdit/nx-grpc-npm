@@ -120,7 +120,7 @@ service NxNewHyperServices {
 	rpc RemoveCoupon(HprIDRequest) returns (ResponseStatus); 
 
 	rpc CreateGlobalCategory(HprGlobalCategory) returns (NprRecordAddResponse); 
-	rpc FindAllGlobalCategory(HprOptionalIDRequest) returns (HprCategoryModelListResponse);
+	rpc FindAllGlobalCategory(FindAllGlobalCategoryRequest) returns (HprCategoryModelListResponse);
 	rpc RemoveGlobalCategory(HprIDRequest) returns (ResponseStatus); 
 	rpc FindOneGlobalCategory(HprIDRequest) returns (HprCategoryModelListResponse);
 	rpc UpdateGlobalCategory( HprUpdateGlobalCategoryDto) returns (NprRecordUpdateResponse);
@@ -162,7 +162,7 @@ service NxNewHyperServices {
 	rpc UpdateStoreSetting(HprUpdateStoreSettingDto) returns (NprRecordUpdateResponse);
 	rpc RemoveStoreSettingLocation(HprIDRequest) returns (ResponseStatus);
  
-	rpc FindManyShopListByShopId(HprIDRequest) returns (HprShopListModelListResponse) ; 
+	rpc FindManyShopListByShopId(FindManyShopListByShopIdRequest) returns (HprShopListModelListResponse) ; 
 	rpc FindManyShopModelByShopId(HprIDRequest) returns (HprShopModelListResponse) ;
 	rpc FindByIdShopModel(HprIDRequest) returns (HprShopModelListResponse) ; 
 	rpc SetShopAvailability(HprSetShopAvailabilityRequest) returns (HprSetShopAvailabilityResponse) ; 
@@ -178,6 +178,26 @@ service NxNewHyperServices {
 	
 	rpc ApplyCoupon(HprApplyCouponRequest) returns (HprApplyCouponResponse);
 }
+
+
+	message FindManyShopListByShopIdRequest
+	{
+		PassportInfo Passport =1; 
+		int64 Shop_Id =2;
+		string Lng =3;
+		string Lat =4;
+
+	}
+
+	message FindAllGlobalCategoryRequest
+	{
+		PassportInfo Passport =1; 
+		google.protobuf.Int64Value Global_Category_Id =2;
+		string Lng =3;
+		string Lat =4;
+
+	}
+
 
 	message HprSetShopAvailabilityRequest{
 		PassportInfo Passport = 1;
