@@ -1,12 +1,10 @@
 syntax ="proto3";
 
 option csharp_namespace ="Nx.Server.Services.Erp";
-
-//import "google/protobuf/empty.proto"; 
+ 
 import "common.proto";
 import "google/protobuf/timestamp.proto"; 
-import "erp/acct.proto";
-//import "google/protobuf/empty.proto"; 
+import "erp/acct.proto"; 
 import "google/protobuf/wrappers.proto";
 
 package NxServer;
@@ -120,7 +118,7 @@ service NxNewHyperServices {
 	rpc RemoveCoupon(HprIDRequest) returns (ResponseStatus); 
 
 	rpc CreateGlobalCategory(HprGlobalCategory) returns (NprRecordAddResponse); 
-	rpc FindAllGlobalCategory(FindAllGlobalCategoryRequest) returns (HprCategoryModelListResponse);
+	rpc FindAllGlobalCategory(HprFindAllGlobalCategoryRequest) returns (HprCategoryModelListResponse);
 	rpc RemoveGlobalCategory(HprIDRequest) returns (ResponseStatus); 
 	rpc FindOneGlobalCategory(HprIDRequest) returns (HprCategoryModelListResponse);
 	rpc UpdateGlobalCategory( HprUpdateGlobalCategoryDto) returns (NprRecordUpdateResponse);
@@ -162,7 +160,7 @@ service NxNewHyperServices {
 	rpc UpdateStoreSetting(HprUpdateStoreSettingDto) returns (NprRecordUpdateResponse);
 	rpc RemoveStoreSettingLocation(HprIDRequest) returns (ResponseStatus);
  
-	rpc FindManyShopListByShopId(FindManyShopListByShopIdRequest) returns (HprShopListModelListResponse) ; 
+	rpc FindManyShopListByShopId(HprFindManyShopListByShopIdRequest) returns (HprShopListModelListResponse) ; 
 	rpc FindManyShopModelByShopId(HprIDRequest) returns (HprShopModelListResponse) ;
 	rpc FindByIdShopModel(HprIDRequest) returns (HprShopModelListResponse) ; 
 	rpc SetShopAvailability(HprSetShopAvailabilityRequest) returns (HprSetShopAvailabilityResponse) ; 
@@ -180,7 +178,7 @@ service NxNewHyperServices {
 }
 
 
-	message FindManyShopListByShopIdRequest
+	message HprFindManyShopListByShopIdRequest
 	{
 		PassportInfo Passport =1; 
 		int64 Shop_Id =2;
@@ -189,7 +187,7 @@ service NxNewHyperServices {
 
 	}
 
-	message FindAllGlobalCategoryRequest
+	message HprFindAllGlobalCategoryRequest
 	{
 		PassportInfo Passport =1; 
 		google.protobuf.Int64Value Global_Category_Id =2;

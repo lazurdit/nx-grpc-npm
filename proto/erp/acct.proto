@@ -4,8 +4,7 @@ option csharp_namespace ="Nx.Server.Services.Erp";
 
 import "google/protobuf/empty.proto"; 
 import "common.proto";
-import "google/protobuf/wrappers.proto";
-//import "google/protobuf/duration.proto";  
+import "google/protobuf/wrappers.proto"; 
 import "google/protobuf/timestamp.proto";
 
 package NxServer;

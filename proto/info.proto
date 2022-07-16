@@ -2,7 +2,7 @@
 
 	Scalar Value Types
 	==================
-	A scalar message field can have one of the following types ï¿½ the table shows the type specified in the .proto file, and the corresponding type in the automatically generated class:
+	A scalar message field can have one of the following types – the table shows the type specified in the .proto file, and the corresponding type in the automatically generated class:
 	double, float, int32, int64, uint32, uint64, sint32, sint64, fixed32, fixed64, sfixed32, sfixed64, bool, string, bytes
   
 	see https://developers.google.com/protocol-buffers/docs/proto3#scalar
@@ -10,8 +10,7 @@
 */
 
 syntax = "proto3";
-import "google/protobuf/empty.proto"; 
-//import "Common.proto"; 
+import "google/protobuf/empty.proto";  
 
 option csharp_namespace = "Nx.Server.Protos";
 package NxServer;
