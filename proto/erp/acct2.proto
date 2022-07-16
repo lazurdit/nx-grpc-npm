@@ -2,6 +2,7 @@ syntax ="proto3";
 
 option csharp_namespace ="Nx.Server.Services.Erp";
  
+import "google/protobuf/empty.proto"; 
 import "common.proto";
 import "google/protobuf/timestamp.proto"; 
 import "erp/acct.proto"; 
@@ -118,7 +119,8 @@ service NxNewHyperServices {
 	rpc RemoveCoupon(HprIDRequest) returns (ResponseStatus); 
 
 	rpc CreateGlobalCategory(HprGlobalCategory) returns (NprRecordAddResponse); 
-	rpc FindAllGlobalCategory(HprFindAllGlobalCategoryRequest) returns (HprCategoryModelListResponse);
+	rpc FindAllGlobalCategory(HprOptionalIDRequest) returns (HprCategoryModelListResponse);
+ 	rpc SearchAllGlobalCategory(HprSearchAllGlobalCategoryRequest) returns (HprCategoryModelListResponse);
 	rpc RemoveGlobalCategory(HprIDRequest) returns (ResponseStatus); 
 	rpc FindOneGlobalCategory(HprIDRequest) returns (HprCategoryModelListResponse);
 	rpc UpdateGlobalCategory( HprUpdateGlobalCategoryDto) returns (NprRecordUpdateResponse);
@@ -187,7 +189,7 @@ service NxNewHyperServices {
 
 	}
 
-	message HprFindAllGlobalCategoryRequest
+	message HprSearchAllGlobalCategoryRequest
 	{
 		PassportInfo Passport =1; 
 		google.protobuf.Int64Value Global_Category_Id =2;
