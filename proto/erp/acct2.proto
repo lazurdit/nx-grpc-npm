@@ -292,8 +292,13 @@ message HprItemSearchRequest {
 
 
 message HprDeliveryCostResponse {
-	NprDecimalValue DeliveryCost = 1;
-	ResponseStatus Status = 2;
+	NprDecimalValue Delivery_Cost =1;
+	HprSelectedDeliveryProvider Selected_Delivery_Provider =2;
+	string Nearest_Shop_Lng =3;
+	string Nearest_Shop_Lat =4;
+	google.protobuf.Int64Value Shop_Id =5;
+	google.protobuf.BoolValue Shop_Is_Available =6; 
+	ResponseStatus Status =7;
 }
 
 message HprOrderCartListResponse{
