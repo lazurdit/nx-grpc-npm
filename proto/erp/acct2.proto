@@ -561,7 +561,7 @@ message HprFullItem {
 	string TitleAr =4;
 	string DescriptionEn =5;
 	string DescriptionAr =6;
-	NprDecimalValue BasePrice =7;
+	NprDecimalValue Base_Price2 =7;
 	HprProductImage MainImg =8;
 	string UnitEn =9;
 	string UnitAr =10;
@@ -569,6 +569,7 @@ message HprFullItem {
 	repeated HprFullItemOption Options =12;
 	repeated HprFullItemAddition Additions =13;
 	repeated HprCategoryModel Category =14;
+	NprDecimalValue Special_Price=15;
 }
 
 message HprFullItemAddition {
@@ -679,11 +680,13 @@ message HprItemListModel {
 	string TitleAr =3;
 	string DescriptionEn =4;
 	string DescriptionAr =5;
-	NprDecimalValue BasePrice =6;
+	NprDecimalValue Base_Price2 =6;
 	string UnitEn =7;
 	string UnitAr =8;
 	string Img =9;
 	google.protobuf.BoolValue Is_Out_Of_Stock =10;
+	NprDecimalValue Special_Price =11;
+
 }
 
 message HprItemModel {
@@ -692,9 +695,10 @@ message HprItemModel {
 	string TitleAr =3;
 	string DescriptionEn =4;
 	string DescriptionAr =5;
-	NprDecimalValue BasePrice =6;
+	NprDecimalValue Base_Price2 =6;
 	repeated HprUnitModel Units =7;
 	repeated HprImageModel Images =8;
+	NprDecimalValue Special_Price =9;
 }
 
 message HprItemOption {
@@ -757,13 +761,14 @@ message HprOrderFullItem {
 	string TitleAr =3;
 	string DescriptionEn =4;
 	string DescriptionAr =5;
-	NprDecimalValue BasePrice =6;
+	NprDecimalValue Base_Price2 =6;
 	HprOrderProductImage MainImg =7;
 	string UnitEn =8;
 	string UnitAr =9;
 	repeated HprOrderFullItemOption Options =10;
 	repeated HprOrderFullItemAddition Additions =11;
 	NprDecimalValue Qty =12;
+	NprDecimalValue Special_Price =13;
 }
 
 message HprOrderFullItemAddition {
@@ -810,7 +815,7 @@ message HprFullProduct {
 	string TitleAr =4;
 	string DescriptionEn =5;
 	string DescriptionAr =6;
-	NprDecimalValue BasePrice =7;
+	NprDecimalValue Base_Price2 =7;
 	HprItemImage MainImg =8;
 	HprProductUnitData Unit =9; 
 	repeated HprItemImage OtherImages =11;
@@ -822,6 +827,7 @@ message HprFullProduct {
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21;
+	NprDecimalValue Special_Price =22;
 }
 
 message HprProduct {
@@ -831,7 +837,7 @@ message HprProduct {
 	string TitleAr =4;
 	string DescriptionEn =5;
 	string DescriptionAr =6;
-	NprDecimalValue BasePrice =7;
+	NprDecimalValue Base_Price2 =7;
 	HprItemImage MainImg =8;
 	HprProductUnitData Unit =9; 
 	repeated HprItemImage OtherImages =11;
@@ -843,6 +849,7 @@ message HprProduct {
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21; 
+	NprDecimalValue Special_Price =22;
 }
 
 
@@ -852,7 +859,7 @@ message HprProductAddRequest {
 	string TitleAr =4;
 	string DescriptionEn =5;
 	string DescriptionAr =6;
-	NprDecimalValue BasePrice =7;
+	NprDecimalValue Base_Price2 =7;
 	HprItemImage MainImg =8;
 	int64 MainUnit =9;  
 	int64 Category_Id =12;
@@ -861,6 +868,8 @@ message HprProductAddRequest {
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21;
+	NprDecimalValue Special_Price =22;
+
 }
 
 message HprUpdateProductDto {
@@ -870,7 +879,7 @@ message HprUpdateProductDto {
 	string TitleAr =4;
 	string DescriptionEn =5;
 	string DescriptionAr =6;
-	NprDecimalValue BasePrice =7;
+	NprDecimalValue Base_Price2 =7;
 	HprItemImage MainImg =8;
 	int64 MainUnit =9;  
 	int64 Category_Id =12;
@@ -879,6 +888,7 @@ message HprUpdateProductDto {
 	google.protobuf.BoolValue IsArchived =19;
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21;
+	NprDecimalValue Special_Price =22;
 }
  
 
