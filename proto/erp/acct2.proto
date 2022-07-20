@@ -202,13 +202,13 @@ service NxNewHyperServices {
 	message HprSetShopAvailabilityRequest{
 		PassportInfo Passport = 1;
 		int64 ShopId=2;
-		bool IsAvailable = 3;	
+		bool Is_Available = 3;	
 	} 
 
 	message HprSetShopAvailabilityResponse{
 		ResponseStatus Status = 1;;
 		int64 ShopId=2;
-		bool IsAvailable = 3;	
+		bool Is_Available = 3;	
 	} 
 
 	message HprCreateOrderRequest{
@@ -254,7 +254,7 @@ service NxNewHyperServices {
 		google.protobuf.StringValue Shop_Logo=9;
 		string Shop_Name_Ar = 10;
 		string Shop_Name_En = 11; 
-		bool IsAvailable=12;
+		bool Is_Available=12;
 	} 
 
 	message HprApplyGlobalCategoryOnShopRequest{
@@ -462,7 +462,7 @@ message HprCartInput {
 
 message HprCartShopModelInput {
 	int64 Id =1; 
-	google.protobuf.BoolValue IsAvailable =2;
+	google.protobuf.BoolValue Is_Available =2;
 }
 
 message HprCategoryModel {
@@ -912,7 +912,7 @@ message HprShopListModel {
 	HprDefaultPickupOption PickupOption =12;
 	int64 MaxOrderAmount =13;
 	int64 MaxOrderQuantity =14; 
-	google.protobuf.BoolValue IsAvailable=15;
+	google.protobuf.BoolValue Is_Available=15;
 }
 
 message HprShopLocation {
@@ -936,7 +936,7 @@ message HprShopModel {
 	repeated HprCategoryModel Categories =7;
 	HprDefaultPickupOption PickupOptions =8; 
 	NprDecimalValue DELIVERY_FEES_PER_ORDER =9;
-	google.protobuf.BoolValue IsAvailable =10;
+	google.protobuf.BoolValue Is_Available =10;
 }
 
 message HprShopSettings {
@@ -950,6 +950,7 @@ message HprShopSettings {
 	google.protobuf.StringValue Logo =9;
 	string NameAr =10;
 	string NameEn =11;
+	google.protobuf.BoolValue Is_Available =12;
 }
 
 enum HprDefaultPickupOption {
