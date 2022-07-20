@@ -218,7 +218,8 @@ service NxNewHyperServices {
 	message HprCreateOrderResponse{
 		ResponseStatus Status = 1;
 		int64 Record_Id = 2;
-		HprOrderCart ORDER_CART = 3;	
+		repeated int64 Out_Of_Stock_Items =3;
+		HprOrderCart Order_Cart = 4;	
 	} 
 
 	message HprFullProductResponse{
