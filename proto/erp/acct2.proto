@@ -924,6 +924,9 @@ message HprShopListModel {
 	int64 MaxOrderAmount =13;
 	int64 MaxOrderQuantity =14; 
 	google.protobuf.BoolValue Is_Available=15;
+	repeated HprCategoryModel L1Categories =16;
+	repeated HprCategoryModel L2Categories =17;
+	int64 Delivery_Estimation= 18;
 }
 
 message HprShopLocation {
