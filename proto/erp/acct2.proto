@@ -2,7 +2,6 @@ syntax ="proto3";
 
 option csharp_namespace ="Nx.Server.Services.Erp";
  
-import "google/protobuf/empty.proto"; 
 import "common.proto";
 import "google/protobuf/timestamp.proto"; 
 import "erp/acct.proto"; 
@@ -177,9 +176,22 @@ service NxNewHyperServices {
 	rpc DeleteOrder(HprIDRequest) returns (ResponseStatus);
 	
 	rpc ApplyCoupon(HprApplyCouponRequest) returns (HprApplyCouponResponse);
+	rpc CalculateOrderTaxes(CalculateOrderTaxesRequest) returns(CalculateOrderTaxesResponse); 
+
 }
 
+	message CalculateOrderTaxesRequest
+	{
+		PassportInfo Passport =1; 
+		HprCartInput Cart_Input =2; 
+	}
 
+	message CalculateOrderTaxesResponse 
+	{
+		ResponseStatus Status = 1;
+		repeated HprOrderCartTax Taxes=2;
+		NprDecimalValue Total_Taxes =3; 
+	} 
 	message HprFindManyShopListByShopIdRequest
 	{
 		PassportInfo Passport =1; 
@@ -585,6 +597,7 @@ message HprFullItemAddition {
 	string TitleEn = 9;
 	string TitleAr = 10;
 	repeated HprFullItemOptionChoice Choices = 11;
+	NprDecimalValue Tax_Percent=12;
 }
 
 enum HprUiType{
@@ -612,6 +625,7 @@ message HprFullItemOption {
 	string TitleEn =9;
 	string TitleAr =10;
 	repeated HprFullItemOptionChoice Choices =11;
+	NprDecimalValue Tax_Percent=12;
 }
 
 message HprFullItemOptionChoice {
@@ -663,6 +677,7 @@ message HprItemAddition {
 	google.protobuf.BoolValue IsArchived =12;
 	bool Required =13;
 	PassportInfo Passport =14;
+	NprDecimalValue Tax_Percent =15;
 }
 
 message HprItemImage {
@@ -717,6 +732,8 @@ message HprItemOption {
 	google.protobuf.BoolValue IsArchived =12;
 	bool Required =13;
 	PassportInfo Passport =14;
+	NprDecimalValue Tax_Percent =15;
+
 }
 
 message HprOrder {
@@ -755,8 +772,7 @@ message HprOrderCart {
 	HprSelectedDeliveryProvider SelectedDeliveryProvider =14;
 	HprShopLocation Location=15;
 	repeated HprOrderCartTax Taxes=16;
-	NprDecimalValue Total_Taxes =17;
-
+	NprDecimalValue Total_Taxes =17; 
 }
 
 message HprOrderCartTax {
@@ -778,6 +794,7 @@ message HprOrderFullItem {
 	repeated HprOrderFullItemAddition Additions =11;
 	NprDecimalValue Qty =12;
 	NprDecimalValue Special_Price =13;
+	NprDecimalValue Tax_Percent=14;
 }
 
 message HprOrderFullItemAddition {
@@ -790,6 +807,7 @@ message HprOrderFullItemAddition {
 	HprOrderFullItemOptionChoice SelectedChoice =7;
 	NprDecimalValue Qty =8;
 	string Value =9;
+	NprDecimalValue Tax_Percent =10;
 }
 
 message HprOrderFullItemOption {
@@ -802,6 +820,7 @@ message HprOrderFullItemOption {
 	HprOrderFullItemOptionChoice SelectedChoice =7;
 	NprDecimalValue Qty =8;
 	string Value =9;
+	NprDecimalValue Tax_Percent =10;
 }
 
 message HprOrderFullItemOptionChoice {
@@ -837,6 +856,7 @@ message HprFullProduct {
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21;
 	NprDecimalValue Special_Price =22;
+	NprDecimalValue Tax_Percent =23;
 }
 
 message HprProduct {
@@ -878,6 +898,7 @@ message HprProductAddRequest {
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21;
 	NprDecimalValue Special_Price =22;
+	NprDecimalValue Tax_Percent =23;
 
 }
 
@@ -898,6 +919,7 @@ message HprUpdateProductDto {
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21;
 	NprDecimalValue Special_Price =22;
+	NprDecimalValue Tax_Percent =23;
 }
  
 
@@ -1023,6 +1045,7 @@ message HprUpdateAdditionsDto {
 	google.protobuf.BoolValue IsArchived =12;
 	bool Required =13;
 	PassportInfo Passport =14; 
+	NprDecimalValue Tax_Percent=15;
 }
 
 message HprUpdateCouponDto {
@@ -1068,6 +1091,7 @@ message HprUpdateOptionsDto {
 	google.protobuf.BoolValue IsArchived =12;
 	bool Required =13;
 	PassportInfo Passport =14;
+	NprDecimalValue Tax_Percent=15;
 }
 
 

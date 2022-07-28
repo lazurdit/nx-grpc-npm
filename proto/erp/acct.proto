@@ -436,11 +436,12 @@ package NxServer;
            google.protobuf.StringValue StringTag2 =44; 
            NprDecimalValue DecimalTag1 =45;
            NprDecimalValue DecimalTag2 =46;
-           google.protobuf.Int64Value NumberTag1 =47;
-           google.protobuf.Int64Value NumberTag2 =48; 
-		   bool IsArchived =49; 
-           repeated NprItemNodeLink Links =50; 
-	       google.protobuf.BoolValue Is_Out_Of_Stock =51;
+           NprDecimalValue DecimalTag3 =47;
+           google.protobuf.Int64Value NumberTag1 =48;
+           google.protobuf.Int64Value NumberTag2 =49; 
+		   bool IsArchived =50; 
+           repeated NprItemNodeLink Links =51; 
+	       google.protobuf.BoolValue Is_Out_Of_Stock =52;
     }
     
     message NprSuspectNumberResponse {
