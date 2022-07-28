@@ -3772,6 +3772,7 @@ package NxServer;
            bool IsVariant = 38;
            google.protobuf.Int64Value VariantParentNodeId =39;
            google.protobuf.StringValue SKU =40;
+           google.protobuf.Int64Value Delivery_Distance_Meters =41; 
     }
     
 

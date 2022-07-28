@@ -477,7 +477,7 @@ message HprCategoryModel {
 	string NodePath =8;
 	google.protobuf.Int64Value ShopId =9;
 	google.protobuf.BoolValue IsArchived =10;
-
+	google.protobuf.Int64Value Delivery_Distance_Meters =11; 
 }
 
 message HprChoices {
@@ -570,6 +570,7 @@ message HprFullItem {
 	repeated HprFullItemAddition Additions =13;
 	repeated HprCategoryModel Category =14;
 	NprDecimalValue Special_Price=15;
+	NprDecimalValue Tax_Percent=16;
 }
 
 message HprFullItemAddition {
@@ -753,6 +754,14 @@ message HprOrderCart {
 	int64 PreparationTime =13;
 	HprSelectedDeliveryProvider SelectedDeliveryProvider =14;
 	HprShopLocation Location=15;
+	repeated HprOrderCartTax Taxes=16;
+	NprDecimalValue Total_Taxes =17;
+
+}
+
+message HprOrderCartTax {
+	NprDecimalValue Tax_Percent =1;
+	NprDecimalValue Total_Amount =2;
 }
 
 message HprOrderFullItem {
