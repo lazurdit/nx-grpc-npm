@@ -1,6 +1,6 @@
 {
 	"name": "nx-grpc-ts",
-	"version": "0.1.164",
+	"version": "0.1.166",
 	"description": "Node package source for @lazurdit/nx-grpc npm package",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",

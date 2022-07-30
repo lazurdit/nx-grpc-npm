@@ -133,15 +133,15 @@ service NxNewHyperServices {
 	rpc UpdateProduct(HprUpdateProductDto) returns (HprFullProductResponse);
 	rpc CreateProduct(HprProductAddRequest) returns (HprFullProductResponse);
 	
-	rpc CreateProductOption(HprItemOption) returns (NprRecordAddResponse);
+	rpc CreateProductOption(HprItemOption) returns (HprItemOptionResponse);
 	rpc FindAllProductOptionsByProdctId(HprIDRequest) returns (HprItemOptionListResponse) ;
 	rpc RemoveProductOptions(HprIDRequest) returns (ResponseStatus);
-	rpc UpdateProductOption(  HprUpdateOptionsDto  ) returns (NprRecordUpdateResponse);
+	rpc UpdateProductOption(HprUpdateOptionsDto) returns (NprRecordUpdateResponse);
 	
 	rpc FindAllProductAdditionsByProdctId(HprIDRequest) returns (HprItemAdditionListResponse) ;
 	rpc RemoveProductAdditions(HprIDRequest) returns (ResponseStatus);
-	rpc CreateProductAddition(HprItemAddition) returns (NprRecordAddResponse);
-	rpc UpdateProductAddition( HprUpdateAdditionsDto ) returns (NprRecordUpdateResponse);
+	rpc CreateProductAddition(HprItemAddition) returns (HprItemAdditionResponse);
+	rpc UpdateProductAddition(HprUpdateAdditionsDto) returns (NprRecordUpdateResponse);
 	
 	rpc CreateProductFile(HprItemImage) returns (NprRecordAddResponse);
 	rpc FindAllProductFilesByProductId(HprIDRequest) returns (HprItemImageListResponse) ;
@@ -176,17 +176,17 @@ service NxNewHyperServices {
 	rpc DeleteOrder(HprIDRequest) returns (ResponseStatus);
 	
 	rpc ApplyCoupon(HprApplyCouponRequest) returns (HprApplyCouponResponse);
-	rpc CalculateOrderTaxes(CalculateOrderTaxesRequest) returns(CalculateOrderTaxesResponse); 
+	rpc CalculateOrderTaxes(HprCalculateOrderTaxesRequest) returns(HprCalculateOrderTaxesResponse); 
 
 }
 
-	message CalculateOrderTaxesRequest
+	message HprCalculateOrderTaxesRequest
 	{
 		PassportInfo Passport =1; 
 		HprCartInput Cart_Input =2; 
 	}
 
-	message CalculateOrderTaxesResponse 
+	message HprCalculateOrderTaxesResponse 
 	{
 		ResponseStatus Status = 1;
 		repeated HprOrderCartTax Taxes=2;
@@ -239,6 +239,15 @@ service NxNewHyperServices {
 		HprFullProduct Product = 3;	
 	} 
 
+	message HprItemAdditionResponse{
+		ResponseStatus Status = 1; 
+		HprItemAddition Addition = 3;	
+	}
+
+	message HprItemOptionResponse{
+		ResponseStatus Status = 1; 
+		HprItemOption Option = 3;	
+	}
 	
 	message HprSetEntityGlobalCategoryArchiveRequest{
 		PassportInfo Passport = 1;
