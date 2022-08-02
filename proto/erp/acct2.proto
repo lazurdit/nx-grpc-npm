@@ -176,9 +176,9 @@ service NxNewHyperServices {
 	rpc ApplyCoupon(HprApplyCouponRequest) returns (HprApplyCouponResponse);
 	rpc CalculateOrderTaxes(HprCalculateOrderTaxesRequest) returns(HprCalculateOrderTaxesResponse); 
 
-	rpc CloneTemplate(CloneTemplateRequest) returns (ResponseStatus); 
+	rpc CloneTemplate(HprCloneTemplateRequest) returns (ResponseStatus); 
 }
-	message CloneTemplateRequest
+	message HprCloneTemplateRequest
 	{
 		PassportInfo Passport =1; 
 		HprCompanyTemplates Template =2;
