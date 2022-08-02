@@ -161,9 +161,7 @@ service NxNewHyperServices {
 	rpc UpdateStoreSetting(HprUpdateStoreSettingDto) returns (NprRecordUpdateResponse);
 	rpc RemoveStoreSettingLocation(HprIDRequest) returns (ResponseStatus);
  
-	rpc FindManyShopListByShopId(HprFindManyShopListByShopIdRequest) returns (HprShopListModelListResponse) ; 
-	rpc FindManyShopModelByShopId(HprIDRequest) returns (HprShopModelListResponse) ;
-	rpc FindByIdShopModel(HprIDRequest) returns (HprShopModelListResponse) ; 
+	rpc FindManyShopListByShopId(HprFindManyShopListByShopIdRequest) returns (HprShopListModelListResponse) ;  
 	rpc SetShopAvailability(HprSetShopAvailabilityRequest) returns (HprSetShopAvailabilityResponse) ; 
 
 	rpc SearchShops(HprShopSearchRequest) returns (HprShopListModelListResponse) ; 
@@ -178,8 +176,18 @@ service NxNewHyperServices {
 	rpc ApplyCoupon(HprApplyCouponRequest) returns (HprApplyCouponResponse);
 	rpc CalculateOrderTaxes(HprCalculateOrderTaxesRequest) returns(HprCalculateOrderTaxesResponse); 
 
+	rpc CloneTemplate(CloneTemplateRequest) returns (ResponseStatus); 
 }
+	message CloneTemplateRequest
+	{
+		PassportInfo Passport =1; 
+		HprCompanyTemplates Template =2;
+	}
 
+	enum HprCompanyTemplates {
+		Grocery_Company_Template =0;
+		Pharmacy_Company_Template =1;
+	}
 	message HprCalculateOrderTaxesRequest
 	{
 		PassportInfo Passport =1; 
@@ -348,7 +356,7 @@ message HprShopListModelListResponse{
 	int64 totalItems = 2;
 	ResponseStatus Status = 3;
 }
-
+ 
 message HprShopModelListResponse{
 	repeated HprShopModel ShopModels =1;
 	int64 totalItems = 2;
