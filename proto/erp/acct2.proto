@@ -18,82 +18,82 @@ package NxServer;
   }
   
   message NprFiscalPeriodAddRequest{ 
-    int64 FiscalYearId =1;
+    int64 Fiscal_Year_Id =1;
     int32 Number =2;
     string Name=3;
     NprFiscalPeriodStatuses Status =4;
-    NprFiscalPeriodTypes PeriodType =5;
-    google.protobuf.Timestamp ActiveDate =6; 
-    google.protobuf.Timestamp SuspendDate =7; 
-    google.protobuf.Timestamp TransactionsEndDate =8; 
-    google.protobuf.Timestamp TransactionsStartDate =9; 
-    bool IsDefault=10;
+    NprFiscalPeriodTypes Period_Type =5;
+    google.protobuf.Timestamp Active_Date =6; 
+    google.protobuf.Timestamp Suspend_Date =7; 
+    google.protobuf.Timestamp Transactions_End_Date =8; 
+    google.protobuf.Timestamp Transactions_Start_Date =9; 
+    bool Is_Default=10;
     PassportInfo Passport =11;
-    string TempId =15;
+    string Temp_Id =15;
   }
   
   enum NprFiscalPeriodStatuses {
-    OPEN =0;
-    CLOSED=1;
+    Open =0;
+    Closed=1;
   }
   enum NprFiscalPeriodTypes {
-    NORMAL_PERIOD=0;
-    ADJUSTMENT_PERIOD=1;
+    Normal_Period=0;
+    Adjustment_Period=1;
 
   }
   message NprFiscalPeriodDeleteRequest{
     PassportInfo Passport =1;
-    int64 FiscalPeriodIdRequired =3;
+    int64 Fiscal_Period_Id_Required =3;
   }
    
   message NprFiscalPeriodUpdateRequest{ 
-    int64 FiscalYearId =1;
+    int64 Fiscal_Year_Id =1;
     int32 Number =2;
     string Name=3;
     NprFiscalPeriodStatuses Status =4;
-    NprFiscalPeriodTypes PeriodType =5;
-    google.protobuf.Timestamp ActiveDate =6; 
-    google.protobuf.Timestamp SuspendDate =7; 
-    google.protobuf.Timestamp TransactionsEndDate =8; 
-    google.protobuf.Timestamp TransactionsStartDate =9; 
-    bool IsDefault=10;
+    NprFiscalPeriodTypes Period_Type =5;
+    google.protobuf.Timestamp Active_Date =6; 
+    google.protobuf.Timestamp Suspend_Date =7; 
+    google.protobuf.Timestamp Transactions_End_Date =8; 
+    google.protobuf.Timestamp Transactions_Start_Date =9; 
+    bool Is_Default=10;
     PassportInfo Passport =11;
-    int64 RecordId =12;
-    string TempId =15;
+    int64 Record_Id =12;
+    string Temp_Id =15;
   }
    
   message NprFiscalPeriodListRequest {
     PassportInfo Passport =1; 
-    repeated int64 FiscalYearIdsRequired =2;
-    repeated int64 FiscalPeriodIdsRequired =3;
-    bool IncludeSpecificStatus=4;
-    NprFiscalPeriodStatuses StatusToInclude =5;
-    bool IncludeSpecificPeriodType=6;
-    NprFiscalPeriodTypes PeriodType =7;
-    bool DefaultFiscalPeriodsOnly=8; 
+    repeated int64 Fiscal_Year_Ids_Required =2;
+    repeated int64 Fiscal_Period_Ids_Required =3;
+    bool Include_Specific_Status=4;
+    NprFiscalPeriodStatuses Status_To_Include =5;
+    bool Include_Specific_Period_Type=6;
+    NprFiscalPeriodTypes Period_Type =7;
+    bool Default_Fiscal_Periods_Only=8; 
   }
 
   message NprFiscalPeriodListResponse {
-    repeated NprFiscalPeriod FiscalPeriods =1;
+    repeated NprFiscalPeriod Fiscal_Periods =1;
     ResponseStatus Status =2;
   } 
  
   message NprFiscalPeriod{
-    int64 FiscalYearId =1;
+    int64 Fiscal_Year_Id =1;
     int32 Number =2;
     string Name=3;
     NprFiscalPeriodStatuses Status =4;
-    NprFiscalPeriodTypes PeriodType =5;
-    google.protobuf.Timestamp ActiveDate =6; 
-    google.protobuf.Timestamp SuspendDate =7; 
-    google.protobuf.Timestamp TransactionsEndDate =8; 
-    google.protobuf.Timestamp TransactionsStartDate =9; 
-    bool IsDefault=10;
+    NprFiscalPeriodTypes Period_Type =5;
+    google.protobuf.Timestamp Active_Date =6; 
+    google.protobuf.Timestamp Suspend_Date =7; 
+    google.protobuf.Timestamp Transactions_End_Date =8; 
+    google.protobuf.Timestamp Transactions_Start_Date =9; 
+    bool Is_Default=10;
     PassportInfo Passport =11;
     int64 Id =12;
-    google.protobuf.Timestamp CreationDate =13; 
-    google.protobuf.Timestamp ModifyDate =14;
-    string TempId =15;
+    google.protobuf.Timestamp Creation_Date =13; 
+    google.protobuf.Timestamp Modify_Date =14;
+    string Temp_Id =15;
   }
   
 
@@ -116,6 +116,11 @@ service NxNewHyperServices {
 	rpc FindOneCouponById(HprIDRequest) returns (HprCouponListResponse);
 	rpc UpdateCoupon(HprUpdateCouponDto) returns (NprRecordUpdateResponse);
 	rpc RemoveCoupon(HprIDRequest) returns (ResponseStatus); 
+
+	rpc CreateShopCategory(HprShopCategoryCreateRequest) returns (HprShopCategoryCreateResponse); 
+	rpc UpdateShopCategory(HprShopCategoryUpdateRequest) returns (HprShopCategoryUpdateResponse); 
+	rpc RemoveShopCategory(HprIDRequest) returns (ResponseStatus); 
+
 
 	rpc CreateGlobalCategory(HprGlobalCategory) returns (NprRecordAddResponse); 
 	rpc FindAllGlobalCategory(HprOptionalIDRequest) returns (HprCategoryModelListResponse);
@@ -221,13 +226,13 @@ service NxNewHyperServices {
 
 	message HprSetShopAvailabilityRequest{
 		PassportInfo Passport = 1;
-		int64 ShopId=2;
+		int64 Shop_Id=2;
 		bool Is_Available = 3;	
 	} 
 
 	message HprSetShopAvailabilityResponse{
 		ResponseStatus Status = 1;;
-		int64 ShopId=2;
+		int64 Shop_Id=2;
 		bool Is_Available = 3;	
 	} 
 
@@ -285,11 +290,14 @@ service NxNewHyperServices {
 		string Shop_Name_Ar = 10;
 		string Shop_Name_En = 11; 
 		bool Is_Available=12;
+		google.protobuf.Int64Value Average_Prepare_Time_From = 13;
+		google.protobuf.Int64Value Average_Prepare_Time_To = 14;
+
 	} 
 
 	message HprApplyGlobalCategoryOnShopRequest{
 		PassportInfo Passport = 1;
-		int64 CATEGORY_ID = 2;	
+		int64 Category_Id = 2;	
 	} 
 	message HprApplyGlobalCategoryOnShopResponse{
 		ResponseStatus Status = 2;
@@ -297,24 +305,24 @@ service NxNewHyperServices {
 
 message HprShopSearchRequest {
 	PassportInfo Passport = 1;
-	repeated google.protobuf.Int64Value GlobalCategoryId = 2;
-	google.protobuf.Int64Value PageNumber =3;
-	google.protobuf.Int64Value QtyPerPage =4;
-	google.protobuf.StringValue SearchText=5;
+	repeated google.protobuf.Int64Value Global_Category_Id = 2;
+	google.protobuf.Int64Value Page_Number =3;
+	google.protobuf.Int64Value Qty_Per_Page =4;
+	google.protobuf.StringValue Search_Text=5;
 	google.protobuf.StringValue Lng =6;
 	google.protobuf.StringValue Lat =7;
-	HprDefaultPickupOption PickupOptions =8;
+	HprDefaultPickupOption Pickup_Options =8;
 }
 
 message HprItemSearchRequest {
 	PassportInfo Passport = 1;
-	repeated google.protobuf.Int64Value GlobalCategoryId = 2;
-	google.protobuf.Int64Value PageNumber =3;
-	google.protobuf.Int64Value QtyPerPage =4;
-	google.protobuf.StringValue SearchText=5;
+	repeated google.protobuf.Int64Value Global_Category_Id = 2;
+	google.protobuf.Int64Value Page_Number =3;
+	google.protobuf.Int64Value Qty_Per_Page =4;
+	google.protobuf.StringValue Search_Text=5;
 	google.protobuf.StringValue Lng =6;
 	google.protobuf.StringValue Lat =7;
-	HprDefaultPickupOption PickupOptions =8;
+	HprDefaultPickupOption Pickup_Options =8;
 	NprDecimalValue min_cost = 9;
 	NprDecimalValue max_cost = 10;
 	google.protobuf.StringValue id =11;
@@ -332,12 +340,12 @@ message HprDeliveryCostResponse {
 }
 
 message HprOrderCartListResponse{
-	repeated HprOrderCart OrderCarts =1;
+	repeated HprOrderCart Order_Carts =1;
 	ResponseStatus Status = 2;
 }
 
 message HprFullItemListResponse{
-	repeated HprFullItem FullItems =1;
+	repeated HprFullItem Full_Items =1;
 	ResponseStatus Status = 2;
 }
  
@@ -352,39 +360,39 @@ message HprShopSettingsResponse {
 }
 
 message HprShopListModelListResponse{
-	repeated HprShopListModel ShopListModels =1;
-	int64 totalItems = 2;
+	repeated HprShopListModel Shop_List_Models =1;
+	int64 total_Items = 2;
 	ResponseStatus Status = 3;
 }
  
 message HprShopModelListResponse{
-	repeated HprShopModel ShopModels =1;
-	int64 totalItems = 2;
+	repeated HprShopModel Shop_Models =1;
+	int64 total_Items = 2;
 	ResponseStatus Status = 3;
 }
 
 message HprUnitModelListResponse{
-	repeated HprUnitModel UnitModels =1;
+	repeated HprUnitModel Unit_Models =1;
 	ResponseStatus Status = 2;
 }
 
 message HprItemImageListResponse{
-	repeated HprItemImage ItemFiles =1;
+	repeated HprItemImage Item_Files =1;
 	ResponseStatus Status = 2;
 }
 
 message HprItemFile { 
-	string FileUrl = 1; 
+	string File_Url = 1; 
 	PassportInfo Passport = 2;
 }
 message HprItemAdditionListResponse{
-	repeated HprItemAddition ItemAdditions =1;
+	repeated HprItemAddition Item_Additions =1;
 	ResponseStatus Status = 2;
 }
 
 
 message HprItemOptionListResponse{
-	repeated HprItemOption ItemOptions =1;
+	repeated HprItemOption Item_Options =1;
 	ResponseStatus Status = 2;
 }
 
@@ -396,19 +404,19 @@ message HprProductListResponse{
 
 
 message HprItemModelListResponse{
-	repeated HprItemModel ItemListModel =1;
+	repeated HprItemModel Item_List_Model =1;
 	ResponseStatus Status = 2;
 }
 
 message HprItemListModelListResponse{
-	repeated HprItemListModel ItemListModel =1;
+	repeated HprItemListModel Item_List_Model =1;
 	ResponseStatus Status = 2;
 }
 
 message HprCouponFindRequest {
 	PassportInfo Passport=1;
-	optional string CouponText = 2;
-	optional string ShopId = 3;
+	optional string Coupon_Text = 2;
+	optional string Shop_Id = 3;
 }
 message HprApplyCouponRequest {
 	PassportInfo Passport=1;
@@ -419,7 +427,8 @@ message HprApplyCouponRequest {
 message HprApplyCouponResponse {
 	ResponseStatus Status = 1;
 	HprCoupon Coupon =3;
-	HprCartInput Cart=4;
+	HprCouponDisplayObject Coupon_Details =4;
+	HprCartInput Cart=5;
 }
 
 
@@ -440,12 +449,12 @@ message HprIdsRequest {
 }
 
  message HprCategoryModelListResponse{
-	repeated HprCategoryModel CategoryList =1;
+	repeated HprCategoryModel Category_List =1;
 	ResponseStatus Status = 2;
 }
 
 message HprCouponListResponse{
-	repeated HprCouponDisplayObject CouponList =1;
+	repeated HprCouponDisplayObject Coupon_List =1;
 	ResponseStatus Status = 2;
 }
  
@@ -453,8 +462,8 @@ message HprCouponListResponse{
 
  message HprCartFullItemAdditionInput {
 	google.protobuf.Int64Value Id = 1;
-	NprDecimalValue SelectedQty = 2;
-	HprFullItemAdditionChoiceInput SelectedChoice = 3;
+	NprDecimalValue Selected_Qty = 2;
+	HprFullItemAdditionChoiceInput Selected_Choice = 3;
 	NprDecimalValue Qty = 4;
 	string Value = 5;
 }
@@ -468,22 +477,22 @@ message HprCartFullItemInput {
 
 message HprCartFullItemOptionInput {
 	google.protobuf.Int64Value Id = 1;
-	NprDecimalValue SelectedQty = 2;
-	HprFullItemOptionChoiceInput SelectedChoice = 3;
+	NprDecimalValue Selected_Qty = 2;
+	HprFullItemOptionChoiceInput Selected_Choice = 3;
 	NprDecimalValue Qty = 4;
 	string Value = 5;
 }
 
 message HprCartInput {
 	repeated HprCartFullItemInput Items =1;
-	HprSelectedPickupOption SelectedPickupOption =2; 
+	HprSelectedPickupOption Selected_Pickup_Option =2; 
 	google.protobuf.StringValue Coupon =3;
 	HprCartShopModelInput Shop =4;
-	NprDecimalValue BasePrice =5;
-	NprDecimalValue TotalPrice =6;
-	NprDecimalValue DiscountAmount =7;
-	NprDecimalValue TotalAfterDiscount =8;
-	NprDecimalValue DeliveryAmount =9;
+	NprDecimalValue Base_Price =5;
+	NprDecimalValue Total_Price =6;
+	NprDecimalValue Discount_Amount =7;
+	NprDecimalValue Total_After_Discount =8;
+	NprDecimalValue Delivery_Amount =9;
 	google.protobuf.StringValue Coupon_Code_Applied=13;
 	string Lng =10;
 	string Lat =11;
@@ -497,46 +506,47 @@ message HprCartShopModelInput {
 
 message HprCategoryModel {
 	int64 Id =1;
-	google.protobuf.Int64Value ParentId =2;
-	google.protobuf.Int64Value GlobalCategoryId =3;
-	google.protobuf.BoolValue IsGlobalCategory =4;
-	string TitleEn =5;
-	string TitleAr =6;
+	google.protobuf.Int64Value Parent_Id =2;
+	google.protobuf.Int64Value Global_Category_Id =3;
+	google.protobuf.BoolValue Is_Global_Category =4;
+	string Title_En =5;
+	string Title_Ar =6;
 	google.protobuf.Int64Value Level =7;
-	string NodePath =8;
-	google.protobuf.Int64Value ShopId =9;
-	google.protobuf.BoolValue IsArchived =10;
+	string Node_Path =8;
+	google.protobuf.Int64Value Shop_Id =9;
+	google.protobuf.BoolValue Is_Archived =10;
 	google.protobuf.Int64Value Delivery_Distance_Meters =11; 
 }
 
 message HprChoices {
-	string NameEn =1;
-	string NameAr =2;
+	string Name_En =1;
+	string Name_Ar =2;
 	NprDecimalValue Price =3;
 	google.protobuf.Int64Value Id =4;
 }
 
 message HprCoupon {
-	bool IsCodeValid =1;
-	string Code =2;
-	NprDecimalValue DiscountAmount =3; 
+	bool Is_Code_Valid =1;
+	bool Is_Coupon_Available =2;
+	string Code =3;
+	NprDecimalValue Discount_Amount =4; 
 }
 
 message HprCouponDisplayObject {
-	string ShopId =1;
+	string Shop_Id =1;
 	string Id =2;
 	string Code =3;
-	string NameEn =4;
-	string NameAr =5;
+	string Name_En =4;
+	string Name_Ar =5;
 	HprCouponType Coupon_Type =6;
-	string DescriptionAr =7;
-	NprDecimalValue DiscountAmount =8;
-	NprDecimalValue TotalAmount =9;
-	NprDecimalValue AmountPerCustomer =10;
-	google.protobuf.Timestamp StartDate =11;
-	google.protobuf.BoolValue IsArchived =12;
-	google.protobuf.Timestamp EndDate =13;
-	string DescriptionEn =14;
+	string Description_Ar =7;
+	NprDecimalValue Discount_Amount =8;
+	NprDecimalValue Total_Amount =9;
+	NprDecimalValue Amount_Per_Customer =10;
+	google.protobuf.Timestamp Start_Date =11;
+	google.protobuf.BoolValue Is_Archived =12;
+	google.protobuf.Timestamp End_Date =13;
+	string Description_En =14;
 	
 }
 
@@ -548,33 +558,33 @@ enum HprCouponType {
 }
 
 message HprCreateCouponDto {
-	string ShopId =1;
+	string Shop_Id =1;
 	string Code =2;
-	string NameEn =3;
-	string NameAr =4;
+	string Name_En =3;
+	string Name_Ar =4;
 	HprCouponType Coupon_Type =5;
-	string DescriptionAr =6;
-	string DescriptionEn =7;
-	NprDecimalValue DiscountAmount =8;
-	NprDecimalValue TotalAmount =9;
-	NprDecimalValue AmountPerCustomer =10;
-	google.protobuf.Timestamp StartDate =11;
-	google.protobuf.Timestamp EndDate =12;
+	string Description_Ar =6;
+	string Description_En =7;
+	NprDecimalValue Discount_Amount =8;
+	NprDecimalValue Total_Amount =9;
+	NprDecimalValue Amount_Per_Customer =10;
+	google.protobuf.Timestamp Start_Date =11;
+	google.protobuf.Timestamp End_Date =12;
 	PassportInfo Passport =13;
 }
 
 message HprCreateUnitDto {
-	int64 ShopId =1;
-	string TitleEn =2;
-	string TitleAr =3;
-	google.protobuf.BoolValue IsArchived =4;
+	int64 Shop_Id =1;
+	string Title_En =2;
+	string Title_Ar =3;
+	google.protobuf.BoolValue Is_Archived =4;
 	PassportInfo Passport =5;
 	google.protobuf.Int64Value Id =6;
 }
 
 message HprCustomOptionsModel {
-	string TitleEn =1;
-	string TitleAr =2;
+	string Title_En =1;
+	string Title_Ar =2;
 	NprDecimalValue Price =3;
 	NprDecimalValue Qty =4;
 }
@@ -586,15 +596,15 @@ message HprFindShopInput {
 message HprFullItem {
 	int64 Id =1;
 	HprShopModel Shop =2;
-	string TitleEn =3;
-	string TitleAr =4;
-	string DescriptionEn =5;
-	string DescriptionAr =6;
+	string Title_En =3;
+	string Title_Ar =4;
+	string Description_En =5;
+	string Description_Ar =6;
 	NprDecimalValue Base_Price2 =7;
-	HprProductImage MainImg =8;
-	string UnitEn =9;
-	string UnitAr =10;
-	repeated HprProductImage OtherImages =11;
+	HprProductImage Main_Img =8;
+	string Unit_En =9;
+	string Unit_Ar =10;
+	repeated HprProductImage Other_Images =11;
 	repeated HprFullItemOption Options =12;
 	repeated HprFullItemAddition Additions =13;
 	repeated HprCategoryModel Category =14;
@@ -604,22 +614,22 @@ message HprFullItem {
 
 message HprFullItemAddition {
 	int64 Id = 1;
-	HprUiType UiType = 2;
+	HprUiType Ui_Type = 2;
 	bool Required = 3;
-	bool CanSpecifyQty = 4;
-	NprDecimalValue MinQty = 5;
-	NprDecimalValue MaxQty = 6;
-	NprDecimalValue FreeQty = 7;
-	NprDecimalValue UnitPrice = 8;
-	string TitleEn = 9;
-	string TitleAr = 10;
+	bool Can_Specify_Qty = 4;
+	NprDecimalValue Min_Qty = 5;
+	NprDecimalValue Max_Qty = 6;
+	NprDecimalValue Free_Qty = 7;
+	NprDecimalValue Unit_Price = 8;
+	string Title_En = 9;
+	string Title_Ar = 10;
 	repeated HprFullItemOptionChoice Choices = 11;
 	NprDecimalValue Tax_Percent=12;
 }
 
 enum HprUiType{
 	check =0;
-	dropDown =1;
+	drop_Down =1;
 	number =2;
 	text =3;
 }
@@ -632,15 +642,15 @@ message HprFullItemAdditionChoiceInput {
 
 message HprFullItemOption {
 	int64 Id =1;
-	HprUiType UiType =2;
+	HprUiType Ui_Type =2;
 	bool Required =3;
-	bool CanSpecifyQty =4;
-	NprDecimalValue MinQty =5;
-	NprDecimalValue MaxQty =6;
-	NprDecimalValue FreeQty =7;
-	NprDecimalValue UnitPrice =8;
-	string TitleEn =9;
-	string TitleAr =10;
+	bool Can_Specify_Qty =4;
+	NprDecimalValue Min_Qty =5;
+	NprDecimalValue Max_Qty =6;
+	NprDecimalValue Free_Qty =7;
+	NprDecimalValue Unit_Price =8;
+	string Title_En =9;
+	string Title_Ar =10;
 	repeated HprFullItemOptionChoice Choices =11;
 	NprDecimalValue Tax_Percent=12;
 }
@@ -648,8 +658,8 @@ message HprFullItemOption {
 message HprFullItemOptionChoice {
 	string Id =1;
 	NprDecimalValue Price =2;
-	string TitleEn =3;
-	string TitleAr =4;
+	string Title_En =3;
+	string Title_Ar =4;
 }
 
 message HprFullItemOptionChoiceInput {
@@ -660,38 +670,84 @@ message HprFullItemOptionChoiceInput {
 
 message HprGlobalCategory {
 	google.protobuf.Int64Value Id =1;
-	string TitleEn =2;
-	string TitleAr =3;
-	google.protobuf.Int64Value ParentId =4;
-	google.protobuf.BoolValue IsArchived =5; 
+	string Title_En =2;
+	string Title_Ar =3;
+	google.protobuf.Int64Value Parent_Id =4;
+	google.protobuf.BoolValue Is_Archived =5; 
 	PassportInfo Passport =8;
-	string DescriptionEn =9;
-	string DescriptionAr =10;
-	google.protobuf.Int64Value DeliveryDistanceMeters =11;
+	string Description_En =9;
+	string Description_Ar =10;
+	google.protobuf.Int64Value Delivery_Distance_Meters =11;
 
+}
+
+message HprShopCategoryCreateRequest {
+ 	string Title_En =2;
+	string Title_Ar =3;
+	int64 Parent_Id =4; 
+	PassportInfo Passport =8;
+	string Description_En =9;
+	string Description_Ar =10;  
+	google.protobuf.Int64Value Related_Global_Category_Id =11;
+	google.protobuf.BoolValue Is_Archived =12;
+}
+
+message HprShopCategoryCreateResponse {
+	ResponseStatus Status = 1;
+	HprShopCategory Shop_Category =2;
+}
+
+message HprShopCategoryUpdateRequest {
+	int64 Id =1;
+	string Title_En =2;
+	string Title_Ar =3; 
+	google.protobuf.BoolValue Is_Archived =5; 
+	PassportInfo Passport =8;
+	string Description_En =9;
+	string Description_Ar =10; 
+	google.protobuf.Int64Value Related_Global_Category_Id =11;
+}
+
+
+message HprShopCategoryUpdateResponse {
+	ResponseStatus Status = 1;
+	HprShopCategory Shop_Category =2;
+}
+
+
+message HprShopCategory {
+	int64 Id =1;
+	google.protobuf.Int64Value Parent_Id =2;
+	google.protobuf.Int64Value Global_Category_Id =3; 
+	string Title_En =5;
+	string Title_Ar =6;
+	google.protobuf.Int64Value Level =7;
+	string Node_Path =8;
+	google.protobuf.Int64Value Shop_Id =9;
+	google.protobuf.BoolValue Is_Archived =10; 
 }
 
 message HprImageModel {
 	int64 Id =1;
 	string Url =2;
-	string CaptionAr =3;
-	string CaptionEn =4;
-	bool IsDefault =5;
+	string Caption_Ar =3;
+	string Caption_En =4;
+	bool Is_Default =5;
 }
 
 message HprItemAddition {
 	string Id =1;
-	string ItemId =2;
-	string NameEn =3;
-	string NameAr =4;
-	HprUiType UiType =5;
+	string Item_Id =2;
+	string Name_En =3;
+	string Name_Ar =4;
+	HprUiType Ui_Type =5;
 	NprDecimalValue Price =6;
 	repeated HprChoices Choices =7; 
-	bool CanSpecifyQty =8;
-	NprDecimalValue MinQty =9;
-	NprDecimalValue MaxQty =10;
-	NprDecimalValue FreeQty =11;
-	google.protobuf.BoolValue IsArchived =12;
+	bool Can_Specify_Qty =8;
+	NprDecimalValue Min_Qty =9;
+	NprDecimalValue Max_Qty =10;
+	NprDecimalValue Free_Qty =11;
+	google.protobuf.BoolValue Is_Archived =12;
 	bool Required =13;
 	PassportInfo Passport =14;
 	NprDecimalValue Tax_Percent =15;
@@ -699,35 +755,35 @@ message HprItemAddition {
 
 message HprItemImage {
 	string Id =1;
-	string ItemId =2;
-	string ImageUrl =3;
-	string NameAr =4;
-	string NameEn =5;
-	google.protobuf.BoolValue IsArchived =6;
+	string Item_Id =2;
+	string Image_Url =3;
+	string Name_Ar =4;
+	string Name_En =5;
+	google.protobuf.BoolValue Is_Archived =6;
 	PassportInfo Passport =7;
 }
 
 message HprItemListModel {
 	string Id =1;
-	string TitleEn =2;
-	string TitleAr =3;
-	string DescriptionEn =4;
-	string DescriptionAr =5;
+	string Title_En =2;
+	string Title_Ar =3;
+	string Description_En =4;
+	string Description_Ar =5;
 	NprDecimalValue Base_Price2 =6;
-	string UnitEn =7;
-	string UnitAr =8;
+	string Unit_En =7;
+	string Unit_Ar =8;
 	string Img =9;
 	google.protobuf.BoolValue Is_Out_Of_Stock =10;
 	NprDecimalValue Special_Price =11;
-
+	google.protobuf.Int64Value Category_Id =12; 
 }
 
 message HprItemModel {
 	int64 Id =1;
-	string TitleEn =2;
-	string TitleAr =3;
-	string DescriptionEn =4;
-	string DescriptionAr =5;
+	string Title_En =2;
+	string Title_Ar =3;
+	string Description_En =4;
+	string Description_Ar =5;
 	NprDecimalValue Base_Price2 =6;
 	repeated HprUnitModel Units =7;
 	repeated HprImageModel Images =8;
@@ -736,17 +792,17 @@ message HprItemModel {
 
 message HprItemOption {
 	string Id =1;
-	string ItemId =2;
-	string NameEn =3;
-	string NameAr =4;
-	HprUiType UiType =5;
+	string Item_Id =2;
+	string Name_En =3;
+	string Name_Ar =4;
+	HprUiType Ui_Type =5;
 	NprDecimalValue Price =6;
 	repeated HprChoices Choices =7;
-	bool CanSpecifyQty =8;
-	NprDecimalValue MinQty =9;
-	NprDecimalValue MaxQty =10;
-	NprDecimalValue FreeQty =11;
-	google.protobuf.BoolValue IsArchived =12;
+	bool Can_Specify_Qty =8;
+	NprDecimalValue Min_Qty =9;
+	NprDecimalValue Max_Qty =10;
+	NprDecimalValue Free_Qty =11;
+	google.protobuf.BoolValue Is_Archived =12;
 	bool Required =13;
 	PassportInfo Passport =14;
 	NprDecimalValue Tax_Percent =15;
@@ -755,38 +811,38 @@ message HprItemOption {
 
 message HprOrder {
 	string Id =1;
-	string ShopId =2;
+	string Shop_Id =2;
 	string Customer =3;
 	repeated HprProduct Items =4; 
 	NprDecimalValue Total =6;
-	string OrderNumber =7;
-	string ShippingMethod =8;
-	NprDecimalValue ShippingAmount =9;
+	string Order_Number =7;
+	string Shipping_Method =8;
+	NprDecimalValue Shipping_Amount =9;
 	HprShopModel Shop =10;
-	NprDecimalValue BasePrice =11;
-	NprDecimalValue TotalPrice =12;
-	NprDecimalValue TotalAfterDiscount =13;
-	NprDecimalValue DiscountAmount =14;
-	google.protobuf.Timestamp DateCreated =15;
-	google.protobuf.BoolValue IsArchived =16;
+	NprDecimalValue Base_Price =11;
+	NprDecimalValue Total_Price =12;
+	NprDecimalValue Total_After_Discount =13;
+	NprDecimalValue Discount_Amount =14;
+	google.protobuf.Timestamp Date_Created =15;
+	google.protobuf.BoolValue Is_Archived =16;
 	HprShopLocation Location =17;
 }
 
 message HprOrderCart {
 	int64 Id =1;
 	repeated HprOrderFullItem Items =2;
-	HprShopModel ShopData =3;
-	NprDecimalValue BasePrice =4;
-	NprDecimalValue TotalPrice =5;
-	NprDecimalValue DiscountAmount =6;
-	NprDecimalValue TotalAfterDiscount =7;
-	NprDecimalValue DeliveryAmount =8;
+	HprShopModel Shop_Data =3;
+	NprDecimalValue Base_Price =4;
+	NprDecimalValue Total_Price =5;
+	NprDecimalValue Discount_Amount =6;
+	NprDecimalValue Total_After_Discount =7;
+	NprDecimalValue Delivery_Amount =8;
 	string Lng =9;
 	string Lat =10;
-	HprSelectedPickupOption SelectedPickupOption =11; 
+	HprSelectedPickupOption Selected_Pickup_Option =11; 
 	google.protobuf.BoolValue Hyper_Delivery =12;
-	int64 PreparationTime =13;
-	HprSelectedDeliveryProvider SelectedDeliveryProvider =14;
+	int64 Preparation_Time =13;
+	HprSelectedDeliveryProvider Selected_Delivery_Provider =14;
 	HprShopLocation Location=15;
 	repeated HprOrderCartTax Taxes=16;
 	NprDecimalValue Total_Taxes =17; 
@@ -799,14 +855,14 @@ message HprOrderCartTax {
 
 message HprOrderFullItem {
 	int64 Id =1;
-	string TitleEn =2;
-	string TitleAr =3;
-	string DescriptionEn =4;
-	string DescriptionAr =5;
+	string Title_En =2;
+	string Title_Ar =3;
+	string Description_En =4;
+	string Description_Ar =5;
 	NprDecimalValue Base_Price2 =6;
-	HprOrderProductImage MainImg =7;
-	string UnitEn =8;
-	string UnitAr =9;
+	HprOrderProductImage Main_Img =7;
+	string Unit_En =8;
+	string Unit_Ar =9;
 	repeated HprOrderFullItemOption Options =10;
 	repeated HprOrderFullItemAddition Additions =11;
 	NprDecimalValue Qty =12;
@@ -816,12 +872,12 @@ message HprOrderFullItem {
 
 message HprOrderFullItemAddition {
 	int64 Id =1;
-	HprUiType UiType =2;
-	NprDecimalValue UnitPrice =3;
-	string TitleEn =4;
-	string TitleAr =5;
-	NprDecimalValue SelectedQty =6;
-	HprOrderFullItemOptionChoice SelectedChoice =7;
+	HprUiType Ui_Type =2;
+	NprDecimalValue Unit_Price =3;
+	string Title_En =4;
+	string Title_Ar =5;
+	NprDecimalValue Selected_Qty =6;
+	HprOrderFullItemOptionChoice Selected_Choice =7;
 	NprDecimalValue Qty =8;
 	string Value =9;
 	NprDecimalValue Tax_Percent =10;
@@ -829,12 +885,12 @@ message HprOrderFullItemAddition {
 
 message HprOrderFullItemOption {
 	int64 Id =1;
-	HprUiType UiType =2;
-	NprDecimalValue UnitPrice =3;
-	string TitleEn =4;
-	string TitleAr =5;
-	NprDecimalValue SelectedQty =6;
-	HprOrderFullItemOptionChoice SelectedChoice =7;
+	HprUiType Ui_Type =2;
+	NprDecimalValue Unit_Price =3;
+	string Title_En =4;
+	string Title_Ar =5;
+	NprDecimalValue Selected_Qty =6;
+	HprOrderFullItemOptionChoice Selected_Choice =7;
 	NprDecimalValue Qty =8;
 	string Value =9;
 	NprDecimalValue Tax_Percent =10;
@@ -843,8 +899,8 @@ message HprOrderFullItemOption {
 message HprOrderFullItemOptionChoice {
 	string Id =1;
 	NprDecimalValue Price =2;
-	string TitleEn =3;
-	string TitleAr =4;
+	string Title_En =3;
+	string Title_Ar =4;
 	string Value =5;
 	NprDecimalValue Qty =6;
 }
@@ -855,21 +911,21 @@ message HprOrderProductImage {
 
 message HprFullProduct {
 	string Id =1;
-	string ShopId =2;
-	string TitleEn =3;
-	string TitleAr =4;
-	string DescriptionEn =5;
-	string DescriptionAr =6;
+	string Shop_Id =2;
+	string Title_En =3;
+	string Title_Ar =4;
+	string Description_En =5;
+	string Description_Ar =6;
 	NprDecimalValue Base_Price2 =7;
-	HprItemImage MainImg =8;
+	HprItemImage Main_Img =8;
 	HprProductUnitData Unit =9; 
-	repeated HprItemImage OtherImages =11;
+	repeated HprItemImage Other_Images =11;
 	HprCategoryModel Category =12;
 	string Barcode =13;
-	HprProductPrepareTime PrepareTime =14;
+	HprProductPrepareTime Prepare_Time =14;
 	repeated HprItemOption Options =16; 
 	repeated HprItemAddition Additions =18;
-	google.protobuf.BoolValue IsArchived =19;
+	google.protobuf.BoolValue Is_Archived =19;
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21;
 	NprDecimalValue Special_Price =22;
@@ -878,40 +934,41 @@ message HprFullProduct {
 
 message HprProduct {
 	string Id =1;
-	string ShopId =2;
-	string TitleEn =3;
-	string TitleAr =4;
-	string DescriptionEn =5;
-	string DescriptionAr =6;
+	string Shop_Id =2;
+	string Title_En =3;
+	string Title_Ar =4;
+	string Description_En =5;
+	string Description_Ar =6;
 	NprDecimalValue Base_Price2 =7;
-	HprItemImage MainImg =8;
+	HprItemImage Main_Img =8;
 	HprProductUnitData Unit =9; 
-	repeated HprItemImage OtherImages =11;
+	repeated HprItemImage Other_Images =11;
 	repeated HprCategoryModel Category =12;
 	string Barcode =13;
-	HprProductPrepareTime PrepareTime =14;
+	HprProductPrepareTime Prepare_Time =14;
 	repeated HprItemOption Options =16; 
 	repeated HprItemAddition Additions =18;
-	google.protobuf.BoolValue IsArchived =19;
+	google.protobuf.BoolValue Is_Archived =19;
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21; 
 	NprDecimalValue Special_Price =22;
+	google.protobuf.Int64Value Category_Id =32; 
 }
 
 
 message HprProductAddRequest {
-	string ShopId =2;
-	string TitleEn =3;
-	string TitleAr =4;
-	string DescriptionEn =5;
-	string DescriptionAr =6;
+	string Shop_Id =2;
+	string Title_En =3;
+	string Title_Ar =4;
+	string Description_En =5;
+	string Description_Ar =6;
 	NprDecimalValue Base_Price2 =7;
-	HprItemImage MainImg =8;
-	int64 MainUnit =9;  
+	HprItemImage Main_Img =8;
+	int64 Main_Unit =9;  
 	int64 Category_Id =12;
 	string Barcode =13;
-	HprProductPrepareTime PrepareTime =14;
-	google.protobuf.BoolValue IsArchived =19;
+	HprProductPrepareTime Prepare_Time =14;
+	google.protobuf.BoolValue Is_Archived =19;
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21;
 	NprDecimalValue Special_Price =22;
@@ -921,18 +978,18 @@ message HprProductAddRequest {
 
 message HprUpdateProductDto {
 	string Id=1;
-	string ShopId =2;
-	string TitleEn =3;
-	string TitleAr =4;
-	string DescriptionEn =5;
-	string DescriptionAr =6;
+	string Shop_Id =2;
+	string Title_En =3;
+	string Title_Ar =4;
+	string Description_En =5;
+	string Description_Ar =6;
 	NprDecimalValue Base_Price2 =7;
-	HprItemImage MainImg =8;
-	int64 MainUnit =9;  
+	HprItemImage Main_Img =8;
+	int64 Main_Unit =9;  
 	int64 Category_Id =12;
 	string Barcode =13;
-	HprProductPrepareTime PrepareTime =14;
-	google.protobuf.BoolValue IsArchived =19;
+	HprProductPrepareTime Prepare_Time =14;
+	google.protobuf.BoolValue Is_Archived =19;
 	PassportInfo Passport =20;
 	google.protobuf.BoolValue Is_Out_Of_Stock =21;
 	NprDecimalValue Special_Price =22;
@@ -947,9 +1004,9 @@ message HprProductPrepareTime {
 }
 
 message HprProductUnitData {
-	string UnitEn =1;
-	string UnitAr =2;
-	string UnitId =3;
+	string Unit_En =1;
+	string Unit_Ar =2;
+	string Unit_Id =3;
 }
 
 message HprProductImage {
@@ -959,60 +1016,68 @@ message HprProductImage {
 message HprShopListModel {
 	string Id =1;
 	string Logo =2;
-	string TitleAr =3;
-	string TitleEn =4;
+	string Title_Ar =3;
+	string Title_En =4;
 	repeated HprCategoryModel Categories =5;
-	int64 GlobalCategoryId =6;
-	NprDecimalValue PageNumber =7;
-	NprDecimalValue QtyPerPage =8;
-	string SearchText =9;
+	int64 Global_Category_Id =6;
+	NprDecimalValue Page_Number =7;
+	NprDecimalValue Qty_Per_Page =8;
+	string Search_Text =9;
 	string Lng = 10;
 	string Lat =11;
-	HprDefaultPickupOption PickupOption =12;
-	int64 MaxOrderAmount =13;
-	int64 MaxOrderQuantity =14; 
+	HprDefaultPickupOption Pickup_Option =12;
+	int64 Max_Order_Amount =13;
+	int64 Max_Order_Quantity =14; 
 	google.protobuf.BoolValue Is_Available=15;
-	repeated HprCategoryModel L1Categories =16;
-	repeated HprCategoryModel L2Categories =17;
+	repeated HprCategoryModel L1_Categories =16;
+	repeated HprCategoryModel L2_Categories =17;
 	int64 Delivery_Estimation= 18;
+	int64 Delivery_Estimation_To= 19;
+	int64 Average_Prepare_Time_From= 20;
+	int64 Average_Prepare_Time_To= 21;
+	
 }
 
 message HprShopLocation {
 	int64 Id =1;
 	google.protobuf.StringValue Lat =3;
 	google.protobuf.StringValue Lng =4;
-	int64 ShopId =5;
-	google.protobuf.BoolValue IsArchived =6;
+	int64 Shop_Id =5;
+	google.protobuf.BoolValue Is_Archived =6;
 	PassportInfo Passport =7;
-	string NameAr =8;
-	string NameEn =9;
+	string Name_Ar =8;
+	string Name_En =9;
 }
 
 message HprShopModel {
 	int64 Id =1;
-	string TitleEn =2;
-	string TitleAr =3;
-	int64 MaxOrderAmount =4;
-	int64 MaxOrderQuantity =5;
+	string Title_En =2;
+	string Title_Ar =3;
+	int64 Max_Order_Amount =4;
+	int64 Max_Order_Quantity =5;
 	string Logo =6;
 	repeated HprCategoryModel Categories =7;
-	HprDefaultPickupOption PickupOptions =8; 
-	NprDecimalValue DELIVERY_FEES_PER_ORDER =9;
+	HprDefaultPickupOption Pickup_Options =8; 
+	NprDecimalValue Delivery_Fees_Per_Order =9;
 	google.protobuf.BoolValue Is_Available =10;
+	google.protobuf.Int64Value Average_Prepare_Time_From = 11;
+	google.protobuf.Int64Value Average_Prepare_Time_To = 12;
 }
 
 message HprShopSettings {
-	int64 ShopId =1;
-	int64 MaxOrderPerLine =3;
-	int64 MaxOrderAmount =4;
-	HprDefaultPickupOption DefaultPickupOption =5;
-	HprDefaultDeliveryProvider DefaultDeliveryProvider =6;
-	NprDecimalValue DeliveryCostPerOrder =7;
+	int64 Shop_Id =1;
+	int64 Max_Order_Per_Line =3;
+	int64 Max_Order_Amount =4;
+	HprDefaultPickupOption Default_Pickup_Option =5;
+	HprDefaultDeliveryProvider Default_Delivery_Provider =6;
+	NprDecimalValue Delivery_Cost_Per_Order =7;
 	repeated HprShopLocation Locations =8;
 	google.protobuf.StringValue Logo =9;
-	string NameAr =10;
-	string NameEn =11;
+	string Name_Ar =10;
+	string Name_En =11;
 	google.protobuf.BoolValue Is_Available =12;
+	google.protobuf.Int64Value Average_Prepare_Time_From = 13;
+	google.protobuf.Int64Value Average_Prepare_Time_To = 14;
 }
 
 enum HprDefaultPickupOption {
@@ -1039,73 +1104,73 @@ enum HprSelectedDeliveryProvider{
 
 message HprUnitModel {
 	int64 Id =1;
-	string TitleEn =2;
-	string TitleAr =3;
-	bool IsDefault =4;
+	string Title_En =2;
+	string Title_Ar =3;
+	bool Is_Default =4;
 	NprDecimalValue Multiplier =5;
-	int64 ShopId =6;
-	google.protobuf.BoolValue IsArchived =7;
+	int64 Shop_Id =6;
+	google.protobuf.BoolValue Is_Archived =7;
 }
 
 message HprUpdateAdditionsDto { 
 	string Id =1;
-	string ItemId =2;
-	string NameEn =3;
-	string NameAr =4;
-	HprUiType UiType =5;
+	string Item_Id =2;
+	string Name_En =3;
+	string Name_Ar =4;
+	HprUiType Ui_Type =5;
 	NprDecimalValue Price =6;
 	repeated HprChoices Choices =7; 
-	bool CanSpecifyQty =8;
-	NprDecimalValue MinQty =9;
-	NprDecimalValue MaxQty =10;
-	NprDecimalValue FreeQty =11;
-	google.protobuf.BoolValue IsArchived =12;
+	bool Can_Specify_Qty =8;
+	NprDecimalValue Min_Qty =9;
+	NprDecimalValue Max_Qty =10;
+	NprDecimalValue Free_Qty =11;
+	google.protobuf.BoolValue Is_Archived =12;
 	bool Required =13;
 	PassportInfo Passport =14; 
 	NprDecimalValue Tax_Percent=15;
 }
 
 message HprUpdateCouponDto {
-	string ShopId =1;
+	string Shop_Id =1;
 	string Code =2;
-	string NameEn =3;
-	string NameAr =4;
+	string Name_En =3;
+	string Name_Ar =4;
 	HprCouponType Coupon_Type =5;
-	string DescriptionAr =6;
-	string DescriptionEn =7;
-	NprDecimalValue DiscountAmount =8;
-	NprDecimalValue TotalAmount =9;
-	NprDecimalValue AmountPerCustomer =10;
-	google.protobuf.Timestamp StartDate =11;
-	google.protobuf.Timestamp EndDate = 12;
+	string Description_Ar =6;
+	string Description_En =7;
+	NprDecimalValue Discount_Amount =8;
+	NprDecimalValue Total_Amount =9;
+	NprDecimalValue Amount_Per_Customer =10;
+	google.protobuf.Timestamp Start_Date =11;
+	google.protobuf.Timestamp End_Date = 12;
 	google.protobuf.Int64Value Id =13;
 	PassportInfo Passport =14;
 }
 
 message HprUpdateGlobalCategoryDto {
 	google.protobuf.Int64Value Id =1;
-	string TitleEn =2;
-	string TitleAr =3; 
-	google.protobuf.BoolValue IsArchived =5; 
+	string Title_En =2;
+	string Title_Ar =3; 
+	google.protobuf.BoolValue Is_Archived =5; 
 	PassportInfo Passport =8;
-	string DescriptionEn =9;
-	string DescriptionAr =10;
-	google.protobuf.Int64Value DeliveryDistanceMeters =11;
+	string Description_En =9;
+	string Description_Ar =10;
+	google.protobuf.Int64Value Delivery_Distance_Meters =11;
 }
 
 message HprUpdateOptionsDto {
 	string Id =1;
-	string ItemId =2;
-	string NameEn =3;
-	string NameAr =4;
-	HprUiType UiType =5;
+	string Item_Id =2;
+	string Name_En =3;
+	string Name_Ar =4;
+	HprUiType Ui_Type =5;
 	NprDecimalValue Price =6;
 	repeated HprChoices Choices =7;
-	bool CanSpecifyQty =8;
-	NprDecimalValue MinQty =9;
-	NprDecimalValue MaxQty =10;
-	NprDecimalValue FreeQty =11;
-	google.protobuf.BoolValue IsArchived =12;
+	bool Can_Specify_Qty =8;
+	NprDecimalValue Min_Qty =9;
+	NprDecimalValue Max_Qty =10;
+	NprDecimalValue Free_Qty =11;
+	google.protobuf.BoolValue Is_Archived =12;
 	bool Required =13;
 	PassportInfo Passport =14;
 	NprDecimalValue Tax_Percent=15;
@@ -1113,24 +1178,26 @@ message HprUpdateOptionsDto {
 
 
 message HprUpdateStoreSettingDto {
-	int64 ShopId =1;
-	int64 MaxOrderPerLine =3;
-	int64 MaxOrderAmount =4;
-	HprDefaultPickupOption DefaultPickupOption =5;
-	HprDefaultDeliveryProvider DefaultDeliveryProvider =6;
-	NprDecimalValue DeliveryCostPerOrder =7;
+	int64 Shop_Id =1;
+	int64 Max_Order_Per_Line =3;
+	int64 Max_Order_Amount =4;
+	HprDefaultPickupOption Default_Pickup_Option =5;
+	HprDefaultDeliveryProvider Default_Delivery_Provider =6;
+	NprDecimalValue Delivery_Cost_Per_Order =7;
 	repeated HprShopLocation Locations =8;
 	PassportInfo Passport =9;
-	string NameAr =10;
-	string NameEn =11;
+	string Name_Ar =10;
+	string Name_En =11;
 	google.protobuf.StringValue Logo =12;
+	google.protobuf.Int64Value Average_Prepare_Time_From = 13;
+	google.protobuf.Int64Value Average_Prepare_Time_To = 14;
 }
 
 message HprUpdateUnitDto {
 	google.protobuf.Int64Value Id =1;
-	int64 ShopId =2;
-	string TitleEn =3;
-	string TitleAr =4;
-	google.protobuf.BoolValue IsArchived =5;
+	int64 Shop_Id =2;
+	string Title_En =3;
+	string Title_Ar =4;
+	google.protobuf.BoolValue Is_Archived =5;
 	PassportInfo Passport =6;
 }
