@@ -705,7 +705,8 @@ message HprShopCategoryUpdateRequest {
 	PassportInfo Passport =8;
 	string Description_En =9;
 	string Description_Ar =10; 
-	google.protobuf.Int64Value Related_Global_Category_Id =11;
+	int64 Order_Number =11;
+	google.protobuf.Int64Value Related_Global_Category_Id =12;
 }
 
 
@@ -1155,7 +1156,8 @@ message HprUpdateGlobalCategoryDto {
 	PassportInfo Passport =8;
 	string Description_En =9;
 	string Description_Ar =10;
-	google.protobuf.Int64Value Delivery_Distance_Meters =11;
+	int64 Order_Number =11;
+	google.protobuf.Int64Value Delivery_Distance_Meters =12;
 }
 
 message HprUpdateOptionsDto {
