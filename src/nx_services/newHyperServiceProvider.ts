@@ -63,7 +63,8 @@ import {
     HprShopCategoryCreateResponse,
     HprShopCategoryCreateRequest,
     HprShopCategoryUpdateRequest,
-    HprShopCategoryUpdateResponse
+    HprShopCategoryUpdateResponse,
+    HprCloneEntityDataRequest
 } from '../nx_types/erp/acct2_pb';
 import { NprRecordAddResponse, NprRecordUpdateResponse } from '../nx_types/erp/acct_pb';
 
@@ -1017,6 +1018,24 @@ export class newHyperServiceProvider {
             const client = this.getNxNewHyperServicesClient();
 
             client.removeShopCategory(hprIDRequest, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    /**Clones an entity items to a specific entity
+     * @param hprCloneEntityDataRequest
+     * @returns result status
+     */
+    public cloneEntity(hprCloneEntityDataRequest: HprCloneEntityDataRequest): Promise<ResponseStatus> {
+        return new Promise<ResponseStatus>((resolve, reject) => {
+            const client = this.getNxNewHyperServicesClient();
+
+            client.cloneEntityData(hprCloneEntityDataRequest, (err, result) => {
                 if (err) {
                     reject(err);
                 } else {

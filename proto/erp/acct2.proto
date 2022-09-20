@@ -120,7 +120,7 @@ service NxNewHyperServices {
 	rpc CreateShopCategory(HprShopCategoryCreateRequest) returns (HprShopCategoryCreateResponse); 
 	rpc UpdateShopCategory(HprShopCategoryUpdateRequest) returns (HprShopCategoryUpdateResponse); 
 	rpc RemoveShopCategory(HprIDRequest) returns (ResponseStatus); 
-
+	rpc CloneEntityData(HprCloneEntityDataRequest) returns (ResponseStatus);
 
 	rpc CreateGlobalCategory(HprGlobalCategory) returns (NprRecordAddResponse); 
 	rpc FindAllGlobalCategory(HprOptionalIDRequest) returns (HprCategoryModelListResponse);
@@ -690,6 +690,10 @@ message HprShopCategoryCreateRequest {
 	string Description_Ar =10;  
 	google.protobuf.Int64Value Related_Global_Category_Id =11;
 	google.protobuf.BoolValue Is_Archived =12;
+}
+message HprCloneEntityDataRequest{
+	PassportInfo Passport =1;
+	int64 Target_Entity_Id=2;
 }
 
 message HprShopCategoryCreateResponse {
