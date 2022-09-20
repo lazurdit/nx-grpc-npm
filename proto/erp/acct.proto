@@ -4058,9 +4058,7 @@ package NxServer;
 	    google.protobuf.Int32Value Max_Items_Per_Order = 16;
 	    NprDecimalValue Delivery_Cost_Per_Order = 17; 
     }
-
-     
-
+ 
     message NprEntityAddRequest{ 
         repeated NprEntityAddTranslation Translations =3;
         string Temp_Id =6;
@@ -4071,7 +4069,8 @@ package NxServer;
 		google.protobuf.Int32Value Max_Qty_Per_Line = 15;
 	    google.protobuf.Int32Value Max_Items_Per_Order = 16;
 	    NprDecimalValue Delivery_Cost_Per_Order = 17; 
-        bool Is_Available = 18;
+		google.protobuf.BoolValue Is_Template=18;
+        bool Is_Available = 19;
     }
 
     message NprEntityAddTranslation {

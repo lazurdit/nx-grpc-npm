@@ -292,6 +292,7 @@ service NxNewHyperServices {
 		bool Is_Available=12;
 		google.protobuf.Int64Value Average_Prepare_Time_From = 13;
 		google.protobuf.Int64Value Average_Prepare_Time_To = 14;
+		google.protobuf.BoolValue Is_Template =15;
 
 	} 
 
@@ -1067,6 +1068,7 @@ message HprShopModel {
 	google.protobuf.BoolValue Is_Available =10;
 	google.protobuf.Int64Value Average_Prepare_Time_From = 11;
 	google.protobuf.Int64Value Average_Prepare_Time_To = 12;
+	google.protobuf.BoolValue Is_Template = 13;
 }
 
 message HprShopSettings {
@@ -1083,6 +1085,7 @@ message HprShopSettings {
 	google.protobuf.BoolValue Is_Available =12;
 	google.protobuf.Int64Value Average_Prepare_Time_From = 13;
 	google.protobuf.Int64Value Average_Prepare_Time_To = 14;
+	google.protobuf.BoolValue Is_Template =15;
 }
 
 enum HprDefaultPickupOption {
@@ -1197,6 +1200,7 @@ message HprUpdateStoreSettingDto {
 	google.protobuf.StringValue Logo =12;
 	google.protobuf.Int64Value Average_Prepare_Time_From = 13;
 	google.protobuf.Int64Value Average_Prepare_Time_To = 14;
+	google.protobuf.BoolValue Is_Template = 15;
 }
 
 message HprUpdateUnitDto {
