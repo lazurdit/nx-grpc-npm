@@ -169,6 +169,7 @@ service NxNewHyperServices {
 	rpc FindManyShopListByShopId(HprFindManyShopListByShopIdRequest) returns (HprShopListModelListResponse) ;  
 	rpc SetShopAvailability(HprSetShopAvailabilityRequest) returns (HprSetShopAvailabilityResponse) ; 
 
+	rpc GetHomePageData(HprShopSearchRequest) returns (HprHomePageDataResponse) ; 
 	rpc SearchShops(HprShopSearchRequest) returns (HprShopListModelListResponse) ; 
 	rpc SearchItems(HprItemSearchRequest) returns (HprItemListModelListResponse) ;
 	rpc SearchProducts(HprItemSearchRequest) returns (HprProductListResponse) ; 
@@ -365,7 +366,21 @@ message HprShopListModelListResponse{
 	int64 total_Items = 2;
 	ResponseStatus Status = 3;
 }
- 
+message HprHomePageDataResponse{
+	repeated HprHprHomePageDataItem Data_Items =1;
+	int64 total_Items = 2;
+	ResponseStatus Status = 3;
+}
+
+message HprHprHomePageDataItem { 
+	string Id =1;
+	string Logo =2;
+	string Title_Ar =3;
+	string Title_En =4;   
+	google.protobuf.BoolValue Is_Available=5;  
+	google.protobuf.BoolValue Has_Offer=6;  
+}
+
 message HprShopModelListResponse{
 	repeated HprShopModel Shop_Models =1;
 	int64 total_Items = 2;

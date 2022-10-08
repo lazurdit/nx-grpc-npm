@@ -64,7 +64,8 @@ import {
     HprShopCategoryCreateRequest,
     HprShopCategoryUpdateRequest,
     HprShopCategoryUpdateResponse,
-    HprCloneEntityDataRequest
+    HprCloneEntityDataRequest,
+    HprHomePageDataResponse
 } from '../nx_types/erp/acct2_pb';
 import { NprRecordAddResponse, NprRecordUpdateResponse } from '../nx_types/erp/acct_pb';
 
@@ -818,6 +819,20 @@ export class newHyperServiceProvider {
             const client = this.getNxNewHyperServicesClient();
 
             client.searchShops(shopSearchRequest, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+    }
+
+    public getHomePageData(shopSearchRequest: HprShopSearchRequest): Promise<HprHomePageDataResponse> {
+        return new Promise<HprHomePageDataResponse>((resolve, reject) => {
+            const client = this.getNxNewHyperServicesClient();
+
+            client.getHomePageData(shopSearchRequest, (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
