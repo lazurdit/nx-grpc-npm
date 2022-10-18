@@ -291,8 +291,6 @@ package NxServer;
         repeated NprItemNodeSpecificationEntry Specifications =20;
     }
 
-
-
     enum NprItemNodeUpdateAvatarStatus{
         No_Change =0;
         Removed =1;
@@ -306,7 +304,6 @@ package NxServer;
             string Notes =6;
     }
 
-	
     message NprItemNodeAddRequest{ 
         NprItemNodeTypes Node_Type =1; 
         NprSuspectNumber Number =2;
@@ -442,7 +439,11 @@ package NxServer;
            google.protobuf.Int64Value Number_Tag2 =49; 
 		   bool Is_Archived =50; 
            repeated NprItemNodeLink Links =51; 
-	       google.protobuf.BoolValue Is_Out_Of_Stock =52;
+	       google.protobuf.BoolValue Is_Out_Of_Stock =52; 
+	       google.protobuf.Int64Value Node_Order =53;
+	
+	
+		
     }
     
     message NprSuspectNumberResponse {
@@ -644,8 +645,6 @@ package NxServer;
 
     }
 
-
-
     enum NprMediaTypes { 
         Image =0;
     }
@@ -716,8 +715,6 @@ package NxServer;
         FileData Attachment_Data =7;
         PassportInfo Passport =8; 
     }
-
-
 
     enum NprAttachmentTypes { 
         File =0;
@@ -862,8 +859,6 @@ package NxServer;
         PassportInfo Passport =17;
     }
 
-
-     
     message NprMeasurementUnitDeleteRequest{
         PassportInfo Passport =1;
         int64 Measurement_Unit_Id_Required =3;
@@ -1107,8 +1102,6 @@ package NxServer;
         PassportInfo Passport =17;
     }
 
-
-     
     message NprTaxCategoryDeleteRequest{
         PassportInfo Passport =1;
         int64 Tax_Category_Id_Required =3;
@@ -1218,8 +1211,6 @@ package NxServer;
         PassportInfo Passport =17;
     }
 
-
-     
     message NprFeeDeleteRequest{
         PassportInfo Passport =1;
         int64 Fee_Id_Required =3;
@@ -1290,8 +1281,6 @@ package NxServer;
         PassportInfo Passport =17;
     }
 
-
-     
     message NprFeeCategoryDeleteRequest{
         PassportInfo Passport =1;
         int64 Fee_Category_Id_Required =3;
@@ -1401,8 +1390,6 @@ package NxServer;
         PassportInfo Passport =17;
     }
 
-
-     
     message NprDepositDeleteRequest{
         PassportInfo Passport =1;
         int64 Deposit_Id_Required =3;
@@ -1473,8 +1460,6 @@ package NxServer;
         PassportInfo Passport =17;
     }
 
-
-     
     message NprDepositCategoryDeleteRequest{
         PassportInfo Passport =1;
         int64 Deposit_Category_Id_Required =3;
@@ -1496,7 +1481,6 @@ package NxServer;
         rpc RemoveEntityDefault (NprSellPriceJournalRemoveEntityDefaultRequest) returns (ResponseStatus); 
     }
 
-    
     message NprSellPriceJournalSetEntityDefaultRequest {
         PassportInfo Passport =1;
         int64 Sell_Price_Journal_Id =2;
@@ -1559,8 +1543,6 @@ package NxServer;
         PassportInfo Passport =9;
     }
 
-
-     
     message NprSellPriceJournalDeleteRequest{
         PassportInfo Passport =1;
         int64 Sell_Price_Journal_Id_Required =3;
@@ -1585,7 +1567,6 @@ package NxServer;
         rpc RemoveEntityDefault (NprBuyPriceJournalRemoveEntityDefaultRequest) returns (ResponseStatus); 
     }
 
-    
     message NprBuyPriceJournalSetEntityDefaultRequest {
         PassportInfo Passport =1;
         int64 Buy_Price_Journal_Id =2;
@@ -1648,8 +1629,6 @@ package NxServer;
         PassportInfo Passport =9;
     }
 
-
-     
     message NprBuyPriceJournalDeleteRequest{
         PassportInfo Passport =1;
         int64 Buy_Price_Journal_Id_Required =3;
@@ -1733,8 +1712,6 @@ package NxServer;
         PassportInfo Passport =9;
     }
 
-
-     
     message NprTaxJournalDeleteRequest{
         PassportInfo Passport =1;
         int64 Tax_Journal_Id_Required =3;
@@ -1818,8 +1795,6 @@ package NxServer;
         PassportInfo Passport =9;
     }
 
-
-     
     message NprFeeJournalDeleteRequest{
         PassportInfo Passport =1;
         int64 Fee_Journal_Id_Required =3;
@@ -1903,8 +1878,6 @@ package NxServer;
         PassportInfo Passport =9;
     }
 
-
-     
     message NprDepositJournalDeleteRequest{
         PassportInfo Passport =1;
         int64 Deposit_Journal_Id_Required =3;
@@ -2033,8 +2006,6 @@ package NxServer;
         PassportInfo Passport =17;
     }
 
-
-     
     message NprBranchDeleteRequest{
         PassportInfo Passport =1;
         int64 Branch_Id_Required =3;
@@ -2052,8 +2023,6 @@ package NxServer;
         repeated NprBranchFeeJournal Fee_Journals=10; 
         PassportInfo Passport =17;
     }
-
-
 
     message  NprBranchBuyPriceJournal {
         int64 Id =1;
@@ -2188,8 +2157,6 @@ package NxServer;
 
     }
 
-
-     
     message NprAccountNodeAddRequest{ 
         NprAccountNodeTypes Node_Type =1;
         string Name =2;
@@ -2227,8 +2194,6 @@ package NxServer;
         AccountNodeCostCenterJournal Cost_Center_Journal=41;
     }
 
-
-  
     message NprAccountNodeListResponse{
         repeated NprAccountNode Nodes =1;
         ResponseStatus Status =2; 
@@ -2352,7 +2317,6 @@ package NxServer;
         NprDecimalValue Percentage =4;
     }
 
-
 // NxSupplierService 
     service NxSupplierService { 
         rpc SearchSuppliers (NprSupplierSearchRequest) returns (NprSupplierSearchResponse);
@@ -2445,8 +2409,6 @@ package NxServer;
         PassportInfo Passport =26;
     }
 
-
-     
     message NprSupplierDeleteRequest{
         PassportInfo Passport =1;
         int64 Supplier_Id_Required =3;
@@ -2477,8 +2439,6 @@ package NxServer;
         repeated NprSupplierFeeJournal Fee_Journals=25; 
         PassportInfo Passport =26;
     }
-
-
 
     message  NprSupplierBuyPriceJournal {
         int64 Id =1;
@@ -2608,8 +2568,6 @@ package NxServer;
         PassportInfo Passport =26;
     }
 
-
-     
     message NprClientDeleteRequest{
         PassportInfo Passport =1;
         int64 Client_Id_Required =3;
@@ -2640,8 +2598,6 @@ package NxServer;
         repeated NprClientFeeJournal Fee_Journals=25; 
         PassportInfo Passport =26;
     }
-
-
 
     message  NprClientSellPriceJournal {
         int64 Id =1;
@@ -2733,8 +2689,6 @@ package NxServer;
         PassportInfo Passport =17;
     }
 
-
-     
     message NprPaymentDeleteRequest{
         PassportInfo Passport =1;
         int64 Payment_Id_Required =3;
@@ -2819,8 +2773,6 @@ package NxServer;
         PassportInfo Passport =9;
     }
 
-
-     
     message NprPaymentJournalDeleteRequest{
         PassportInfo Passport =1;
         int64 Payment_Journal_Id_Required =3;
@@ -2868,8 +2820,6 @@ package NxServer;
         NprSalesTransactionTemplate Sales_Transaction_Template_Data =15;
     }
 
-
-
     message NprQuotationTemplateAddRequest{ 
         bool Has_Expiry_Date = 7;
         bool Allow_Guest=10; 
@@ -2878,8 +2828,6 @@ package NxServer;
         PassportInfo Passport =14; 
     }
 
-
- 
     message NprSalesTransactionTemplateListResponse{
         repeated NprSalesTransactionTemplate Templates =1;
         ResponseStatus Status =2; 
@@ -3456,8 +3404,6 @@ package NxServer;
         int64 Node_Attachment_Id_Required =3;
     }
 
-
-         
 // CostCenterNodeService
     service NxCostCenterNodeService {
         rpc GetAllGroupsAsTree (NprCostCenterGroupTreeRequest) returns (NprCostCenterNodeListResponse); 
@@ -3595,8 +3541,6 @@ package NxServer;
     }
     
 
-	
-    
 // GlobalItemNodeService
     service NxGlobalItemNodeService {
         rpc GetAllGroupsAsTree (NprGlobalItemNodeGroupTreeRequest) returns (NprGlobalItemNodeListResponse); 
@@ -3621,7 +3565,6 @@ package NxServer;
         NprItemNodeGroupType Group_Type =4;
         bool Populate_Measurement_Units_Data=6;
     }
-
 
     message NprGlobalItemNodeSearchResponse{
         repeated NprGlobalItemNode Global_Item_Nodes =1;
@@ -3654,8 +3597,6 @@ package NxServer;
 		repeated string images =42;
         int64 Delivery_Distance_Meters= 43;
     }
-
-     
 
     message NprGlobalItemNodeAddRequest{ 
         NprGlobalItemNodeTypes Node_Type =1;
@@ -3775,6 +3716,7 @@ package NxServer;
            google.protobuf.Int64Value Variant_Parent_Node_Id =39;
            google.protobuf.StringValue Sku =40;
            google.protobuf.Int64Value Delivery_Distance_Meters =41; 
+           google.protobuf.Int64Value Node_Order =42;
     }
     
 
@@ -3863,8 +3805,6 @@ package NxServer;
         Group_Global_Item_Node =2;
     }
 
-  
-  
 // NxGlobalItemNodeMediaService 
     service NxGlobalItemNodeMediaService { 
         rpc SearchGlobalItemNodeMedias (NprGlobalItemNodeMediaSearchRequest) returns (NprGlobalItemNodeMediaSearchResponse);
@@ -3933,8 +3873,6 @@ package NxServer;
 
     }
 
-
-     
     message NprGlobalItemNodeMediaDeleteRequest{
         PassportInfo Passport =1;
         int64 Node_Media_Id_Required =3;
@@ -4003,7 +3941,6 @@ package NxServer;
         PassportInfo Passport =8; 
     }
 
- 
     message NprGlobalItemNodeAttachmentDeleteRequest{
         PassportInfo Passport =1;
         int64 Node_Attachment_Id_Required =3;
@@ -4189,8 +4126,6 @@ package NxServer;
         PassportInfo Passport =17;
     }
 
-
-	
 // NxPickupOptionService 
     service NxPickupOptionService { 
         rpc SearchPickupOptions (NprPickupOptionSearchRequest) returns (NprPickupOptionSearchResponse);
@@ -4266,9 +4201,6 @@ package NxServer;
 	    bool Is_Active =18;
     }
 
-
-
-		
 // NxDeliveryProviderService 
     service NxDeliveryProviderService { 
         rpc SearchDeliveryProviders (NprDeliveryProviderSearchRequest) returns (NprDeliveryProviderSearchResponse);
@@ -4343,7 +4275,6 @@ package NxServer;
         PassportInfo Passport =17;
 	    bool Is_Active =18;
     }
-
 
 // NxCouponService 
     service NxCouponService { 

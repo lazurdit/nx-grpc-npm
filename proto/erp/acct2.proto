@@ -97,7 +97,6 @@ package NxServer;
   }
   
 
-	 
 // NxNewHyperService 
 service NxNewHyperServices { 
 	rpc SetStoreGlobalCategoryArchive (HprSetEntityGlobalCategoryArchiveRequest) returns (HprSetEntityGlobalCategoryArchiveResponse);
@@ -447,8 +446,6 @@ message HprApplyCouponResponse {
 	HprCartInput Cart=5;
 }
 
-
-
 message HprIDRequest {
 	PassportInfo Passport =1; 
 	int64 Id =2;
@@ -464,7 +461,7 @@ message HprIdsRequest {
 	repeated int64 Id =2;
 }
 
- message HprCategoryModelListResponse{
+message HprCategoryModelListResponse{
 	repeated HprCategoryModel Category_List =1;
 	ResponseStatus Status = 2;
 }
@@ -473,10 +470,8 @@ message HprCouponListResponse{
 	repeated HprCouponDisplayObject Coupon_List =1;
 	ResponseStatus Status = 2;
 }
- 
 
-
- message HprCartFullItemAdditionInput {
+message HprCartFullItemAdditionInput {
 	google.protobuf.Int64Value Id = 1;
 	NprDecimalValue Selected_Qty = 2;
 	HprFullItemAdditionChoiceInput Selected_Choice = 3;
@@ -532,6 +527,7 @@ message HprCategoryModel {
 	google.protobuf.Int64Value Shop_Id =9;
 	google.protobuf.BoolValue Is_Archived =10;
 	google.protobuf.Int64Value Delivery_Distance_Meters =11; 
+	google.protobuf.Int64Value Order_Number =12;
 }
 
 message HprChoices {
@@ -746,6 +742,7 @@ message HprShopCategory {
 	string Node_Path =8;
 	google.protobuf.Int64Value Shop_Id =9;
 	google.protobuf.BoolValue Is_Archived =10; 
+	google.protobuf.Int64Value Order_Number =11;
 }
 
 message HprImageModel {
