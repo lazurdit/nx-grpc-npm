@@ -690,6 +690,7 @@ message HprGlobalCategory {
 	string Description_En =9;
 	string Description_Ar =10;
 	google.protobuf.Int64Value Delivery_Distance_Meters =11;
+	google.protobuf.Int64Value Order_Number =12;
 
 }
 
